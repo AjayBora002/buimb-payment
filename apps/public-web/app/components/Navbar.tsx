@@ -21,6 +21,8 @@ import {
 } from 'lucide-react';
 import { FinoraLogo } from './FinoraLogo';
 
+const DASHBOARD_URL = process.env.NEXT_PUBLIC_DASHBOARD_URL || 'http://localhost:5173';
+
 export function Navbar() {
   const [activeMenu, setActiveMenu] = useState<string | null>(null);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -367,7 +369,7 @@ export function Navbar() {
             {/* Right Actions */}
             <div className="flex items-center gap-2 sm:gap-3">
               <a
-                href="http://localhost:5173"
+                href={DASHBOARD_URL}
                 target="_blank"
                 rel="noreferrer"
                 className="text-xs sm:text-sm font-semibold text-slate-700 hover:text-[#2B59FF] px-3 py-2 transition-colors"
@@ -375,12 +377,14 @@ export function Navbar() {
                 Merchant Sign In
               </a>
 
-              <Link
-                href="/contact"
+              <a
+                href={`${DASHBOARD_URL}/?mode=signup`}
+                target="_blank"
+                rel="noreferrer"
                 className="bg-[#2B59FF] hover:bg-[#1E40AF] text-white text-xs sm:text-sm font-semibold px-5 sm:px-6 py-2.5 rounded-full transition-all duration-300 shadow-[0_4px_16px_rgba(43,89,255,0.25)] hover:shadow-[0_6px_20px_rgba(43,89,255,0.4)] hover:scale-[1.02]"
               >
                 Get Started
-              </Link>
+              </a>
 
               <button
                 onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
@@ -444,15 +448,17 @@ export function Navbar() {
             </div>
 
             <div className="pt-4 space-y-2.5">
-              <Link
-                href="/contact"
+              <a
+                href={`${DASHBOARD_URL}/?mode=signup`}
+                target="_blank"
+                rel="noreferrer"
                 onClick={() => setMobileMenuOpen(false)}
                 className="w-full py-3 rounded-full bg-[#2B59FF] text-white font-semibold text-center block shadow-lg shadow-blue-500/25 text-sm"
               >
                 Get Started
-              </Link>
+              </a>
               <a
-                href="http://localhost:5173"
+                href={DASHBOARD_URL}
                 target="_blank"
                 rel="noreferrer"
                 className="w-full py-2.5 rounded-full border border-slate-200 text-slate-700 font-semibold text-center block hover:bg-slate-50 transition-colors text-sm"
