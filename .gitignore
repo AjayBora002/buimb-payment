@@ -45,6 +45,8 @@ prisma/migrations/
 
 # Generated TypeScript declarations (compiled alongside source)
 **/*.d.ts
+**/*.d.ts.map
+!apps/public-web/next-env.d.ts
 
 # Docker
 .docker/

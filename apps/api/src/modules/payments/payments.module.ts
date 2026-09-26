@@ -8,10 +8,12 @@ import { OrdersService } from './orders.service.js';
 import { PublicPaymentsController } from './public-payments.controller.js';
 import { PrismaService } from '../../common/database/prisma.service.js';
 
+import { ProductionPaymentGuard } from '../../common/guards/production-payment.guard.js';
+
 @Module({
   imports: [DatabaseModule, LedgerModule],
   controllers: [PaymentsController, OrdersController, PublicPaymentsController],
-  providers: [PaymentsService, OrdersService, PrismaService],
+  providers: [PaymentsService, OrdersService, PrismaService, ProductionPaymentGuard],
   exports: [PaymentsService],
 })
 export class PaymentsModule {}

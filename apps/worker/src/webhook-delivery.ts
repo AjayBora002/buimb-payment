@@ -13,7 +13,7 @@ export interface WebhookSignatureResult {
  * SSRF Protection: Validate URL before making HTTP request.
  * Defense in depth - validate at delivery time even if creation was bypassed.
  */
-function validateWebhookUrlForDelivery(urlString: string): void {
+export function validateWebhookUrlForDelivery(urlString: string): void {
   let url: URL;
   try {
     url = new URL(urlString);
@@ -132,6 +132,13 @@ export async function postWebhook(
         throw new Error(`Redirect response (${response.status}) missing Location header`);
       }
 
+      // Validate redirect target to prevent SSRF via redirects
+      try {
+        validateWebhookUrlForDelivery(new URL(location, currentUrl).toString());
+      } catch (err: any) {
+        throw new Error(`Redirect Location header points to invalid URL: ${err.message}`);
+      }
+
       currentUrl = new URL(location, currentUrl).toString();
       redirectCount++;
 
@@ -140,7 +147,7 @@ export async function postWebhook(
         headers,
         body: payloadString,
         signal: controller.signal,
-        redirect: 'error',
+        redirect: 'manual',
       });
     }
 

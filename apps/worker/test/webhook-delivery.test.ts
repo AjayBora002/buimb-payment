@@ -235,5 +235,73 @@ describe('Webhook Delivery Worker', () => {
 
       assert.equal(sig, expectedSig);
     });
+
+    it('blocks delivery when initial webhook URL is an SSRF target (localhost, cloud metadata, private IP)', async () => {
+      const ssrfUrls = [
+        'http://localhost:3000/webhook',
+        'http://127.0.0.1:8080/hook',
+        'http://169.254.169.254/latest/meta-data',
+        'http://metadata.google.internal/computeMetadata/v1',
+        'http://10.0.0.1/internal',
+        'http://192.168.1.1/admin',
+        'http://172.20.0.1/status',
+      ];
+
+      for (const badUrl of ssrfUrls) {
+        const ssrfDelivery = {
+          ...baseDelivery,
+          endpoint: {
+            ...baseDelivery.endpoint,
+            url: badUrl,
+          },
+        };
+        const mockPrisma = createMockPrisma(ssrfDelivery);
+
+        await assert.rejects(
+          async () => {
+            await processWebhookDelivery(mockDeliveryId, {
+              prismaClient: mockPrisma,
+            });
+          },
+          (err: Error) => {
+            assert.match(err.message, /Webhook URL validation failed/);
+            return true;
+          },
+        );
+
+        const updated = mockPrisma.getRecord();
+        assert.equal(updated.status, 'FAILED');
+        assert.match(updated.errorMessage, /Webhook URL validation failed/);
+      }
+    });
+
+    it('prevents SSRF via HTTP redirect when endpoint attempts 302 redirect to metadata or internal address', async () => {
+      const { postWebhook } = await import('../src/webhook-delivery.js');
+
+      const mockFetchWithSsrfRedirect: typeof fetch = async (url) => {
+        if (url.toString().includes('example.com')) {
+          return new Response(null, {
+            status: 302,
+            headers: {
+              Location: 'http://169.254.169.254/latest/meta-data/',
+            },
+          });
+        }
+        return new Response('{}', { status: 200 });
+      };
+
+      await assert.rejects(
+        async () => {
+          await postWebhook('https://example.com/webhook', '{}', {}, {
+            fetchFn: mockFetchWithSsrfRedirect,
+          });
+        },
+        (err: Error) => {
+          assert.match(err.message, /Redirect Location header points to invalid URL: Webhook URL points to cloud metadata service/);
+          return true;
+        },
+      );
+    });
   });
 });
+

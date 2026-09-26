@@ -1,1 +1,0 @@
-{"version":3,"file":"ledger.controller.d.ts","sourceRoot":"","sources":["ledger.controller.ts"],"names":[],"mappings":"AAQA,OAAO,EAAE,aAAa,EAAE,MAAM,qBAAqB,CAAC;AAGpD,qBAIa,gBAAgB;IACf,OAAO,CAAC,QAAQ,CAAC,aAAa;gBAAb,aAAa,EAAE,aAAa;IAInD,YAAY,CAAQ,GAAG,EAAE,GAAG;IAO5B,gBAAgB,CACM,eAAe,CAAC,EAAE,MAAM,EACjC,MAAM,CAAC,EAAE,MAAM,EAChB,KAAK,CAAC,EAAE,MAAM;;;;CAQjC"}
