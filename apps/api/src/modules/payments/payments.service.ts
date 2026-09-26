@@ -15,9 +15,11 @@ import { MockProvider } from '@buimbpay/payments';
 import {
   PaymentIntentStatus,
   Environment,
+  RiskOutcome,
   type PaymentIntent,
 } from '@prisma/client';
 import { LedgerService } from '../ledger/ledger.service.js';
+import { RiskService } from '../risk/risk.service.js';
 import { randomUUID } from 'crypto';
 
 @Injectable()
@@ -28,6 +30,7 @@ export class PaymentsService {
   constructor(
     private readonly prisma: PrismaService,
     private readonly ledgerService: LedgerService,
+    private readonly riskService: RiskService,
   ) {}
 
   private async recordCaptureLedgerEntry(
@@ -145,12 +148,133 @@ export class PaymentsService {
       simulateOutcome: data.simulateOutcome ?? 'success',
     });
 
-    const newStatus =
-      providerResponse.status === 'authorised'
-        ? PaymentIntentStatus.CAPTURED   // auto-capture flow
-        : providerResponse.status === 'requires_action'
-          ? PaymentIntentStatus.REQUIRES_ACTION
-          : PaymentIntentStatus.FAILED;
+    // Risk evaluation: Score the payment before deciding final state
+    const riskDecision = await this.riskService.evaluatePayment(
+      merchantId,
+      paymentIntentId,
+      {
+        amount: Number(intent.amount),
+      },
+    );
+
+    // If risk decision blocks the payment, fail it
+    if (riskDecision.outcome === RiskOutcome.DECLINE) {
+      this.logger.warn(
+        `Payment ${paymentIntentId} declined by risk engine: ${riskDecision.reasonCodes.join(', ')}`,
+      );
+      return this.prisma.$transaction(async (tx) => {
+        await tx.paymentAttempt.create({
+          data: {
+            paymentIntentId: intent.id,
+            amount: intent.amount,
+            currency: intent.currency,
+            status: 'FAILED',
+            errorCode: 'RISK_DECLINE',
+            errorMessage: 'Payment declined by risk evaluation',
+          },
+        });
+
+        await tx.paymentIntent.update({
+          where: { id: intent.id },
+          data: {
+            status: PaymentIntentStatus.FAILED,
+            version: intent.version + 1,
+          },
+        });
+
+        return tx.paymentIntent.findUniqueOrThrow({ where: { id: intent.id } });
+      });
+    }
+
+    // If risk decision requires step-up (e.g., 3D Secure), transition to REQUIRES_ACTION
+    if (riskDecision.outcome === RiskOutcome.ALLOW_WITH_STEP_UP) {
+      this.logger.debug(
+        `Payment ${paymentIntentId} requires step-up due to risk: ${riskDecision.reasonCodes.join(', ')}`,
+      );
+      return this.prisma.$transaction(async (tx) => {
+        await tx.paymentAttempt.create({
+          data: {
+            paymentIntentId: intent.id,
+            amount: intent.amount,
+            currency: intent.currency,
+            status: 'PENDING',
+            providerRef: providerResponse.providerRef,
+          },
+        });
+
+        await tx.paymentIntent.update({
+          where: { id: intent.id },
+          data: {
+            status: PaymentIntentStatus.REQUIRES_ACTION,
+            providerRef: providerResponse.providerRef,
+            version: intent.version + 1,
+          },
+        });
+
+        return tx.paymentIntent.findUniqueOrThrow({ where: { id: intent.id } });
+      });
+    }
+
+    // If risk decision requires manual review, hold the payment
+    if (riskDecision.outcome === RiskOutcome.REVIEW) {
+      this.logger.warn(
+        `Payment ${paymentIntentId} flagged for manual review: ${riskDecision.reasonCodes.join(', ')}`,
+      );
+      // For now, we'll still allow the payment but flag it in audit
+      // In production, you might want to put this in a HOLD state or similar
+    }
+
+    // Determine next state based on provider response, respecting state machine
+    let newStatus: PaymentIntentStatus;
+    let immediateCapture = false;
+
+    if (providerResponse.status === 'authorised') {
+      // Auto-capture flow: PROCESSING → AUTHORISED → CAPTURED
+      if (intent.captureMethod === 'AUTOMATIC') {
+        newStatus = PaymentIntentStatus.AUTHORISED;
+        immediateCapture = true;
+      } else {
+        // Manual capture required
+        newStatus = PaymentIntentStatus.AUTHORISED;
+      }
+    } else if (providerResponse.status === 'requires_action') {
+      newStatus = PaymentIntentStatus.REQUIRES_ACTION;
+    } else {
+      newStatus = PaymentIntentStatus.FAILED;
+    }
+
+    // Validate the transition from PROCESSING to newStatus
+    try {
+      assertValidTransition(PaymentIntentStatus.PROCESSING, newStatus);
+    } catch (e) {
+      if (e instanceof InvalidStateTransitionError) {
+        this.logger.error(
+          `Invalid state transition after provider response: PROCESSING → ${newStatus}`,
+          e.message,
+        );
+        // Fall back to FAILED if the intended transition is invalid
+        newStatus = PaymentIntentStatus.FAILED;
+      } else {
+        throw e;
+      }
+    }
+
+    // For auto-capture, validate AUTHORISED → CAPTURED
+    if (immediateCapture) {
+      try {
+        assertValidTransition(PaymentIntentStatus.AUTHORISED, PaymentIntentStatus.CAPTURED);
+        newStatus = PaymentIntentStatus.CAPTURED;
+      } catch (e) {
+        if (e instanceof InvalidStateTransitionError) {
+          this.logger.error(
+            'Auto-capture transition failed: AUTHORISED → CAPTURED is invalid',
+            e.message,
+          );
+          // Keep at AUTHORISED, let manual capture handle it
+        }
+        // Fall through with newStatus = AUTHORISED
+      }
+    }
 
     return this.prisma.$transaction(async (tx) => {
       // Record the attempt

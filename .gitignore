@@ -6,6 +6,7 @@ build/
 out/
 .turbo/
 *.js.map
+*.tsbuildinfo
 
 # Env files - NEVER commit credentials
 .env
@@ -41,6 +42,9 @@ coverage/
 # Prisma
 prisma/migrations/
 !packages/database/prisma/migrations/
+
+# Generated TypeScript declarations (compiled alongside source)
+**/*.d.ts
 
 # Docker
 .docker/

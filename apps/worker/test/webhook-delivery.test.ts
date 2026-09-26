@@ -3,6 +3,8 @@ import assert from 'node:assert/strict';
 import { createHmac } from 'node:crypto';
 import { signPayload, processWebhookDelivery } from '../src/webhook-delivery.js';
 
+process.env.ENCRYPTION_KEY = process.env.ENCRYPTION_KEY || '0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef';
+
 describe('Webhook Delivery Worker', () => {
   const mockSecret = 'whsec_test_secret_1234567890abcdef';
   const mockEndpointId = '11111111-1111-1111-1111-111111111111';

@@ -1,12 +1,19 @@
 import { randomBytes, createCipheriv, createDecipheriv } from 'node:crypto';
 
-const DEFAULT_DEV_KEY = '0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef';
-
 function getEncryptionKey(keyHex?: string): Buffer {
-  const hex = keyHex || process.env.ENCRYPTION_KEY || DEFAULT_DEV_KEY;
+  const hex = keyHex || process.env.ENCRYPTION_KEY;
+
+  if (!hex) {
+    throw new Error(
+      'ENCRYPTION_KEY environment variable is required. ' +
+      'Generate one with: node -e "console.log(require(\'crypto\').randomBytes(32).toString(\'hex\'))"'
+    );
+  }
+
   if (hex.length !== 64) {
     throw new Error('ENCRYPTION_KEY must be a 64-character hex string (32 bytes).');
   }
+
   return Buffer.from(hex, 'hex');
 }
 

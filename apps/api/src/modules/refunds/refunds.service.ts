@@ -31,13 +31,6 @@ export class RefundsService {
   ): Promise<Refund> {
     const key = data.idempotencyKey || `ref_idem_${randomUUID().replace(/-/g, '')}`;
 
-    const existing = await this.prisma.refund.findUnique({
-      where: { idempotencyKey: key },
-    });
-    if (existing) {
-      return existing;
-    }
-
     const pi = await this.prisma.paymentIntent.findFirst({
       where: { id: data.paymentIntentId, merchantId },
       include: { refunds: true },
@@ -76,76 +69,90 @@ export class RefundsService {
       currency: pi.currency,
     });
 
-    return this.prisma.$transaction(async (tx) => {
-      const refundStatus =
-        providerResult.status === 'succeeded' ? RefundStatus.SUCCEEDED : RefundStatus.FAILED;
+    const refundStatus =
+      providerResult.status === 'succeeded' ? RefundStatus.SUCCEEDED : RefundStatus.FAILED;
 
-      const refund = await tx.refund.create({
-        data: {
-          paymentIntentId: pi.id,
-          merchantId,
-          idempotencyKey: key,
-          amount: refundAmount,
-          currency: pi.currency,
-          status: refundStatus,
-          reason: data.reason,
-          notes: data.notes,
-          providerRef: providerResult.providerRefundRef,
-          initiatedBy: userId,
-          processedAt: new Date(),
-        },
-      });
-
-      const newTotalRefunded =
-        totalRefunded + (refund.status === RefundStatus.SUCCEEDED ? refundAmount : 0n);
-      const isFullyRefunded = newTotalRefunded >= pi.amount;
-
-      await tx.paymentIntent.update({
-        where: { id: pi.id },
-        data: {
-          status: isFullyRefunded
-            ? PaymentIntentStatus.REFUNDED
-            : PaymentIntentStatus.PARTIALLY_REFUNDED,
-          version: { increment: 1 },
-        },
-      });
-
-      if (refund.status === RefundStatus.SUCCEEDED) {
-        const [cashAccount, escrowAccount] = await Promise.all([
-          this.ledgerService.getOrCreateAccount(
-            'PLATFORM_CASH',
-            { name: 'Platform Cash', type: 'ASSET' },
-            tx,
-          ),
-          this.ledgerService.getOrCreateAccount(
-            'PLATFORM_ESCROW',
-            { name: 'Merchant Escrow Payable', type: 'LIABILITY' },
-            tx,
-          ),
-        ]);
-
-        await this.ledgerService.recordTransaction(
-          {
-            type: 'REFUND',
-            description: `Refund ${refund.id} for payment intent ${pi.id}`,
+    // Use transaction with unique constraint error handling for idempotency
+    try {
+      return await this.prisma.$transaction(async (tx) => {
+        const refund = await tx.refund.create({
+          data: {
             paymentIntentId: pi.id,
-            referenceId: refund.id,
-            entries: [
-              {
-                debitAccountId: escrowAccount.id,
-                creditAccountId: cashAccount.id,
-                amount: refundAmount,
-                currency: pi.currency,
-                description: `Refund debited from escrow: ${refund.id}`,
-              },
-            ],
+            merchantId,
+            idempotencyKey: key,
+            amount: refundAmount,
+            currency: pi.currency,
+            status: refundStatus,
+            reason: data.reason,
+            notes: data.notes,
+            providerRef: providerResult.providerRefundRef,
+            initiatedBy: userId,
+            processedAt: new Date(),
           },
-          tx,
-        );
-      }
+        });
 
-      return refund;
-    });
+        const newTotalRefunded =
+          totalRefunded + (refund.status === RefundStatus.SUCCEEDED ? refundAmount : 0n);
+        const isFullyRefunded = newTotalRefunded >= pi.amount;
+
+        await tx.paymentIntent.update({
+          where: { id: pi.id },
+          data: {
+            status: isFullyRefunded
+              ? PaymentIntentStatus.REFUNDED
+              : PaymentIntentStatus.PARTIALLY_REFUNDED,
+            version: { increment: 1 },
+          },
+        });
+
+        if (refund.status === RefundStatus.SUCCEEDED) {
+          const [cashAccount, escrowAccount] = await Promise.all([
+            this.ledgerService.getOrCreateAccount(
+              'PLATFORM_CASH',
+              { name: 'Platform Cash', type: 'ASSET' },
+              tx,
+            ),
+            this.ledgerService.getOrCreateAccount(
+              'PLATFORM_ESCROW',
+              { name: 'Merchant Escrow Payable', type: 'LIABILITY' },
+              tx,
+            ),
+          ]);
+
+          await this.ledgerService.recordTransaction(
+            {
+              type: 'REFUND',
+              description: `Refund ${refund.id} for payment intent ${pi.id}`,
+              paymentIntentId: pi.id,
+              referenceId: refund.id,
+              entries: [
+                {
+                  debitAccountId: escrowAccount.id,
+                  creditAccountId: cashAccount.id,
+                  amount: refundAmount,
+                  currency: pi.currency,
+                  description: `Refund debited from escrow: ${refund.id}`,
+                },
+              ],
+            },
+            tx,
+          );
+        }
+
+        return refund;
+      });
+    } catch (err: any) {
+      // If it's a unique constraint violation (idempotency key conflict), return existing refund
+      if (err?.code === 'P2002' && err?.meta?.target?.includes('idempotencyKey')) {
+        const existing = await this.prisma.refund.findUnique({
+          where: { idempotencyKey: key },
+        });
+        if (existing) {
+          return existing;
+        }
+      }
+      throw err;
+    }
   }
 
   async findRefund(merchantId: string, id: string): Promise<Refund> {

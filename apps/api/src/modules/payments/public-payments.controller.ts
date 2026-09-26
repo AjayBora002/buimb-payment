@@ -7,11 +7,13 @@ import {
   HttpCode,
   HttpStatus,
   NotFoundException,
+  UseGuards,
 } from '@nestjs/common';
 import { ApiTags, ApiOperation } from '@nestjs/swagger';
 import { OrdersService } from './orders.service.js';
 import { PaymentsService } from './payments.service.js';
 import { PrismaService } from '../../common/database/prisma.service.js';
+import { ProductionPaymentGuard } from '../../common/guards/production-payment.guard.js';
 
 /**
  * Public (unauthenticated) endpoints consumed by the customer-facing checkout pages.
@@ -19,6 +21,7 @@ import { PrismaService } from '../../common/database/prisma.service.js';
  * They deliberately do NOT expose merchant-private fields (e.g. fees, settlement data).
  */
 @ApiTags('Public Checkout')
+@UseGuards(ProductionPaymentGuard)
 @Controller({ version: '1' })
 export class PublicPaymentsController {
   constructor(

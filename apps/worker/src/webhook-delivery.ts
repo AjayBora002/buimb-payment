@@ -10,6 +10,59 @@ export interface WebhookSignatureResult {
 }
 
 /**
+ * SSRF Protection: Validate URL before making HTTP request.
+ * Defense in depth - validate at delivery time even if creation was bypassed.
+ */
+function validateWebhookUrlForDelivery(urlString: string): void {
+  let url: URL;
+  try {
+    url = new URL(urlString);
+  } catch {
+    throw new Error('Invalid webhook URL format');
+  }
+
+  const hostname = url.hostname.toLowerCase();
+
+  // Block metadata services
+  if (hostname === '169.254.169.254' || hostname === 'metadata.google.internal' || hostname === 'metadata') {
+    throw new Error('Webhook URL points to cloud metadata service');
+  }
+
+  // Block localhost/loopback
+  if (hostname === 'localhost' || hostname === '127.0.0.1' || hostname === '::1') {
+    throw new Error('Webhook URL points to localhost');
+  }
+
+  // Check IPv4 addresses
+  const ipv4Pattern = /^(\d{1,3})\.(\d{1,3})\.(\d{1,3})\.(\d{1,3})$/;
+  const ipv4Match = hostname.match(ipv4Pattern);
+
+  if (ipv4Match) {
+    const [, oct1, oct2, oct3, oct4] = ipv4Match.map(Number);
+
+    if (
+      oct1 === 0 ||
+      oct1 === 10 ||
+      (oct1 === 172 && oct2 >= 16 && oct2 <= 31) ||
+      oct1 === 127 ||
+      (oct1 === 169 && oct2 === 254) ||
+      (oct1 === 192 && oct2 === 168) ||
+      oct1 >= 224
+    ) {
+      throw new Error('Webhook URL points to private/internal IP address');
+    }
+  }
+
+  // Check IPv6
+  if (hostname.includes(':')) {
+    const blockedIPv6Prefixes = ['::1', 'fe80:', 'fc00:', 'fd00:', '::'];
+    if (blockedIPv6Prefixes.some(p => hostname.startsWith(p))) {
+      throw new Error('Webhook URL points to IPv6 local or link-local address');
+    }
+  }
+}
+
+/**
  * Sign payload with HMAC-SHA256 according to Stripe / modern webhook conventions.
  * Signature header format: X-BuimbPay-Signature: t=<timestamp>,v1=<signature>
  */
@@ -159,6 +212,22 @@ export async function processWebhookDelivery(
   const startTime = Date.now();
 
   try {
+    // SSRF Protection: Validate URL before attempting delivery (defense in depth)
+    try {
+      validateWebhookUrlForDelivery(endpoint.url);
+    } catch (err: any) {
+      const errMsg = `Webhook URL validation failed: ${err.message}`;
+      await prismaClient.webhookDelivery.update({
+        where: { id: deliveryId },
+        data: {
+          status: 'FAILED',
+          latencyMs: Math.max(1, Date.now() - startTime),
+          errorMessage: errMsg.slice(0, 1000),
+        },
+      });
+      throw new Error(errMsg);
+    }
+
     const httpResult = await postWebhook(endpoint.url, payloadString, headers, {
       timeoutMs: options.timeoutMs ?? 10000,
       maxRedirects: 1,

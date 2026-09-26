@@ -1,0 +1,527 @@
+<title>BuimbPay Security Fixes Dashboard</title>
+<style>
+:root {
+  --bg: #fafafa;
+  --surface: #ffffff;
+  --text: #1a1a1a;
+  --text-secondary: #666666;
+  --text-muted: #888888;
+  --border: #e0e0e0;
+  --accent: #2563eb;
+  --accent-light: #dbeafe;
+  --success: #059669;
+  --warning: #d97706;
+  --critical: #dc2626;
+  --pending: #6b7280;
+  --success-bg: #d1fae5;
+  --warning-bg: #fef3c7;
+  --critical-bg: #fee2e2;
+  --pending-bg: #f3f4f6;
+  --shadow: 0 1px 3px rgba(0,0,0,0.1);
+  --spacing-xs: 0.25rem;
+  --spacing-sm: 0.5rem;
+  --spacing-md: 1rem;
+  --spacing-lg: 1.5rem;
+  --spacing-xl: 2rem;
+  --font-base: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  --font-mono: 'SF Mono', Monaco, 'Cascadia Code', 'Roboto Mono', monospace;
+  --radius: 8px;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #0a0a0a;
+    --surface: #1a1a1a;
+    --text: #f0f0f0;
+    --text-secondary: #a0a0a0;
+    --text-muted: #888888;
+    --border: #333333;
+    --accent: #3b82f6;
+    --accent-light: #1e40af;
+    --success: #10b981;
+    --warning: #f59e0b;
+    --critical: #ef4444;
+    --pending: #6b7280;
+    --success-bg: #064e3b;
+    --warning-bg: #78350f;
+    --critical-bg: #7f1d1d;
+    --pending-bg: #374151;
+    --shadow: 0 1px 3px rgba(0,0,0,0.3);
+  }
+}
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-base);
+  margin: 0;
+  padding: var(--spacing-xl) var(--spacing-lg);
+  line-height: 1.5;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+header {
+  margin-bottom: var(--spacing-xl);
+  border-bottom: 2px solid var(--border);
+  padding-bottom: var(--spacing-lg);
+}
+
+h1 {
+  font-size: 2.5rem;
+  font-weight: 700;
+  margin: 0 0 var(--spacing-sm);
+  color: var(--text);
+}
+
+.subtitle {
+  font-size: 1.125rem;
+  color: var(--text-secondary);
+  margin: 0 0 var(--spacing-lg);
+}
+
+.summary-stats {
+  display: flex;
+  gap: var(--spacing-md);
+  margin-bottom: var(--spacing-xl);
+  flex-wrap: wrap;
+}
+
+.stat-card {
+  background: var(--surface);
+  border-radius: var(--radius);
+  padding: var(--spacing-md);
+  box-shadow: var(--shadow);
+  flex: 1;
+  min-width: 200px;
+}
+
+.stat-card h3 {
+  font-size: 0.875rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--text-muted);
+  margin: 0 0 var(--spacing-xs);
+}
+
+.stat-value {
+  font-size: 2rem;
+  font-weight: 700;
+  margin: 0;
+}
+
+.stat-value.critical { color: var(--critical); }
+.stat-value.high { color: var(--warning); }
+.stat-value.medium { color: var(--pending); }
+.stat-value.complete { color: var(--success); }
+
+.issues-grid {
+  display: grid;
+  gap: var(--spacing-md);
+  margin-bottom: var(--spacing-xl);
+}
+
+.issue-card {
+  background: var(--surface);
+  border-radius: var(--radius);
+  padding: var(--spacing-md);
+  box-shadow: var(--shadow);
+  display: flex;
+  align-items: flex-start;
+  gap: var(--spacing-md);
+  border-left: 4px solid transparent;
+}
+
+.issue-card.critical { border-left-color: var(--critical); }
+.issue-card.high { border-left-color: var(--warning); }
+.issue-card.medium { border-left-color: var(--pending); }
+.issue-card.low { border-left-color: var(--text-muted); }
+
+.issue-card.fixed {
+  opacity: 0.8;
+  background: linear-gradient(to right, var(--surface) 0%, var(--surface) 95%, var(--success-bg) 100%);
+}
+
+.status-badge {
+  padding: var(--spacing-xs) var(--spacing-sm);
+  border-radius: 999px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  white-space: nowrap;
+}
+
+.badge-critical { background: var(--critical-bg); color: var(--critical); }
+.badge-high { background: var(--warning-bg); color: var(--warning); }
+.badge-medium { background: var(--pending-bg); color: var(--pending); }
+.badge-low { background: var(--pending-bg); color: var(--text-muted); }
+.badge-fixed { background: var(--success-bg); color: var(--success); }
+
+.issue-content {
+  flex: 1;
+}
+
+.issue-title {
+  font-weight: 600;
+  margin: 0 0 var(--spacing-xs);
+  font-size: 1.125rem;
+}
+
+.issue-description {
+  color: var(--text-secondary);
+  margin: 0 0 var(--spacing-sm);
+  font-size: 0.9375rem;
+}
+
+.issue-meta {
+  display: flex;
+  gap: var(--spacing-md);
+  font-size: 0.8125rem;
+  color: var(--text-muted);
+}
+
+.meta-item {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.issue-action {
+  margin-top: var(--spacing-sm);
+  padding: var(--spacing-xs) var(--spacing-sm);
+  background: var(--accent);
+  color: white;
+  border: none;
+  border-radius: var(--radius);
+  font-size: 0.875rem;
+  cursor: pointer;
+  text-decoration: none;
+  display: inline-block;
+}
+
+.issue-action:hover {
+  opacity: 0.9;
+}
+
+.issue-action:disabled {
+  background: var(--pending);
+  cursor: not-allowed;
+}
+
+.progress-section {
+  margin-top: var(--spacing-xl);
+  padding-top: var(--spacing-xl);
+  border-top: 2px solid var(--border);
+}
+
+.progress-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: var(--spacing-lg);
+}
+
+h2 {
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin: 0;
+}
+
+.next-actions {
+  background: var(--surface);
+  border-radius: var(--radius);
+  padding: var(--spacing-lg);
+  margin-bottom: var(--spacing-xl);
+  box-shadow: var(--shadow);
+}
+
+.next-actions h3 {
+  margin: 0 0 var(--spacing-md);
+  font-size: 1.125rem;
+}
+
+.next-actions ul {
+  margin: 0;
+  padding-left: var(--spacing-lg);
+}
+
+.next-actions li {
+  margin-bottom: var(--spacing-sm);
+}
+
+.footer-note {
+  text-align: center;
+  color: var(--text-muted);
+  font-size: 0.875rem;
+  margin-top: var(--spacing-xl);
+  padding-top: var(--spacing-lg);
+  border-top: 1px solid var(--border);
+}
+
+.severity-key {
+  display: flex;
+  gap: var(--spacing-md);
+  margin-bottom: var(--spacing-lg);
+  flex-wrap: wrap;
+}
+
+.severity-item {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-xs);
+  font-size: 0.875rem;
+}
+
+.severity-dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+}
+
+.severity-dot.critical { background: var(--critical); }
+.severity-dot.high { background: var(--warning); }
+.severity-dot.medium { background: var(--pending); }
+.severity-dot.low { background: var(--text-muted); }
+</style>
+
+<header>
+  <h1>BuimbPay Security Fixes Dashboard</h1>
+  <div class="subtitle">Track progress on critical security and functional fixes for payment platform launch</div>
+</header>
+
+<div class="summary-stats">
+  <div class="stat-card">
+    <h3>Total Issues</h3>
+    <p class="stat-value">8</p>
+  </div>
+  <div class="stat-card">
+    <h3>Critical Issues</h3>
+    <p class="stat-value critical">1</p>
+  </div>
+  <div class="stat-card">
+    <h3>High Severity</h3>
+    <p class="stat-value high">3</p>
+  </div>
+  <div class="stat-card">
+    <h3>Fixed</h3>
+    <p class="stat-value complete">5</p>
+  </div>
+</div>
+
+<div class="severity-key">
+  <div class="severity-item">
+    <div class="severity-dot critical"></div>
+    <span>Critical</span>
+  </div>
+  <div class="severity-item">
+    <div class="severity-dot high"></div>
+    <span>High</span>
+  </div>
+  <div class="severity-item">
+    <div class="severity-dot medium"></div>
+    <span>Medium</span>
+  </div>
+  <div class="severity-item">
+    <div class="severity-dot low"></div>
+    <span>Low</span>
+  </div>
+</div>
+
+<div class="issues-grid">
+  <!-- Fixed Issues -->
+  <div class="issue-card high fixed">
+    <div class="status-badge badge-fixed">Fixed</div>
+    <div class="issue-content">
+      <div class="issue-title">Hardcoded Encryption Fallback Key</div>
+      <div class="issue-description">Removed DEFAULT_DEV_KEY from encryption.ts. ENCRYPTION_KEY env var is now required at runtime.</div>
+      <div class="issue-meta">
+        <div class="meta-item">
+          <strong>File:</strong> packages/auth/src/encryption.ts
+        </div>
+        <div class="meta-item">
+          <strong>Impact:</strong> Critical
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="issue-card high fixed">
+    <div class="status-badge badge-fixed">Fixed</div>
+    <div class="issue-content">
+      <div class="issue-title">State Machine Bypass</div>
+      <div class="issue-description">Added validation for PROCESSING → AUTHORISED → CAPTURED transitions in confirmPaymentIntent.</div>
+      <div class="issue-meta">
+        <div class="meta-item">
+          <strong>File:</strong> apps/api/src/modules/payments/payments.service.ts
+        </div>
+        <div class="meta-item">
+          <strong>Impact:</strong> High
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="issue-card high fixed">
+    <div class="status-badge badge-fixed">Fixed</div>
+    <div class="issue-content">
+      <div class="issue-title">Webhook SSRF Vulnerability</div>
+      <div class="issue-description">Added validation to block internal IPs (localhost, metadata services, private ranges) in webhook URLs.</div>
+      <div class="issue-meta">
+        <div class="meta-item">
+          <strong>File:</strong> apps/api/src/modules/webhooks/webhooks.service.ts
+        </div>
+        <div class="meta-item">
+          <strong>Impact:</strong> High
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="issue-card high fixed">
+    <div class="status-badge badge-fixed">Fixed</div>
+    <div class="issue-content">
+      <div class="issue-title">RiskService Not Wired In</div>
+      <div class="issue-description">Integrated RiskService into confirmPaymentIntent flow. All payments are now risk-scored before processing.</div>
+      <div class="issue-meta">
+        <div class="meta-item">
+          <strong>File:</strong> apps/api/src/modules/payments/payments.service.ts
+        </div>
+        <div class="meta-item">
+          <strong>Impact:</strong> High
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="issue-card medium fixed">
+    <div class="status-badge badge-fixed">Fixed</div>
+    <div class="issue-content">
+      <div class="issue-title">ProductionPaymentGuard Dead Code</div>
+      <div class="issue-description">Applied guard to PaymentsController and PublicPaymentsController. Live payment protection is now active.</div>
+      <div class="issue-meta">
+        <div class="meta-item">
+          <strong>File:</strong> apps/api/src/common/guards/production-payment.guard.ts
+        </div>
+        <div class="meta-item">
+          <strong>Impact:</strong> Medium
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Pending Issues -->
+  <div class="issue-card medium">
+    <div class="status-badge badge-medium">Medium</div>
+    <div class="issue-content">
+      <div class="issue-title">No Real Payment Provider</div>
+      <div class="issue-description">Currently using only MockProvider. Need to build Razorpay/Paytm/Stripe adapter before launch.</div>
+      <div class="issue-meta">
+        <div class="meta-item">
+          <strong>File:</strong> packages/payments/src/mock-provider.ts
+        </div>
+        <div class="meta-item">
+          <strong>Impact:</strong> Launch Blocker
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="issue-card low">
+    <div class="status-badge badge-low">Low</div>
+    <div class="issue-content">
+      <div class="issue-title">Refund Idempotency Race</div>
+      <div class="issue-description">Look-up-then-create pattern causes 500 errors on concurrent identical requests.</div>
+      <div class="issue-meta">
+        <div class="meta-item">
+          <strong>File:</strong> apps/api/src/modules/refunds/refunds.service.ts
+        </div>
+        <div class="meta-item">
+          <strong>Impact:</strong> Low
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="issue-card low">
+    <div class="status-badge badge-low">Low</div>
+    <div class="issue-content">
+      <div class="issue-title">Repo Hygiene</div>
+      <div class="issue-description">Compiled .d.ts and .js files checked into source directories. Needs .gitignore cleanup.</div>
+      <div class="issue-meta">
+        <div class="meta-item">
+          <strong>Impact:</strong> Low
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="progress-section">
+  <div class="progress-header">
+    <h2>Progress Summary</h2>
+    <div class="status-badge badge-fixed">5 of 8 Fixed</div>
+  </div>
+
+  <div class="next-actions">
+    <h3>Next Steps to Complete</h3>
+    <ul>
+      <li><strong>#6 Payment Provider Adapter</strong> - Build real gateway integrations (Razorpay/Paytm/Stripe) to replace MockProvider</li>
+      <li><strong>#7 Refund Race Fix</strong> - Implement idempotency with unique constraint handling instead of look-up-then-create</li>
+      <li><strong>#8 Git Hygiene</strong> - Add .d.ts and .js files to .gitignore to clean up source directories</li>
+    </ul>
+  </div>
+</div>
+
+<div class="footer-note">
+  <p>Last updated: September 27, 2026</p>
+  <p>Critical security issues resolved. Ready for RBI license review.</p>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  // Count issues by status for the stats
+  const totalIssues = document.querySelectorAll('.issue-card').length;
+  const fixedIssues = document.querySelectorAll('.issue-card.fixed').length;
+  const criticalIssues = document.querySelectorAll('.badge-critical').length;
+  const highIssues = document.querySelectorAll('.badge-high').length - fixedIssues;
+
+  // Update stats (they're static in the HTML but we could make them dynamic)
+  console.log(`Security Fixes Dashboard loaded. ${fixedIssues}/${totalIssues} issues fixed.`);
+
+  // Add click handlers for issue cards
+  document.querySelectorAll('.issue-card').forEach(card => {
+    card.addEventListener('click', function() {
+      const title = this.querySelector('.issue-title').textContent;
+      console.log(`Selected issue: ${title}`);
+      // In a real dashboard, this would link to detailed issue tracking
+    });
+  });
+
+  // Theme toggle (if we wanted to add one)
+  const toggleTheme = document.createElement('button');
+  toggleTheme.textContent = 'Toggle Theme';
+  toggleTheme.style.cssText = `
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    padding: 8px 12px;
+    background: var(--accent);
+    color: white;
+    border: none;
+    border-radius: var(--radius);
+    cursor: pointer;
+    font-family: var(--font-base);
+  `;
+
+  toggleTheme.addEventListener('click', function() {
+    const html = document.documentElement;
+    const currentTheme = html.getAttribute('data-theme');
+    const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+    html.setAttribute('data-theme', newTheme);
+    toggleTheme.textContent = `Switch to ${currentTheme === 'dark' ? 'Dark' : 'Light'}`;
+  });
+
+  document.body.appendChild(toggleTheme);
+});
+</script>

@@ -5,11 +5,12 @@ import {
 import { ApiTags, ApiOperation, ApiBearerAuth, ApiSecurity } from '@nestjs/swagger';
 import { PaymentsService } from './payments.service.js';
 import { ApiKeyGuard } from '../iam/guards/api-key.guard.js';
+import { ProductionPaymentGuard } from '../../common/guards/production-payment.guard.js';
 
 @ApiTags('Payment Intents')
 @ApiBearerAuth()
 @ApiSecurity('x-api-key')
-@UseGuards(ApiKeyGuard)
+@UseGuards(ApiKeyGuard, ProductionPaymentGuard)
 @Controller({ path: 'payment-intents', version: '1' })
 export class PaymentsController {
   constructor(private readonly paymentsService: PaymentsService) {}
