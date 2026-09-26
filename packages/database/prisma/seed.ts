@@ -41,6 +41,26 @@ async function seed() {
     },
   });
 
+  const platformAdminRole = await prisma.role.upsert({
+    where: { name: 'PLATFORM_ADMIN' },
+    update: {},
+    create: {
+      name: 'PLATFORM_ADMIN',
+      description: 'Platform operations staff with KYC review, dispute adjudication, and risk rules access',
+      isSystem: true,
+    },
+  });
+
+  const opsSupervisorRole = await prisma.role.upsert({
+    where: { name: 'OPS_SUPERVISOR' },
+    update: {},
+    create: {
+      name: 'OPS_SUPERVISOR',
+      description: 'Operations supervisor for merchant onboarding and reviews',
+      isSystem: true,
+    },
+  });
+
   // ── Demo merchant admin user ──────────────────────────────────────────────
   const passwordHash = await bcrypt.hash('SandboxDemo@123', 12);
 
@@ -105,6 +125,36 @@ async function seed() {
     },
   });
 
+  // ── Demo platform ops staff user ──────────────────────────────────────────
+  const opsUser = await prisma.user.upsert({
+    where: { email: 'ops@buimbpay.sandbox' },
+    update: {},
+    create: {
+      email: 'ops@buimbpay.sandbox',
+      passwordHash,
+      firstName: 'Platform',
+      lastName: 'Operations',
+      status: 'ACTIVE',
+      emailVerifiedAt: new Date(),
+    },
+  });
+
+  await prisma.merchantUser.upsert({
+    where: {
+      merchantId_userId: {
+        merchantId: demoMerchant.id,
+        userId: opsUser.id,
+      },
+    },
+    update: {},
+    create: {
+      merchantId: demoMerchant.id,
+      userId: opsUser.id,
+      roleId: platformAdminRole.id,
+      joinedAt: new Date(),
+    },
+  });
+
   // ── Platform ledger accounts ──────────────────────────────────────────────
   const ledgerAccounts = [
     { code: 'PLATFORM_CASH', name: 'Platform Cash', type: LedgerAccountType.ASSET },
@@ -139,8 +189,12 @@ async function seed() {
 
   console.log('✅ Seed complete');
   console.log('');
-  console.log('Demo credentials:');
+  console.log('Demo credentials (Merchant Admin):');
   console.log('  Email:    demo@buimbpay.sandbox');
+  console.log('  Password: SandboxDemo@123');
+  console.log('');
+  console.log('Platform Staff credentials (Ops / Platform Admin):');
+  console.log('  Email:    ops@buimbpay.sandbox');
   console.log('  Password: SandboxDemo@123');
   console.log('  Note:     SANDBOX environment only');
 }

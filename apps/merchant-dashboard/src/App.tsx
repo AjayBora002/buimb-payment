@@ -25,8 +25,14 @@ import { CompanyOpsView } from './views/CompanyOpsView.js';
 import { QrCodesView } from './views/QrCodesView.js';
 import { OptimizerView } from './views/OptimizerView.js';
 
+const PLATFORM_STAFF_ROLES = new Set(['PLATFORM_ADMIN', 'OPS_SUPERVISOR']);
+
 function DashboardShell() {
   const { status, user, logout } = useAuth();
+  const isPlatformStaff = user?.merchantUsers?.some((mu) =>
+    PLATFORM_STAFF_ROLES.has(mu.role.name),
+  ) ?? false;
+
   const [authView, setAuthView] = useState<'login' | 'register'>(() => {
     if (typeof window !== 'undefined') {
       return new URLSearchParams(window.location.search).get('mode') === 'signup'
@@ -116,7 +122,7 @@ function DashboardShell() {
             onOpenCommandPalette={() => setIsCommandPaletteOpen(true)}
             onOpenCheckoutPreview={() => setIsCheckoutOpen(true)}
             portalMode={portalMode}
-            onTogglePortalMode={handlePortalSwitch}
+            onTogglePortalMode={isPlatformStaff ? handlePortalSwitch : undefined}
           />
 
           <main className="flex-1 p-8 max-w-[1440px] mx-auto w-full">
@@ -139,7 +145,13 @@ function DashboardShell() {
             {currentTab === 'payouts' && <PayoutsView />}
             {currentTab === 'developers' && <DevelopersView />}
             {currentTab === 'settings-kyc' && <KycSettingsView />}
-            {currentTab === 'company-ops' && <CompanyOpsView />}
+            {currentTab === 'company-ops' && (
+              isPlatformStaff ? (
+                <CompanyOpsView />
+              ) : (
+                <OverviewView onNavigate={setCurrentTab} merchantName={currentPersona.name.split(' ')[0]} />
+              )
+            )}
           </main>
         </div>
 
