@@ -3,7 +3,11 @@ import { useAuth } from '../lib/auth-context.js';
 import { Lock, Mail, AlertTriangle, ArrowRight, ShieldCheck } from 'lucide-react';
 import { BrandLogo } from '../components/BrandLogo.js';
 
-export const LoginView: React.FC = () => {
+export interface LoginViewProps {
+  onSwitchToRegister?: () => void;
+}
+
+export const LoginView: React.FC<LoginViewProps> = ({ onSwitchToRegister }) => {
   const { login } = useAuth();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -120,6 +124,19 @@ export const LoginView: React.FC = () => {
                 </>
               )}
             </button>
+
+            {onSwitchToRegister && (
+              <div className="text-center pt-2 text-xs text-[#8FA396]">
+                New here?{' '}
+                <button
+                  type="button"
+                  onClick={onSwitchToRegister}
+                  className="text-[#C9A227] hover:underline font-semibold cursor-pointer bg-transparent border-none p-0 inline"
+                >
+                  Create an account
+                </button>
+              </div>
+            )}
           </form>
 
           <div className="pt-2 border-t border-[rgba(237,231,214,0.08)] flex items-center justify-between text-[11px] text-[#5C5646]">

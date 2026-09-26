@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { AuthProvider, useAuth } from './lib/auth-context.js';
 import { LoginView } from './views/LoginView.js';
+import { RegisterView } from './views/RegisterView.js';
 import { Sidebar } from './components/Sidebar.js';
 import { UserPersona, USER_PERSONAS } from './types/persona.js';
 import { Header } from './components/Header.js';
@@ -26,6 +27,14 @@ import { OptimizerView } from './views/OptimizerView.js';
 
 function DashboardShell() {
   const { status, user, logout } = useAuth();
+  const [authView, setAuthView] = useState<'login' | 'register'>(() => {
+    if (typeof window !== 'undefined') {
+      return new URLSearchParams(window.location.search).get('mode') === 'signup'
+        ? 'register'
+        : 'login';
+    }
+    return 'login';
+  });
   const [currentTab, setCurrentTab] = useState('overview');
   const [currentPersona, setCurrentPersona] = useState<UserPersona>(USER_PERSONAS[0]);
   const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
@@ -74,7 +83,11 @@ function DashboardShell() {
   }
 
   if (status === 'unauthenticated') {
-    return <LoginView />;
+    return authView === 'register' ? (
+      <RegisterView onSwitchToLogin={() => setAuthView('login')} />
+    ) : (
+      <LoginView onSwitchToRegister={() => setAuthView('register')} />
+    );
   }
 
   return (

@@ -5,10 +5,19 @@ import type { AuthUser, LoginResponse } from '../types/auth.js';
 
 type AuthStatus = 'checking' | 'authenticated' | 'unauthenticated';
 
+interface RegisterData {
+  email: string;
+  password: string;
+  firstName: string;
+  lastName: string;
+  organisationName?: string;
+}
+
 interface AuthContextValue {
   status: AuthStatus;
   user: AuthUser | null;
   login: (email: string, password: string) => Promise<void>;
+  register: (data: RegisterData) => Promise<void>;
   logout: () => void;
 }
 
@@ -68,9 +77,33 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     setStatus('authenticated');
   }, []);
 
+  const register = useCallback(
+    async (data: RegisterData) => {
+      const res = await fetch(`${API_BASE}/v1/auth/register`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          email: data.email,
+          password: data.password,
+          firstName: data.firstName,
+          lastName: data.lastName,
+          ...(data.organisationName ? { organisationName: data.organisationName } : {}),
+        }),
+      });
+
+      if (!res.ok) {
+        const body = await res.json().catch(() => ({}));
+        throw new Error(body.message || 'Unable to create account. Please try again.');
+      }
+
+      await login(data.email, data.password);
+    },
+    [login],
+  );
+
   const value = useMemo<AuthContextValue>(
-    () => ({ status, user, login, logout }),
-    [status, user, login, logout],
+    () => ({ status, user, login, register, logout }),
+    [status, user, login, register, logout],
   );
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
