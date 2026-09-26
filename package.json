@@ -1,0 +1,41 @@
+{
+  "name": "buimbpay",
+  "version": "0.1.0",
+  "private": true,
+  "packageManager": "pnpm@9.15.9",
+  "description": "BuimbPay — Payment infrastructure platform",
+  "engines": {
+    "node": ">=20.0.0",
+    "pnpm": ">=9.0.0"
+  },
+  "scripts": {
+    "build": "turbo run build",
+    "dev": "turbo run dev --parallel",
+    "dev:api": "pnpm --filter @buimbpay/api dev",
+    "dev:web": "pnpm --filter @buimbpay/public-web dev",
+    "dev:dashboard": "pnpm --filter @buimbpay/merchant-dashboard dev",
+    "dev:worker": "pnpm --filter @buimbpay/worker dev",
+    "lint": "turbo run lint",
+    "typecheck": "turbo run typecheck",
+    "test": "turbo run test",
+    "test:integration": "turbo run test:integration",
+    "format": "prettier --write \"**/*.{ts,tsx,js,jsx,json,md,css}\"",
+    "db:generate": "pnpm --filter @buimbpay/database db:generate",
+    "db:migrate": "pnpm --filter @buimbpay/database db:migrate",
+    "db:migrate:dev": "pnpm --filter @buimbpay/database db:migrate:dev",
+    "db:push": "pnpm --filter @buimbpay/database db:push",
+    "db:studio": "pnpm --filter @buimbpay/database db:studio",
+    "db:seed": "pnpm --filter @buimbpay/database db:seed",
+    "infra:up": "docker compose -f infrastructure/docker/docker-compose.yml up -d",
+    "infra:down": "docker compose -f infrastructure/docker/docker-compose.yml down",
+    "infra:reset": "docker compose -f infrastructure/docker/docker-compose.yml down -v && docker compose -f infrastructure/docker/docker-compose.yml up -d"
+  },
+  "devDependencies": {
+    "@typescript-eslint/eslint-plugin": "^8.0.0",
+    "@typescript-eslint/parser": "^8.0.0",
+    "eslint": "^9.0.0",
+    "prettier": "^3.3.0",
+    "turbo": "^2.3.0",
+    "typescript": "^5.7.0"
+  }
+}

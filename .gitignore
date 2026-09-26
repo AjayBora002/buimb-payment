@@ -1,0 +1,54 @@
+# Binaries
+node_modules/
+dist/
+build/
+.next/
+out/
+.turbo/
+*.js.map
+
+# Env files - NEVER commit credentials
+.env
+.env.local
+.env.production
+.env.staging
+!.env.example
+!.env.test.example
+
+# Database
+*.sqlite
+*.db
+
+# Logs
+logs/
+*.log
+npm-debug.log*
+pnpm-debug.log*
+
+# OS
+.DS_Store
+Thumbs.db
+*.swp
+
+# Editor
+.vscode/settings.json
+.idea/
+
+# Coverage
+coverage/
+.nyc_output/
+
+# Prisma
+prisma/migrations/
+!packages/database/prisma/migrations/
+
+# Docker
+.docker/
+
+# Secrets - hard block
+*.pem
+*.key
+*.p12
+*.pfx
+*.cert
+*.crt

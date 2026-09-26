@@ -1,0 +1,1 @@
+{"version":3,"file":"risk.controller.d.ts","sourceRoot":"","sources":["risk.controller.ts"],"names":[],"mappings":"AAQA,OAAO,EAAE,WAAW,EAAE,MAAM,mBAAmB,CAAC;AAGhD,qBAIa,cAAc;IACb,OAAO,CAAC,QAAQ,CAAC,WAAW;gBAAX,WAAW,EAAE,WAAW;IAI/C,aAAa,CACV,GAAG,EAAE,GAAG,EACE,MAAM,CAAC,EAAE,MAAM,EAChB,KAAK,CAAC,EAAE,MAAM;;;;IAW1B,SAAS;CAGhB"}

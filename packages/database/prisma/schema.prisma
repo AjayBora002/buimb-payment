@@ -1,0 +1,1297 @@
+// BuimbPay — Prisma Schema
+// All monetary amounts stored as BigInt (integer minor units, e.g. paise for INR)
+// All PKs are UUIDs. No sequential integer IDs exposed externally.
+// Ledger entries are APPEND-ONLY — enforced by trigger in migration.
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// ENUMS
+// ─────────────────────────────────────────────────────────────────────────────
+
+enum Environment {
+  SANDBOX
+  PRODUCTION
+}
+
+enum UserStatus {
+  ACTIVE
+  INACTIVE
+  LOCKED
+  PENDING_VERIFICATION
+}
+
+enum OrgType {
+  MERCHANT
+  INTERNAL
+}
+
+enum MerchantStatus {
+  PENDING_ONBOARDING
+  UNDER_REVIEW
+  ACTIVE
+  SUSPENDED
+  REJECTED
+  CLOSED
+}
+
+enum KycStatus {
+  NOT_STARTED
+  PENDING
+  UNDER_REVIEW
+  APPROVED
+  REJECTED
+  EXPIRED
+  REQUIRES_RESUBMISSION
+}
+
+enum BusinessType {
+  SOLE_PROPRIETORSHIP
+  PARTNERSHIP
+  PRIVATE_LIMITED
+  PUBLIC_LIMITED
+  LLP
+  NGO
+  OTHER
+}
+
+enum DocumentType {
+  PAN
+  GST_CERTIFICATE
+  CIN
+  LLPIN
+  AADHAAR
+  PASSPORT
+  DRIVING_LICENSE
+  UTILITY_BILL
+  BANK_STATEMENT
+  CANCELLED_CHEQUE
+  INCORPORATION_CERTIFICATE
+  BOARD_RESOLUTION
+  BENEFICIAL_OWNER_DECLARATION
+  OTHER
+}
+
+enum DocumentStatus {
+  PENDING
+  APPROVED
+  REJECTED
+  EXPIRED
+}
+
+enum PaymentIntentStatus {
+  CREATED
+  REQUIRES_ACTION
+  PROCESSING
+  AUTHORISED
+  CAPTURE_PENDING
+  CAPTURED
+  FAILED
+  CANCELLED
+  EXPIRED
+  PARTIALLY_REFUNDED
+  REFUNDED
+  DISPUTED
+  SETTLED
+  RECONCILIATION_REQUIRED
+}
+
+enum PaymentAttemptStatus {
+  INITIATED
+  PENDING
+  AUTHORISED
+  CAPTURED
+  FAILED
+  CANCELLED
+  EXPIRED
+}
+
+enum RefundStatus {
+  PENDING
+  PROCESSING
+  SUCCEEDED
+  FAILED
+  CANCELLED
+}
+
+enum DisputeStatus {
+  OPEN
+  UNDER_REVIEW
+  WON
+  LOST
+  CLOSED
+  EXPIRED
+}
+
+enum DisputeReason {
+  FRAUDULENT
+  DUPLICATE
+  SUBSCRIPTION_CANCELLED
+  PRODUCT_UNACCEPTABLE
+  PRODUCT_NOT_RECEIVED
+  UNRECOGNIZED
+  CREDIT_NOT_PROCESSED
+  OTHER
+}
+
+enum PaymentLinkStatus {
+  ACTIVE
+  PAID
+  EXPIRED
+  CANCELLED
+}
+
+enum SubscriptionStatus {
+  TRIALING
+  ACTIVE
+  PAST_DUE
+  PAUSED
+  CANCELLED
+  EXPIRED
+  INCOMPLETE
+}
+
+enum InvoiceStatus {
+  DRAFT
+  OPEN
+  PAID
+  VOID
+  UNCOLLECTIBLE
+}
+
+enum SettlementStatus {
+  PENDING
+  PROCESSING
+  SETTLED
+  FAILED
+  REVERSED
+}
+
+enum ReconciliationRunStatus {
+  RUNNING
+  COMPLETED
+  FAILED
+  REQUIRES_REVIEW
+}
+
+enum LedgerAccountType {
+  ASSET
+  LIABILITY
+  EQUITY
+  REVENUE
+  EXPENSE
+}
+
+enum WebhookDeliveryStatus {
+  PENDING
+  DELIVERED
+  FAILED
+  DEAD_LETTER
+}
+
+enum ApiKeyStatus {
+  ACTIVE
+  REVOKED
+  EXPIRED
+}
+
+enum RiskOutcome {
+  ALLOW
+  ALLOW_WITH_STEP_UP
+  REVIEW
+  DECLINE
+  HOLD
+}
+
+enum SupportCaseStatus {
+  OPEN
+  IN_PROGRESS
+  RESOLVED
+  CLOSED
+}
+
+enum NotificationChannel {
+  EMAIL
+  WEBHOOK
+  IN_APP
+  SMS
+}
+
+enum OutboxEventStatus {
+  PENDING
+  PROCESSING
+  PUBLISHED
+  FAILED
+}
+
+enum PayoutStatus {
+  PENDING_APPROVAL
+  APPROVED
+  PROCESSING
+  COMPLETED
+  FAILED
+  REVERSED
+  CANCELLED
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// IAM — Identity & Access
+// ─────────────────────────────────────────────────────────────────────────────
+
+model User {
+  id                    String     @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  email                 String     @unique @db.VarChar(320)
+  emailVerifiedAt       DateTime?
+  passwordHash          String     @db.VarChar(255)
+  firstName             String     @db.VarChar(100)
+  lastName              String     @db.VarChar(100)
+  phone                 String?    @db.VarChar(20)
+  phoneVerifiedAt       DateTime?
+  status                UserStatus @default(PENDING_VERIFICATION)
+  mfaEnabled            Boolean    @default(false)
+  mfaSecret             String?    @db.VarChar(255) // encrypted at rest
+  failedLoginAttempts   Int        @default(0)
+  lockedUntil           DateTime?
+  lastLoginAt           DateTime?
+  lastLoginIp           String?    @db.VarChar(45)
+  passwordChangedAt     DateTime   @default(now())
+  createdAt             DateTime   @default(now())
+  updatedAt             DateTime   @updatedAt
+  deletedAt             DateTime?
+
+  merchantUsers   MerchantUser[]
+  sessions        Session[]
+  apiKeys         ApiKey[]
+  auditEvents     AuditEvent[]
+
+  @@index([email])
+  @@index([status])
+  @@map("users")
+}
+
+model Session {
+  id           String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  userId       String   @db.Uuid
+  refreshToken String   @unique @db.VarChar(512) // hashed
+  deviceInfo   Json?
+  ipAddress    String?  @db.VarChar(45)
+  userAgent    String?  @db.VarChar(512)
+  expiresAt    DateTime
+  revokedAt    DateTime?
+  createdAt    DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id])
+
+  @@index([userId])
+  @@index([expiresAt])
+  @@map("sessions")
+}
+
+model Organisation {
+  id          String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  name        String   @db.VarChar(255)
+  slug        String   @unique @db.VarChar(100)
+  type        OrgType
+  logoUrl     String?  @db.VarChar(1024)
+  website     String?  @db.VarChar(1024)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  deletedAt   DateTime?
+
+  merchants Merchant[]
+
+  @@index([slug])
+  @@map("organisations")
+}
+
+model Role {
+  id          String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  name        String   @unique @db.VarChar(100)
+  description String?  @db.VarChar(500)
+  isSystem    Boolean  @default(false)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  permissions RolePermission[]
+  merchantUsers MerchantUser[]
+
+  @@map("roles")
+}
+
+model Permission {
+  id          String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  resource    String   @db.VarChar(100) // e.g. "payment_intents"
+  action      String   @db.VarChar(50)  // e.g. "read", "write", "refund"
+  description String?  @db.VarChar(500)
+  createdAt   DateTime @default(now())
+
+  roles RolePermission[]
+
+  @@unique([resource, action])
+  @@map("permissions")
+}
+
+model RolePermission {
+  roleId       String @db.Uuid
+  permissionId String @db.Uuid
+
+  role       Role       @relation(fields: [roleId], references: [id])
+  permission Permission @relation(fields: [permissionId], references: [id])
+
+  @@id([roleId, permissionId])
+  @@map("role_permissions")
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// MERCHANT ONBOARDING
+// ─────────────────────────────────────────────────────────────────────────────
+
+model Merchant {
+  id              String         @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  organisationId  String         @db.Uuid
+  legalName       String         @db.VarChar(255)
+  displayName     String         @db.VarChar(255)
+  businessType    BusinessType
+  pan             String?        @db.VarChar(10)   // encrypted at rest
+  gstin           String?        @db.VarChar(15)
+  cin             String?        @db.VarChar(21)
+  llpin           String?        @db.VarChar(10)
+  website         String?        @db.VarChar(1024)
+  supportEmail    String?        @db.VarChar(320)
+  supportPhone    String?        @db.VarChar(20)
+  businessModel   String?        @db.VarChar(2000)
+  status          MerchantStatus @default(PENDING_ONBOARDING)
+  kycStatus       KycStatus      @default(NOT_STARTED)
+  riskCategory    String?        @db.VarChar(50)   // LOW, MEDIUM, HIGH
+  mcc             String?        @db.VarChar(4)    // Merchant Category Code
+  consentAccepted Boolean        @default(false)
+  consentAt       DateTime?
+  consentVersion  String?        @db.VarChar(20)
+  reviewedBy      String?        @db.Uuid          // internal user
+  reviewedAt      DateTime?
+  reviewNotes     String?        @db.VarChar(4000)
+  suspendedAt     DateTime?
+  suspendedReason String?        @db.VarChar(500)
+  createdAt       DateTime       @default(now())
+  updatedAt       DateTime       @updatedAt
+  deletedAt       DateTime?
+
+  organisation   Organisation     @relation(fields: [organisationId], references: [id])
+  users          MerchantUser[]
+  documents      MerchantDocument[]
+  kycCases       KycCase[]
+  bankAccounts   BankAccount[]
+  beneficialOwners BeneficialOwner[]
+  apiKeys        ApiKey[]
+  webhookEndpoints WebhookEndpoint[]
+  customers      Customer[]
+  orders         Order[]
+  paymentLinks   PaymentLink[]
+  subscriptionPlans SubscriptionPlan[]
+  settlements    Settlement[]
+  ledgerAccounts LedgerAccount[]
+  supportCases   SupportCase[]
+
+  @@index([status])
+  @@index([kycStatus])
+  @@index([pan])
+  @@map("merchants")
+}
+
+model MerchantUser {
+  id         String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  merchantId String   @db.Uuid
+  userId     String   @db.Uuid
+  roleId     String   @db.Uuid
+  invitedBy  String?  @db.Uuid
+  invitedAt  DateTime?
+  joinedAt   DateTime?
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  merchant Merchant @relation(fields: [merchantId], references: [id])
+  user     User     @relation(fields: [userId], references: [id])
+  role     Role     @relation(fields: [roleId], references: [id])
+
+  @@unique([merchantId, userId])
+  @@map("merchant_users")
+}
+
+model MerchantDocument {
+  id           String         @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  merchantId   String         @db.Uuid
+  documentType DocumentType
+  fileName     String         @db.VarChar(255)
+  fileUrl      String         @db.VarChar(2048)  // signed URL / internal ref
+  mimeType     String         @db.VarChar(100)
+  sizeBytes    Int
+  status       DocumentStatus @default(PENDING)
+  expiresAt    DateTime?
+  reviewedBy   String?        @db.Uuid
+  reviewedAt   DateTime?
+  reviewNotes  String?        @db.VarChar(1000)
+  createdAt    DateTime       @default(now())
+  updatedAt    DateTime       @updatedAt
+
+  merchant Merchant @relation(fields: [merchantId], references: [id])
+
+  @@index([merchantId, documentType])
+  @@index([status])
+  @@map("merchant_documents")
+}
+
+model KycCase {
+  id           String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  merchantId   String    @db.Uuid
+  status       KycStatus @default(PENDING)
+  assignedTo   String?   @db.Uuid
+  notes        String?   @db.VarChar(4000)
+  completedAt  DateTime?
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+
+  merchant Merchant    @relation(fields: [merchantId], references: [id])
+  reviews  KycReview[]
+
+  @@index([merchantId])
+  @@index([status])
+  @@map("kyc_cases")
+}
+
+model KycReview {
+  id         String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  kycCaseId  String    @db.Uuid
+  reviewerId String    @db.Uuid
+  decision   KycStatus
+  notes      String?   @db.VarChar(4000)
+  createdAt  DateTime  @default(now())
+
+  kycCase KycCase @relation(fields: [kycCaseId], references: [id])
+
+  @@index([kycCaseId])
+  @@map("kyc_reviews")
+}
+
+model BeneficialOwner {
+  id           String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  merchantId   String   @db.Uuid
+  firstName    String   @db.VarChar(100)
+  lastName     String   @db.VarChar(100)
+  pan          String?  @db.VarChar(10)  // encrypted
+  dateOfBirth  DateTime?
+  ownershipPct Decimal  @db.Decimal(5, 2)
+  isPoliticallyExposed Boolean @default(false)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  merchant Merchant @relation(fields: [merchantId], references: [id])
+
+  @@index([merchantId])
+  @@map("beneficial_owners")
+}
+
+model BankAccount {
+  id              String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  merchantId      String   @db.Uuid
+  accountHolderName String @db.VarChar(255)
+  accountNumber   String   @db.VarChar(255) // encrypted
+  ifscCode        String   @db.VarChar(11)
+  bankName        String   @db.VarChar(255)
+  accountType     String   @db.VarChar(50)  // SAVINGS, CURRENT
+  isVerified      Boolean  @default(false)
+  verifiedAt      DateTime?
+  verificationRef String?  @db.VarChar(255)
+  isPrimary       Boolean  @default(false)
+  isActive        Boolean  @default(true)
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  merchant    Merchant     @relation(fields: [merchantId], references: [id])
+  settlements Settlement[]
+
+  @@index([merchantId])
+  @@map("bank_accounts")
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// CUSTOMERS
+// ─────────────────────────────────────────────────────────────────────────────
+
+model Customer {
+  id          String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  merchantId  String   @db.Uuid
+  externalId  String?  @db.VarChar(255) // merchant's own customer ID
+  email       String?  @db.VarChar(320)
+  phone       String?  @db.VarChar(20)
+  name        String?  @db.VarChar(255)
+  metadata    Json?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  merchant      Merchant       @relation(fields: [merchantId], references: [id])
+  orders        Order[]
+  subscriptions Subscription[]
+
+  @@unique([merchantId, externalId])
+  @@index([merchantId, email])
+  @@map("customers")
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// PAYMENTS — Orders & Intents
+// ─────────────────────────────────────────────────────────────────────────────
+
+model Order {
+  id              String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  merchantId      String   @db.Uuid
+  customerId      String?  @db.Uuid
+  externalOrderId String?  @db.VarChar(255) // merchant reference
+  amount          BigInt                     // integer minor units (paise)
+  currency        String   @db.VarChar(3)   // ISO 4217
+  description     String?  @db.VarChar(1000)
+  receiptEmail    String?  @db.VarChar(320)
+  metadata        Json?
+  notes           Json?
+  environment     Environment @default(SANDBOX)
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  merchant       Merchant        @relation(fields: [merchantId], references: [id])
+  customer       Customer?       @relation(fields: [customerId], references: [id])
+  paymentIntents PaymentIntent[]
+
+  @@index([merchantId])
+  @@index([merchantId, externalOrderId])
+  @@index([environment])
+  @@map("orders")
+}
+
+model PaymentIntent {
+  id                 String              @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  orderId            String              @db.Uuid
+  merchantId         String              @db.Uuid
+  amount             BigInt
+  currency           String              @db.VarChar(3)
+  status             PaymentIntentStatus @default(CREATED)
+  captureMethod      String              @default("AUTOMATIC") @db.VarChar(20)
+  description        String?             @db.VarChar(1000)
+  statementDescriptor String?            @db.VarChar(22)
+  metadata           Json?
+  clientSecret       String              @unique @db.VarChar(255) // safe token for client
+  cancelledAt        DateTime?
+  cancelReason       String?             @db.VarChar(500)
+  capturedAt         DateTime?
+  captureAmount      BigInt?
+  providerRef        String?             @db.VarChar(255)
+  environment        Environment         @default(SANDBOX)
+  version            Int                 @default(1)
+  createdAt          DateTime            @default(now())
+  updatedAt          DateTime            @updatedAt
+
+  order    Order             @relation(fields: [orderId], references: [id])
+  attempts PaymentAttempt[]
+  refunds  Refund[]
+  disputes Dispute[]
+  settlementItems SettlementItem[]
+  ledgerTransactions LedgerTransaction[]
+
+  @@index([merchantId, status])
+  @@index([orderId])
+  @@index([providerRef])
+  @@index([environment])
+  @@map("payment_intents")
+}
+
+model PaymentAttempt {
+  id               String               @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  paymentIntentId  String               @db.Uuid
+  amount           BigInt
+  currency         String               @db.VarChar(3)
+  status           PaymentAttemptStatus @default(INITIATED)
+  paymentMethodId  String?              @db.Uuid
+  providerAccountId String?             @db.Uuid
+  providerRef      String?              @db.VarChar(255) // provider's payment ID
+  providerResponse Json?                // raw provider response (redacted)
+  errorCode        String?              @db.VarChar(100)
+  errorMessage     String?              @db.VarChar(500)
+  gatewayFee       BigInt?
+  currency3DSStatus String?             @db.VarChar(50)
+  ipAddress        String?              @db.VarChar(45)
+  userAgent        String?              @db.VarChar(512)
+  metadata         Json?
+  createdAt        DateTime             @default(now())
+  updatedAt        DateTime             @updatedAt
+
+  paymentIntent  PaymentIntent  @relation(fields: [paymentIntentId], references: [id])
+  paymentMethod  PaymentMethod? @relation(fields: [paymentMethodId], references: [id])
+  providerAccount ProviderAccount? @relation(fields: [providerAccountId], references: [id])
+
+  @@index([paymentIntentId])
+  @@index([providerRef])
+  @@map("payment_attempts")
+}
+
+model PaymentMethod {
+  id           String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  type         String   @db.VarChar(50)  // CARD, UPI, NETBANKING, WALLET, etc.
+  // Tokenised card data — never store raw card numbers or CVV
+  cardLast4    String?  @db.VarChar(4)
+  cardBrand    String?  @db.VarChar(20)
+  cardExpMonth Int?
+  cardExpYear  Int?
+  cardToken    String?  @db.VarChar(255) // provider token
+  upiVpa       String?  @db.VarChar(255)
+  bankCode     String?  @db.VarChar(20)
+  walletCode   String?  @db.VarChar(50)
+  isActive     Boolean  @default(true)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  attempts PaymentAttempt[]
+
+  @@map("payment_methods")
+}
+
+model ProviderAccount {
+  id           String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  name         String   @db.VarChar(100) // e.g. "mock", "razorpay-sandbox"
+  slug         String   @unique @db.VarChar(50)
+  isActive     Boolean  @default(true)
+  isSandbox    Boolean  @default(true)
+  config       Json     // encrypted at application level before storage
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  attempts PaymentAttempt[]
+  providerEvents ProviderEvent[]
+
+  @@map("provider_accounts")
+}
+
+model ProviderEvent {
+  id                String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  providerAccountId String   @db.Uuid
+  eventType         String   @db.VarChar(100)
+  providerEventId   String   @db.VarChar(255)
+  payload           Json     // raw provider webhook payload
+  processedAt       DateTime?
+  processingError   String?  @db.VarChar(1000)
+  createdAt         DateTime @default(now())
+
+  providerAccount ProviderAccount @relation(fields: [providerAccountId], references: [id])
+
+  @@unique([providerAccountId, providerEventId])
+  @@index([processedAt])
+  @@map("provider_events")
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// REFUNDS & DISPUTES
+// ─────────────────────────────────────────────────────────────────────────────
+
+model Refund {
+  id              String       @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  paymentIntentId String       @db.Uuid
+  merchantId      String       @db.Uuid
+  idempotencyKey  String       @unique @db.VarChar(255)
+  amount          BigInt
+  currency        String       @db.VarChar(3)
+  status          RefundStatus @default(PENDING)
+  reason          String?      @db.VarChar(255)
+  notes           String?      @db.VarChar(1000)
+  providerRef     String?      @db.VarChar(255)
+  providerResponse Json?
+  initiatedBy     String       @db.Uuid  // user ID
+  approvedBy      String?      @db.Uuid
+  approvedAt      DateTime?
+  processedAt     DateTime?
+  failureReason   String?      @db.VarChar(500)
+  createdAt       DateTime     @default(now())
+  updatedAt       DateTime     @updatedAt
+
+  paymentIntent PaymentIntent @relation(fields: [paymentIntentId], references: [id])
+
+  @@index([paymentIntentId])
+  @@index([merchantId, status])
+  @@index([idempotencyKey])
+  @@map("refunds")
+}
+
+model Dispute {
+  id              String        @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  paymentIntentId String        @db.Uuid
+  merchantId      String        @db.Uuid
+  providerRef     String?       @db.VarChar(255)
+  reason          DisputeReason
+  status          DisputeStatus @default(OPEN)
+  amount          BigInt
+  currency        String        @db.VarChar(3)
+  dueBy           DateTime?
+  evidence        Json?
+  internalNotes   String?       @db.VarChar(4000)
+  resolvedAt      DateTime?
+  createdAt       DateTime      @default(now())
+  updatedAt       DateTime      @updatedAt
+
+  paymentIntent PaymentIntent @relation(fields: [paymentIntentId], references: [id])
+
+  @@index([paymentIntentId])
+  @@index([merchantId, status])
+  @@map("disputes")
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// PAYMENT LINKS & PAGES
+// ─────────────────────────────────────────────────────────────────────────────
+
+model PaymentLink {
+  id              String            @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  merchantId      String            @db.Uuid
+  idempotencyKey  String            @unique @db.VarChar(255)
+  slug            String            @unique @db.VarChar(100)
+  amount          BigInt
+  currency        String            @db.VarChar(3)
+  description     String?           @db.VarChar(1000)
+  customerName    String?           @db.VarChar(255)
+  customerEmail   String?           @db.VarChar(320)
+  customerPhone   String?           @db.VarChar(20)
+  expiresAt       DateTime?
+  status          PaymentLinkStatus @default(ACTIVE)
+  metadata        Json?
+  customReference String?           @db.VarChar(255)
+  allowPartial    Boolean           @default(false)
+  minAmount       BigInt?
+  expiredAt       DateTime?
+  cancelledAt     DateTime?
+  createdBy       String            @db.Uuid
+  environment     Environment       @default(SANDBOX)
+  createdAt       DateTime          @default(now())
+  updatedAt       DateTime          @updatedAt
+
+  merchant Merchant @relation(fields: [merchantId], references: [id])
+
+  @@index([merchantId, status])
+  @@index([slug])
+  @@map("payment_links")
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// SUBSCRIPTIONS
+// ─────────────────────────────────────────────────────────────────────────────
+
+model SubscriptionPlan {
+  id            String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  merchantId    String   @db.Uuid
+  name          String   @db.VarChar(255)
+  description   String?  @db.VarChar(1000)
+  amount        BigInt
+  currency      String   @db.VarChar(3)
+  intervalType  String   @db.VarChar(20) // DAILY, WEEKLY, MONTHLY, YEARLY
+  intervalCount Int      @default(1)
+  trialDays     Int      @default(0)
+  isActive      Boolean  @default(true)
+  metadata      Json?
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  merchant      Merchant       @relation(fields: [merchantId], references: [id])
+  subscriptions Subscription[]
+
+  @@index([merchantId])
+  @@map("subscription_plans")
+}
+
+model Subscription {
+  id              String             @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  merchantId      String             @db.Uuid
+  customerId      String             @db.Uuid
+  planId          String             @db.Uuid
+  status          SubscriptionStatus @default(INCOMPLETE)
+  currentPeriodStart DateTime
+  currentPeriodEnd   DateTime
+  trialStart      DateTime?
+  trialEnd        DateTime?
+  cancelAt        DateTime?
+  cancelledAt     DateTime?
+  cancelReason    String?            @db.VarChar(500)
+  pausedAt        DateTime?
+  resumesAt       DateTime?
+  metadata        Json?
+  environment     Environment        @default(SANDBOX)
+  createdAt       DateTime           @default(now())
+  updatedAt       DateTime           @updatedAt
+
+  customer Customer        @relation(fields: [customerId], references: [id])
+  plan     SubscriptionPlan @relation(fields: [planId], references: [id])
+  invoices Invoice[]
+
+  @@index([merchantId, status])
+  @@index([customerId])
+  @@map("subscriptions")
+}
+
+model Invoice {
+  id             String        @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  subscriptionId String        @db.Uuid
+  merchantId     String        @db.Uuid
+  customerId     String        @db.Uuid
+  amount         BigInt
+  currency       String        @db.VarChar(3)
+  status         InvoiceStatus @default(DRAFT)
+  dueDate        DateTime?
+  paidAt         DateTime?
+  voidedAt       DateTime?
+  periodStart    DateTime
+  periodEnd      DateTime
+  attemptCount   Int           @default(0)
+  nextAttemptAt  DateTime?
+  createdAt      DateTime      @default(now())
+  updatedAt      DateTime      @updatedAt
+
+  subscription Subscription @relation(fields: [subscriptionId], references: [id])
+
+  @@index([subscriptionId])
+  @@index([merchantId, status])
+  @@map("invoices")
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// SETTLEMENTS & LEDGER
+// ─────────────────────────────────────────────────────────────────────────────
+
+model Settlement {
+  id             String           @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  merchantId     String           @db.Uuid
+  bankAccountId  String?          @db.Uuid
+  status         SettlementStatus @default(PENDING)
+  grossAmount    BigInt
+  feeAmount      BigInt           @default(0)
+  taxAmount      BigInt           @default(0)
+  adjustmentAmount BigInt         @default(0)
+  refundDeductions BigInt         @default(0)
+  netAmount      BigInt
+  currency       String           @db.VarChar(3)
+  periodStart    DateTime
+  periodEnd      DateTime
+  settledAt      DateTime?
+  providerRef    String?          @db.VarChar(255)
+  notes          String?          @db.VarChar(1000)
+  createdAt      DateTime         @default(now())
+  updatedAt      DateTime         @updatedAt
+
+  merchant    Merchant         @relation(fields: [merchantId], references: [id])
+  bankAccount BankAccount?     @relation(fields: [bankAccountId], references: [id])
+  items       SettlementItem[]
+
+  @@unique([merchantId, periodStart, periodEnd], name: "settlement_period_unique")
+  @@index([merchantId, status])
+  @@map("settlements")
+}
+
+model SettlementItem {
+  id              String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  settlementId    String   @db.Uuid
+  paymentIntentId String?  @db.Uuid
+  type            String   @db.VarChar(50) // PAYMENT, REFUND, DISPUTE, FEE, TAX, ADJUSTMENT
+  amount          BigInt
+  currency        String   @db.VarChar(3)
+  description     String?  @db.VarChar(500)
+  createdAt       DateTime @default(now())
+
+  settlement    Settlement    @relation(fields: [settlementId], references: [id])
+  paymentIntent PaymentIntent? @relation(fields: [paymentIntentId], references: [id])
+
+  @@index([settlementId])
+  @@map("settlement_items")
+}
+
+model LedgerAccount {
+  id          String            @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  merchantId  String?           @db.Uuid  // null = platform account
+  code        String            @unique @db.VarChar(100)
+  name        String            @db.VarChar(255)
+  type        LedgerAccountType
+  currency    String            @db.VarChar(3)
+  isActive    Boolean           @default(true)
+  createdAt   DateTime          @default(now())
+
+  merchant     Merchant?          @relation(fields: [merchantId], references: [id])
+  debitEntries  LedgerEntry[]     @relation("DebitAccount")
+  creditEntries LedgerEntry[]     @relation("CreditAccount")
+
+  @@index([merchantId])
+  @@map("ledger_accounts")
+}
+
+model LedgerTransaction {
+  id              String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  paymentIntentId String?  @db.Uuid
+  type            String   @db.VarChar(100) // PAYMENT, REFUND, FEE, SETTLEMENT, ADJUSTMENT
+  description     String   @db.VarChar(500)
+  referenceId     String?  @db.VarChar(255)
+  actorId         String?  @db.Uuid
+  createdAt       DateTime @default(now())
+  // IMMUTABLE — no updatedAt
+
+  paymentIntent PaymentIntent?  @relation(fields: [paymentIntentId], references: [id])
+  entries       LedgerEntry[]
+
+  @@index([paymentIntentId])
+  @@index([createdAt])
+  @@map("ledger_transactions")
+}
+
+/// APPEND-ONLY — enforced by DB trigger
+model LedgerEntry {
+  id                  String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  ledgerTransactionId String   @db.Uuid
+  debitAccountId      String   @db.Uuid
+  creditAccountId     String   @db.Uuid
+  amount              BigInt
+  currency            String   @db.VarChar(3)
+  description         String?  @db.VarChar(500)
+  createdAt           DateTime @default(now())
+  // IMMUTABLE — no updatedAt, no deletedAt
+
+  ledgerTransaction LedgerTransaction @relation(fields: [ledgerTransactionId], references: [id])
+  debitAccount      LedgerAccount     @relation("DebitAccount", fields: [debitAccountId], references: [id])
+  creditAccount     LedgerAccount     @relation("CreditAccount", fields: [creditAccountId], references: [id])
+
+  @@index([ledgerTransactionId])
+  @@index([debitAccountId])
+  @@index([creditAccountId])
+  @@index([createdAt])
+  @@map("ledger_entries")
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// RECONCILIATION
+// ─────────────────────────────────────────────────────────────────────────────
+
+model ReconciliationRun {
+  id          String                  @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  merchantId  String?                 @db.Uuid
+  status      ReconciliationRunStatus @default(RUNNING)
+  type        String                  @db.VarChar(50) // PROVIDER, SETTLEMENT, BANK
+  periodStart DateTime
+  periodEnd   DateTime
+  summary     Json?
+  startedAt   DateTime                @default(now())
+  completedAt DateTime?
+  error       String?                 @db.VarChar(1000)
+
+  items      ReconciliationItem[]
+  exceptions ReconciliationException[]
+
+  @@index([merchantId])
+  @@index([status])
+  @@map("reconciliation_runs")
+}
+
+model ReconciliationItem {
+  id              String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  runId           String   @db.Uuid
+  internalRef     String?  @db.VarChar(255)
+  providerRef     String?  @db.VarChar(255)
+  internalAmount  BigInt?
+  providerAmount  BigInt?
+  currency        String   @db.VarChar(3)
+  status          String   @db.VarChar(50) // MATCHED, UNMATCHED, MISMATCH
+  matchedAt       DateTime?
+  createdAt       DateTime @default(now())
+
+  run ReconciliationRun @relation(fields: [runId], references: [id])
+
+  @@index([runId])
+  @@map("reconciliation_items")
+}
+
+model ReconciliationException {
+  id           String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  runId        String   @db.Uuid
+  type         String   @db.VarChar(100) // MISSING, AMOUNT_MISMATCH, STATUS_MISMATCH, DUPLICATE
+  description  String   @db.VarChar(1000)
+  internalRef  String?  @db.VarChar(255)
+  providerRef  String?  @db.VarChar(255)
+  amount       BigInt?
+  currency     String?  @db.VarChar(3)
+  resolvedAt   DateTime?
+  resolvedBy   String?  @db.Uuid
+  resolution   String?  @db.VarChar(1000)
+  createdAt    DateTime @default(now())
+
+  run ReconciliationRun @relation(fields: [runId], references: [id])
+
+  @@index([runId])
+  @@map("reconciliation_exceptions")
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// PAYOUTS (scaffold only — disabled behind feature flag)
+// ─────────────────────────────────────────────────────────────────────────────
+
+model Payout {
+  id             String       @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  merchantId     String       @db.Uuid
+  bankAccountId  String       @db.Uuid
+  amount         BigInt
+  currency       String       @db.VarChar(3)
+  status         PayoutStatus @default(PENDING_APPROVAL)
+  reference      String?      @db.VarChar(255)
+  purpose        String?      @db.VarChar(255)
+  notes          String?      @db.VarChar(1000)
+  idempotencyKey String       @unique @db.VarChar(255)
+  requestedBy    String       @db.Uuid
+  approvedBy     String?      @db.Uuid
+  approvedAt     DateTime?
+  processedAt    DateTime?
+  providerRef    String?      @db.VarChar(255)
+  failureReason  String?      @db.VarChar(500)
+  createdAt      DateTime     @default(now())
+  updatedAt      DateTime     @updatedAt
+
+  @@index([merchantId, status])
+  @@map("payouts")
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// WEBHOOKS
+// ─────────────────────────────────────────────────────────────────────────────
+
+model WebhookEndpoint {
+  id          String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  merchantId  String   @db.Uuid
+  url         String   @db.VarChar(2048)
+  description String?  @db.VarChar(255)
+  secret      String   @db.VarChar(512) // hashed
+  secretHint  String   @db.VarChar(10)  // last 4 chars of secret for display
+  events      String[] // subscribed event types
+  isActive    Boolean  @default(true)
+  environment Environment @default(SANDBOX)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  merchant  Merchant          @relation(fields: [merchantId], references: [id])
+  deliveries WebhookDelivery[]
+
+  @@index([merchantId])
+  @@map("webhook_endpoints")
+}
+
+model WebhookEvent {
+  id          String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  merchantId  String   @db.Uuid
+  eventType   String   @db.VarChar(100)
+  apiVersion  String   @db.VarChar(20)
+  payload     Json
+  environment Environment @default(SANDBOX)
+  createdAt   DateTime @default(now())
+
+  deliveries WebhookDelivery[]
+
+  @@index([merchantId, eventType])
+  @@map("webhook_events")
+}
+
+model WebhookDelivery {
+  id              String                @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  webhookEventId  String                @db.Uuid
+  endpointId      String                @db.Uuid
+  status          WebhookDeliveryStatus @default(PENDING)
+  attemptNumber   Int                   @default(1)
+  httpStatus      Int?
+  responseBody    String?               @db.VarChar(4000)
+  errorMessage    String?               @db.VarChar(1000)
+  latencyMs       Int?
+  nextRetryAt     DateTime?
+  deliveredAt     DateTime?
+  createdAt       DateTime              @default(now())
+  updatedAt       DateTime              @updatedAt
+
+  webhookEvent WebhookEvent    @relation(fields: [webhookEventId], references: [id])
+  endpoint     WebhookEndpoint @relation(fields: [endpointId], references: [id])
+
+  @@index([webhookEventId])
+  @@index([endpointId, status])
+  @@index([nextRetryAt])
+  @@map("webhook_deliveries")
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// API KEYS & IDEMPOTENCY
+// ─────────────────────────────────────────────────────────────────────────────
+
+model ApiKey {
+  id          String     @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  merchantId  String     @db.Uuid
+  userId      String     @db.Uuid
+  name        String     @db.VarChar(100)
+  keyHash     String     @unique @db.VarChar(512) // SHA-256 of full key
+  keyPrefix   String     @db.VarChar(20)          // e.g. "bp_sk_test_" + first 8 chars
+  environment Environment
+  scopes      String[]
+  status      ApiKeyStatus @default(ACTIVE)
+  expiresAt   DateTime?
+  lastUsedAt  DateTime?
+  revokedAt   DateTime?
+  revokedBy   String?    @db.Uuid
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
+
+  merchant Merchant @relation(fields: [merchantId], references: [id])
+  user     User     @relation(fields: [userId], references: [id])
+
+  @@index([merchantId])
+  @@index([keyHash])
+  @@map("api_keys")
+}
+
+model IdempotencyRecord {
+  id           String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  merchantId   String   @db.Uuid
+  key          String   @db.VarChar(255)
+  endpoint     String   @db.VarChar(255)
+  requestHash  String   @db.VarChar(64) // SHA-256 of request body
+  responseCode Int
+  responseBody Json
+  expiresAt    DateTime
+  createdAt    DateTime @default(now())
+
+  @@unique([merchantId, key, endpoint])
+  @@index([expiresAt])
+  @@map("idempotency_records")
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// RISK & FRAUD
+// ─────────────────────────────────────────────────────────────────────────────
+
+model RiskRule {
+  id          String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  name        String   @db.VarChar(255)
+  description String?  @db.VarChar(1000)
+  version     Int      @default(1)
+  isActive    Boolean  @default(true)
+  priority    Int      @default(100)
+  conditions  Json     // rule DSL
+  outcome     RiskOutcome
+  createdBy   String   @db.Uuid
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  decisions RiskDecision[]
+
+  @@index([isActive, priority])
+  @@map("risk_rules")
+}
+
+model RiskDecision {
+  id              String      @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  paymentIntentId String?     @db.Uuid
+  merchantId      String      @db.Uuid
+  outcome         RiskOutcome
+  score           Decimal?    @db.Decimal(5, 4)
+  modelVersion    String?     @db.VarChar(50)
+  inputs          Json        // decision inputs (no sensitive raw card data)
+  reasonCodes     String[]
+  matchedRuleId   String?     @db.Uuid
+  reviewedBy      String?     @db.Uuid
+  reviewedAt      DateTime?
+  overrideReason  String?     @db.VarChar(500)
+  createdAt       DateTime    @default(now())
+
+  rule RiskRule? @relation(fields: [matchedRuleId], references: [id])
+
+  @@index([merchantId])
+  @@index([paymentIntentId])
+  @@map("risk_decisions")
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// AUDIT & OUTBOX
+// ─────────────────────────────────────────────────────────────────────────────
+
+/// APPEND-ONLY — application code must only INSERT, never UPDATE or DELETE
+model AuditEvent {
+  id         String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  actorId    String?  @db.Uuid // null = system
+  actorType  String   @db.VarChar(50) // USER, SYSTEM, OPERATOR, API_KEY
+  merchantId String?  @db.Uuid
+  resource   String   @db.VarChar(100) // e.g. "payment_intent"
+  resourceId String?  @db.VarChar(255)
+  action     String   @db.VarChar(100) // e.g. "refund.created"
+  outcome    String   @db.VarChar(20)  // SUCCESS, FAILURE, DENIED
+  ipAddress  String?  @db.VarChar(45)
+  userAgent  String?  @db.VarChar(512)
+  metadata   Json?    // no secrets
+  createdAt  DateTime @default(now())
+
+  actor User? @relation(fields: [actorId], references: [id])
+
+  @@index([merchantId, resource, createdAt])
+  @@index([actorId])
+  @@index([createdAt])
+  @@map("audit_events")
+}
+
+model OutboxEvent {
+  id          String            @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  aggregateId String            @db.VarChar(255)
+  eventType   String            @db.VarChar(100)
+  payload     Json
+  status      OutboxEventStatus @default(PENDING)
+  attempts    Int               @default(0)
+  lastError   String?           @db.VarChar(1000)
+  publishedAt DateTime?
+  createdAt   DateTime          @default(now())
+  updatedAt   DateTime          @updatedAt
+
+  @@index([status, createdAt])
+  @@map("outbox_events")
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// SUPPORT & NOTIFICATIONS
+// ─────────────────────────────────────────────────────────────────────────────
+
+model SupportCase {
+  id         String            @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  merchantId String            @db.Uuid
+  subject    String            @db.VarChar(255)
+  body       String            @db.VarChar(10000)
+  status     SupportCaseStatus @default(OPEN)
+  priority   String            @default("NORMAL") @db.VarChar(20)
+  assignedTo String?           @db.Uuid
+  resolvedAt DateTime?
+  createdAt  DateTime          @default(now())
+  updatedAt  DateTime          @updatedAt
+
+  merchant Merchant @relation(fields: [merchantId], references: [id])
+
+  @@index([merchantId, status])
+  @@map("support_cases")
+}
+
+model Notification {
+  id         String              @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  merchantId String?             @db.Uuid
+  userId     String?             @db.Uuid
+  channel    NotificationChannel
+  subject    String?             @db.VarChar(255)
+  body       String              @db.VarChar(10000)
+  sentAt     DateTime?
+  failedAt   DateTime?
+  error      String?             @db.VarChar(500)
+  createdAt  DateTime            @default(now())
+
+  @@index([merchantId])
+  @@index([userId])
+  @@map("notifications")
+}

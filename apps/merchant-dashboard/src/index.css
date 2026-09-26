@@ -1,0 +1,72 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  color-scheme: dark;
+  --bg-primary: #131B17;
+  --bg-secondary: #1D2E28;
+  --surface-elevated: #1D2E28;
+  --surface-hover: #243831;
+  --primary-brass: #C9A227;
+  --paper: #EDE7D6;
+  --paper-bright: #F6F3EA;
+  --text-on-ink: #EDE7D6;
+  --text-on-paper: #131B17;
+  --text-muted-ink: #8FA396;
+  --text-muted-paper: #5C5646;
+  --border-dark: rgba(237, 231, 214, 0.08);
+  --border-paper: rgba(19, 27, 23, 0.12);
+  --moss: #4E8B6F;
+  --amber-warn: #C98A2E;
+  --stamp-red: #B0503F;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  background-color: #131B17;
+  color: #EDE7D6;
+  font-family: 'Public Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Tabular figures for numbers and financial data */
+.tabular-nums, .num-metric {
+  font-family: 'IBM Plex Mono', monospace;
+  font-feature-settings: 'tnum' 1, 'cv01' 1;
+  font-variant-numeric: tabular-nums;
+}
+
+/* Ledger passbook scrollbars */
+::-webkit-scrollbar {
+  width: 5px;
+  height: 5px;
+}
+::-webkit-scrollbar-track {
+  background: #131B17;
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(237, 231, 214, 0.16);
+  border-radius: 2px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(237, 231, 214, 0.28);
+}
+
+/* Subtle focus rings */
+:focus-visible {
+  outline: 2px solid #C9A227;
+  outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
