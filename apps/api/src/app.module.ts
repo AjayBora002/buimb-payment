@@ -12,6 +12,13 @@ import { WebhooksModule } from './modules/webhooks/webhooks.module.js';
 import { AuditModule } from './modules/audit/audit.module.js';
 import { RiskModule } from './modules/risk/risk.module.js';
 import { HealthModule } from './modules/health/health.module.js';
+import { CheckoutModule } from './modules/checkout/checkout.module.js';
+import { ObserversModule } from './modules/observers/observers.module.js';
+import { RouteModule } from './modules/route/route.module.js';
+import { VerificationModule } from './modules/verification/verification.module.js';
+import { PayoutLinksModule } from './modules/payout-links/payout-links.module.js';
+import { CorporateCardsModule } from './modules/corporate-cards/corporate-cards.module.js';
+import { MagicCheckoutModule } from './modules/magic-checkout/magic-checkout.module.js';
 import { DatabaseModule } from './common/database/database.module.js';
 import { RedisModule } from './common/redis/redis.module.js';
 
@@ -39,6 +46,13 @@ import { RedisModule } from './common/redis/redis.module.js';
     AuditModule,
     RiskModule,
     HealthModule,
+    CheckoutModule,
+    ObserversModule,
+    RouteModule,
+    VerificationModule,
+    PayoutLinksModule,
+    CorporateCardsModule,
+    MagicCheckoutModule,
   ],
 })
 export class AppModule {}

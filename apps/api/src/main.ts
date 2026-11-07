@@ -46,16 +46,17 @@ async function bootstrap() {
     contentSecurityPolicy: {
       directives: {
         defaultSrc: ["'self'"],
-        scriptSrc: ["'self'"],
+        scriptSrc: ["'self'", "'unsafe-inline'"],
         styleSrc: ["'self'", "'unsafe-inline'"],
         imgSrc: ["'self'", 'data:', 'https:'],
+        frameAncestors: ["*"],
       },
     },
   });
 
-  // ── CORS — restrictive by default ─────────────────────────────────────────
+  // ── CORS ──────────────────────────────────────────────────────────────────
   app.enableCors({
-    origin: process.env.ALLOWED_ORIGINS?.split(',') ?? ['http://localhost:3000'],
+    origin: nodeEnv !== 'production' ? true : (process.env.ALLOWED_ORIGINS?.split(',') ?? ['http://localhost:3000']),
     credentials: true,
     methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
   });
