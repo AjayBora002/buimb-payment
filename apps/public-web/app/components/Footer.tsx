@@ -1,209 +1,216 @@
 'use client';
 
-import React, { useState } from 'react';
+import React from 'react';
 import Link from 'next/link';
-import { Mail, Phone, ArrowUpRight, CheckCircle2, ShieldCheck, Lock } from 'lucide-react';
-import { FinoraLogo } from './FinoraLogo';
+import {
+  ShieldCheck,
+  Lock,
+  CheckCircle2,
+  ExternalLink,
+} from 'lucide-react';
+import { RazorpayLogo } from './RazorpayLogo';
 
 export function Footer() {
-  const [email, setEmail] = useState('');
-  const [subscribed, setSubscribed] = useState(false);
-
-  const handleSubscribe = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (email.trim()) {
-      setSubscribed(true);
-      setTimeout(() => {
-        setEmail('');
-      }, 3000);
-    }
-  };
-
   return (
-    <footer className="w-full bg-[#F8FAFC] py-16 px-4 sm:px-6 relative overflow-hidden">
-      {/* Massive subtle Finora spiral watermark in background */}
-      <div className="absolute -bottom-24 left-1/2 -translate-x-1/2 pointer-events-none opacity-[0.03] select-none">
-        <FinoraLogo size={700} color="#0A1128" />
-      </div>
+    <footer className="w-full bg-[#0C1A30] text-slate-300 pt-16 pb-12 px-4 sm:px-6 lg:px-8 border-t border-slate-800 text-xs font-sans select-none antialiased">
+      <div className="max-w-7xl mx-auto">
+        {/* Main 6-Column Grid matching Official Razorpay Mega-Footer */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-6 gap-8 pb-12 border-b border-slate-800">
+          {/* Col 1: Brand Info & Compliance Badges */}
+          <div className="lg:col-span-2 space-y-4 pr-0 lg:pr-6">
+            <RazorpayLogo size={32} textColor="text-white" />
 
-      <div className="max-w-6xl mx-auto relative z-10">
-        {/* Main Floating Footer Card matching Screenshot 5 */}
-        <div className="bg-white rounded-3xl sm:rounded-[2.5rem] border border-slate-100 shadow-[0_20px_60px_rgba(15,23,42,0.06)] p-6 sm:p-10 lg:p-12 relative overflow-hidden">
-          {/* Floating 3D glossy royal blue badge in top right (as seen in Screenshot 5) */}
-          <div className="absolute top-6 right-8 sm:top-10 sm:right-12 hidden md:block">
-            <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-2xl bg-gradient-to-br from-[#3B66FF] to-[#1A45E5] shadow-[0_12px_28px_rgba(43,89,255,0.35)] flex items-center justify-center transform -rotate-12 hover:rotate-0 transition-transform duration-500 cursor-pointer">
-              <FinoraLogo size={36} color="#FFFFFF" />
+            <p className="text-[11px] text-slate-400 leading-relaxed">
+              A comprehensive payments suite in India designed to help businesses seamlessly accept, process, and disburse payments. It gives you access to all payment modes including credit card, debit card, netbanking, UPI and popular wallets including JioMoney, Mobikwik, Airtel Money, FreeCharge, Ola Money and PayZapp.
+            </p>
+
+            <p className="text-[11px] text-slate-400 leading-relaxed">
+              RazorpayX supercharges your business banking experience, bringing effectiveness, efficiency, and excellence to all financial processes. With RazorpayX, businesses can get access to fully-functional current accounts, supercharge their payouts and automate payroll compliance.
+            </p>
+
+            <div className="text-[10px] text-slate-500 leading-normal pt-2">
+              Disclaimer: The RazorpayX powered Current Account and VISA corporate credit card are provided by RBI licensed banks. Your RazorpayX powered current account is provided by our partner banks i.e, ICICI, RBL, Yes bank, in accordance with RBI regulations.
+            </div>
+
+            {/* Certifications Badges */}
+            <div className="flex items-center gap-3 pt-3 flex-wrap">
+              <div className="px-2.5 py-1 rounded bg-slate-800/80 border border-slate-700 text-[10px] font-bold text-slate-200 flex items-center gap-1.5">
+                <ShieldCheck className="w-3.5 h-3.5 text-emerald-400" />
+                PCI-DSS Level 1
+              </div>
+              <div className="px-2.5 py-1 rounded bg-slate-800/80 border border-slate-700 text-[10px] font-bold text-slate-200 flex items-center gap-1.5">
+                <Lock className="w-3.5 h-3.5 text-blue-400" />
+                ISO/IEC 27001
+              </div>
+              <div className="px-2.5 py-1 rounded bg-slate-800/80 border border-slate-700 text-[10px] font-bold text-slate-200 flex items-center gap-1.5">
+                <CheckCircle2 className="w-3.5 h-3.5 text-purple-400" />
+                AICPA SOC 2
+              </div>
             </div>
           </div>
 
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-8 items-start">
-            {/* Left Column: Signature Royal Blue Card */}
-            <div className="lg:col-span-5 bg-[#2B59FF] text-white p-7 sm:p-9 rounded-2xl sm:rounded-3xl shadow-[0_16px_36px_rgba(43,89,255,0.3)] flex flex-col justify-between min-h-[340px] relative overflow-hidden group">
-              {/* Background glow & subtle accent circle */}
-              <div className="absolute -top-12 -right-12 w-40 h-40 bg-white/10 rounded-full blur-2xl group-hover:scale-125 transition-transform duration-700 pointer-events-none" />
+          {/* Col 2: Accept Payments */}
+          <div className="space-y-3">
+            <span className="text-[11px] font-bold text-white uppercase tracking-wider block">
+              Accept Payments
+            </span>
+            <ul className="space-y-2 text-slate-400">
+              <li><Link href="/payment-gateway" className="hover:text-blue-400">Payment Aggregator</Link></li>
+              <li><Link href="/payment-gateway" className="hover:text-blue-400">Payment Gateway</Link></li>
+              <li><Link href="/payment-pages" className="hover:text-blue-400">Payment Pages</Link></li>
+              <li><Link href="/payment-links" className="hover:text-blue-400">Payment Links</Link></li>
+              <li>
+                <Link href="/qr-codes" className="hover:text-blue-400 flex items-center gap-1">
+                  Razorpay POS <span className="text-[8px] bg-blue-500/20 text-blue-300 font-bold px-1 rounded">NEW</span>
+                </Link>
+              </li>
+              <li><Link href="/qr-codes" className="hover:text-blue-400">QR Codes</Link></li>
+              <li><Link href="/subscriptions" className="hover:text-blue-400">Subscriptions</Link></li>
+              <li><Link href="/smart-collect" className="hover:text-blue-400">Smart Collect</Link></li>
+              <li><Link href="/optimizer" className="hover:text-blue-400">Optimizer</Link></li>
+              <li><Link href="/instant-settlement" className="hover:text-blue-400">Instant Settlements</Link></li>
+            </ul>
 
-              <div className="space-y-6 relative z-10">
-                {/* Brand Logo & Name */}
-                <div className="flex items-center gap-3">
-                  <div className="w-11 h-11 rounded-xl bg-white/15 backdrop-blur-md flex items-center justify-center border border-white/20">
-                    <FinoraLogo size={26} color="#FFFFFF" />
-                  </div>
-                  <div>
-                    <span className="text-2xl font-black tracking-tight block leading-none">Finora</span>
-                    <span className="text-[11px] text-white/70 font-medium">By BuimbPay Technologies</span>
-                  </div>
-                </div>
+            <span className="text-[11px] font-bold text-white uppercase tracking-wider block pt-4">
+              Payroll
+            </span>
+            <ul className="space-y-2 text-slate-400">
+              <li><Link href="/payroll" className="hover:text-blue-400">RazorpayX Payroll</Link></li>
+            </ul>
 
-                <p className="text-white/80 text-xs sm:text-sm leading-relaxed max-w-sm">
-                  The unified finance platform engineered for modern investors, startups, and payment infrastructure. Built with double-entry precision and bank-grade security.
-                </p>
-              </div>
+            <span className="text-[11px] font-bold text-white uppercase tracking-wider block pt-4">
+              Become a Partner
+            </span>
+            <ul className="space-y-2 text-slate-400">
+              <li><Link href="/pricing" className="hover:text-blue-400">Refer and Earn</Link></li>
+              <li><Link href="/docs" className="hover:text-blue-400">Onboarding APIs</Link></li>
+            </ul>
+          </div>
 
-              {/* Contact info matching screenshot 5 */}
-              <div className="pt-8 space-y-3 relative z-10 text-xs sm:text-sm text-white/90">
-                <a
-                  href="mailto:help@finora.com"
-                  className="flex items-center gap-2.5 hover:text-white transition-colors"
-                >
-                  <Mail className="w-4 h-4 text-white/70 shrink-0" />
-                  <span>help@finora.com</span>
-                  <span className="text-white/40">/</span>
-                  <span className="text-white/70">support@buimbpay.com</span>
-                </a>
+          {/* Col 3: More & Banking Plus */}
+          <div className="space-y-3">
+            <span className="text-[11px] font-bold text-white uppercase tracking-wider block">
+              Banking Plus
+            </span>
+            <ul className="space-y-2 text-slate-400">
+              <li><Link href="/banking" className="hover:text-blue-400">RazorpayX</Link></li>
+              <li><Link href="/compliance" className="hover:text-blue-400">Source to pay</Link></li>
+              <li><Link href="/banking" className="hover:text-blue-400">Current Accounts</Link></li>
+              <li><Link href="/instant-settlement" className="hover:text-blue-400">Payouts</Link></li>
+              <li><Link href="/instant-settlement" className="hover:text-blue-400">Payout Links</Link></li>
+              <li><Link href="/banking" className="hover:text-blue-400">Corporate Credit Card</Link></li>
+            </ul>
 
-                <a
-                  href="tel:+6281234567890"
-                  className="flex items-center gap-2.5 hover:text-white transition-colors"
-                >
-                  <Phone className="w-4 h-4 text-white/70 shrink-0" />
-                  <span>+62 812-3456-7890</span>
-                  <span className="text-white/40">/</span>
-                  <span className="text-white/70">1800-BUIMB-PAY</span>
-                </a>
-              </div>
+            <span className="text-[11px] font-bold text-white uppercase tracking-wider block pt-4">
+              More
+            </span>
+            <ul className="space-y-2 text-slate-400">
+              <li><Link href="/payment-gateway" className="hover:text-blue-400">Route (Split Pay)</Link></li>
+              <li><Link href="/invoices" className="hover:text-blue-400">Invoices</Link></li>
+              <li><Link href="/payment-links" className="hover:text-blue-400">Freelancer Payments</Link></li>
+              <li><Link href="/pricing" className="hover:text-blue-400">International Payments</Link></li>
+              <li><Link href="/magic-checkout" className="hover:text-blue-400">Flash Checkout</Link></li>
+              <li><Link href="/qr-codes" className="hover:text-blue-400">UPI Payments</Link></li>
+              <li><Link href="/qr-codes" className="hover:text-blue-400">ePOS</Link></li>
+              <li><Link href="/payment-gateway" className="hover:text-blue-400">Checkout Demo</Link></li>
+            </ul>
+          </div>
+
+          {/* Col 4: Developers & Resources & Solutions */}
+          <div className="space-y-3">
+            <span className="text-[11px] font-bold text-white uppercase tracking-wider block">
+              Developers
+            </span>
+            <ul className="space-y-2 text-slate-400">
+              <li><Link href="/docs" className="hover:text-blue-400">Docs</Link></li>
+              <li><Link href="/docs" className="hover:text-blue-400">Integrations</Link></li>
+              <li><Link href="/docs" className="hover:text-blue-400">API Reference</Link></li>
+            </ul>
+
+            <span className="text-[11px] font-bold text-white uppercase tracking-wider block pt-4">
+              Resources
+            </span>
+            <ul className="space-y-2 text-slate-400">
+              <li><Link href="/docs" className="hover:text-blue-400">Blog</Link></li>
+              <li><Link href="/docs" className="hover:text-blue-400">Learn</Link></li>
+              <li><Link href="/docs" className="hover:text-blue-400">Customer Stories</Link></li>
+              <li><Link href="/docs" className="hover:text-blue-400">Events</Link></li>
+              <li><Link href="/compliance" className="hover:text-blue-400">Chargeback Guide</Link></li>
+              <li><Link href="/instant-settlement" className="hover:text-blue-400">Settlement Guide</Link></li>
+            </ul>
+
+            <span className="text-[11px] font-bold text-white uppercase tracking-wider block pt-4">
+              Solutions
+            </span>
+            <ul className="space-y-2 text-slate-400">
+              <li><Link href="/pricing" className="hover:text-blue-400">Education</Link></li>
+              <li><Link href="/pricing" className="hover:text-blue-400">E-commerce</Link></li>
+              <li><Link href="/pricing" className="hover:text-blue-400">SaaS</Link></li>
+              <li><Link href="/pricing" className="hover:text-blue-400">BFSI</Link></li>
+            </ul>
+          </div>
+
+          {/* Col 5: Free Tools & Company */}
+          <div className="space-y-3">
+            <span className="text-[11px] font-bold text-white uppercase tracking-wider block">
+              Free Tools
+            </span>
+            <ul className="space-y-2 text-slate-400">
+              <li><Link href="/tools/gst-calculator" className="hover:text-blue-400 font-semibold text-blue-300">GST Calculator</Link></li>
+              <li><Link href="/compliance" className="hover:text-blue-400">GST Number Search</Link></li>
+              <li><Link href="/compliance" className="hover:text-blue-400">GST Search by PAN</Link></li>
+              <li>
+                <Link href="/pricing" className="hover:text-blue-400 flex items-center gap-1">
+                  ROI Calculator <span className="text-[8px] bg-emerald-500/20 text-emerald-300 font-bold px-1 rounded">NEW</span>
+                </Link>
+              </li>
+              <li>
+                <Link href="/pricing" className="hover:text-blue-400 flex items-center gap-1">
+                  CAGR Calculator <span className="text-[8px] bg-emerald-500/20 text-emerald-300 font-bold px-1 rounded">NEW</span>
+                </Link>
+              </li>
+              <li>
+                <Link href="/pricing" className="hover:text-blue-400 flex items-center gap-1">
+                  EBITDA Calculator <span className="text-[8px] bg-emerald-500/20 text-emerald-300 font-bold px-1 rounded">NEW</span>
+                </Link>
+              </li>
+            </ul>
+
+            <span className="text-[11px] font-bold text-white uppercase tracking-wider block pt-4">
+              Company
+            </span>
+            <ul className="space-y-2 text-slate-400">
+              <li><Link href="/docs" className="hover:text-blue-400">About Us</Link></li>
+              <li><Link href="/docs" className="hover:text-blue-400">Careers</Link></li>
+              <li><Link href="/compliance" className="hover:text-blue-400">Terms of Use</Link></li>
+              <li><Link href="/compliance" className="hover:text-blue-400">Privacy Policy</Link></li>
+              <li><Link href="/compliance" className="hover:text-blue-400">Grievance Redressal</Link></li>
+              <li><Link href="/compliance" className="hover:text-blue-400">Responsible Disclosure</Link></li>
+              <li><Link href="/pricing" className="hover:text-blue-400">Partners</Link></li>
+            </ul>
+          </div>
+        </div>
+
+        {/* Bottom Bar: Address, CIN, Social, RBI Authorised PA */}
+        <div className="pt-8 flex flex-col md:flex-row items-start md:items-center justify-between gap-6 text-[11px] text-slate-500">
+          <div className="space-y-1">
+            <div className="text-slate-400 font-bold">
+              Razorpay Payments Private Limited
             </div>
+            <div>
+              1st Floor, SJR Cyber, 22 Laskar Hosur Road, Adugodi, Bengaluru, 560030, Karnataka, India
+            </div>
+            <div>
+              CIN: U62099KA2024PTC188982 · © Razorpay 2026 All Rights Reserved
+            </div>
+          </div>
 
-            {/* Right Columns: Solutions, Resources, and Newsletter */}
-            <div className="lg:col-span-7 flex flex-col justify-between space-y-8 sm:pl-4">
-              <div className="grid grid-cols-2 sm:grid-cols-2 gap-8 text-sm">
-                {/* Solutions Links matching screenshot 5 */}
-                <div>
-                  <h4 className="text-xs font-bold text-slate-900 uppercase tracking-wider mb-4">
-                    Solutions
-                  </h4>
-                  <ul className="space-y-2.5 text-xs text-slate-600">
-                    <li>
-                      <Link href="/pricing" className="hover:text-[#2B59FF] transition-colors">
-                        For Individual Investors
-                      </Link>
-                    </li>
-                    <li>
-                      <Link href="/pricing" className="hover:text-[#2B59FF] transition-colors">
-                        For Professionals
-                      </Link>
-                    </li>
-                    <li>
-                      <Link href="/contact" className="hover:text-[#2B59FF] transition-colors">
-                        For Financial Advisors
-                      </Link>
-                    </li>
-                    <li>
-                      <Link href="/contact" className="hover:text-[#2B59FF] transition-colors">
-                        For Businesses
-                      </Link>
-                    </li>
-                    <li className="pt-2 border-t border-slate-100">
-                      <Link href="/payment-gateway" className="hover:text-[#2B59FF] transition-colors text-slate-700 font-medium">
-                        Payment Gateway
-                      </Link>
-                    </li>
-                    <li>
-                      <Link href="/qr-codes" className="hover:text-[#2B59FF] transition-colors text-slate-700 font-medium">
-                        Smart QR & POS
-                      </Link>
-                    </li>
-                    <li>
-                      <Link href="/instant-settlement" className="hover:text-[#2B59FF] transition-colors text-slate-700 font-medium">
-                        Instant Settlements
-                      </Link>
-                    </li>
-                  </ul>
-                </div>
-
-                {/* Resources Links matching screenshot 5 */}
-                <div>
-                  <h4 className="text-xs font-bold text-slate-900 uppercase tracking-wider mb-4">
-                    Resources
-                  </h4>
-                  <ul className="space-y-2.5 text-xs text-slate-600">
-                    <li>
-                      <Link href="/docs" className="hover:text-[#2B59FF] transition-colors">
-                        Resources & Docs
-                      </Link>
-                    </li>
-                    <li>
-                      <a href="#faq" className="hover:text-[#2B59FF] transition-colors">
-                        FAQ
-                      </a>
-                    </li>
-                    <li>
-                      <Link href="/contact" className="hover:text-[#2B59FF] transition-colors">
-                        Contact Us
-                      </Link>
-                    </li>
-                    <li className="pt-2 border-t border-slate-100">
-                      <Link href="/tools/gst-calculator" className="hover:text-[#2B59FF] transition-colors text-slate-700 font-medium">
-                        Fee & GST Calculator
-                      </Link>
-                    </li>
-                    <li>
-                      <Link href="/compliance" className="hover:text-[#2B59FF] transition-colors text-slate-700 font-medium">
-                        RBI Compliance Roadmap
-                      </Link>
-                    </li>
-                    <li>
-                      <Link href="/security" className="hover:text-[#2B59FF] transition-colors text-slate-700 font-medium">
-                        Security & PCI-DSS Scope
-                      </Link>
-                    </li>
-                    <li>
-                      <Link href="/legal" className="hover:text-[#2B59FF] transition-colors">
-                        Terms & Privacy
-                      </Link>
-                    </li>
-                  </ul>
-                </div>
-              </div>
-
-              {/* Newsletter subscription box matching Screenshot 5 */}
-              <div className="pt-4 border-t border-slate-100 space-y-3">
-                <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-4">
-                  <div className="text-xs text-slate-500">
-                    © 2026 Pylus Studio / BuimbPay Technologies. All rights reserved.
-                  </div>
-
-                  <form onSubmit={handleSubscribe} className="flex items-center gap-2 max-w-sm w-full">
-                    <input
-                      type="email"
-                      required
-                      value={email}
-                      onChange={(e) => setEmail(e.target.value)}
-                      placeholder="Enter your email"
-                      className="flex-1 bg-slate-50 border border-slate-200 rounded-full px-4 py-2.5 text-xs text-slate-800 placeholder-slate-400 focus:outline-none focus:border-[#2B59FF] focus:bg-white transition-all"
-                    />
-                    <button
-                      type="submit"
-                      className="bg-[#2B59FF] hover:bg-[#1E40AF] text-white text-xs font-semibold px-5 py-2.5 rounded-full transition-all duration-200 shadow-sm shrink-0"
-                    >
-                      {subscribed ? 'Subscribed!' : 'Subscribe'}
-                    </button>
-                  </form>
-                </div>
-
-                <div className="text-[11px] text-slate-400 leading-relaxed">
-                  Payment aggregation, treasury and banking services provided in alignment with scheduled commercial banking partners and RBI Master Directions.
-                </div>
-              </div>
+          <div className="text-right space-y-1">
+            <div className="text-slate-300 font-semibold">
+              Razorpay Payments Private Limited is an RBI Authorised Payment Aggregator
+            </div>
+            <div className="text-[10px] text-slate-500">
+              BuimbPay Enterprise Infrastructure Engine · 99.98% Gateway SLA
             </div>
           </div>
         </div>
