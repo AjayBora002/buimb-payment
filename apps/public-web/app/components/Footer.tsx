@@ -25,11 +25,11 @@ export function Footer() {
             </p>
 
             <p className="text-[11px] text-slate-400 leading-relaxed">
-              RazorpayX supercharges your business banking experience, bringing effectiveness, efficiency, and excellence to all financial processes. With RazorpayX, businesses can get access to fully-functional current accounts, supercharge their payouts and automate payroll compliance.
+              Buimb-PayX supercharges your business banking experience, bringing effectiveness, efficiency, and excellence to all financial processes. With Buimb-PayX, businesses can get access to fully-functional current accounts, supercharge their payouts and automate payroll compliance.
             </p>
 
             <div className="text-[10px] text-slate-500 leading-normal pt-2">
-              Disclaimer: The RazorpayX powered Current Account and VISA corporate credit card are provided by RBI licensed banks. Your RazorpayX powered current account is provided by our partner banks i.e, ICICI, RBL, Yes bank, in accordance with RBI regulations.
+              Disclaimer: The Buimb-PayX powered Current Account and VISA corporate credit card are provided by RBI licensed banks. Your Buimb-PayX powered current account is provided by our partner banks i.e, ICICI, RBL, Yes bank, in accordance with RBI regulations.
             </div>
 
             {/* Certifications Badges */}
@@ -61,7 +61,7 @@ export function Footer() {
               <li><Link href="/payment-links" className="hover:text-blue-400">Payment Links</Link></li>
               <li>
                 <Link href="/qr-codes" className="hover:text-blue-400 flex items-center gap-1">
-                  Razorpay POS <span className="text-[8px] bg-blue-500/20 text-blue-300 font-bold px-1 rounded">NEW</span>
+                  Buimb-Pay POS <span className="text-[8px] bg-blue-500/20 text-blue-300 font-bold px-1 rounded">NEW</span>
                 </Link>
               </li>
               <li><Link href="/qr-codes" className="hover:text-blue-400">QR Codes</Link></li>
@@ -75,7 +75,7 @@ export function Footer() {
               Payroll
             </span>
             <ul className="space-y-2 text-slate-400">
-              <li><Link href="/payroll" className="hover:text-blue-400">RazorpayX Payroll</Link></li>
+              <li><Link href="/payroll" className="hover:text-blue-400">Buimb-PayX Payroll</Link></li>
             </ul>
 
             <span className="text-[11px] font-bold text-white uppercase tracking-wider block pt-4">
@@ -93,7 +93,7 @@ export function Footer() {
               Banking Plus
             </span>
             <ul className="space-y-2 text-slate-400">
-              <li><Link href="/banking" className="hover:text-blue-400">RazorpayX</Link></li>
+              <li><Link href="/banking" className="hover:text-blue-400">Buimb-PayX</Link></li>
               <li><Link href="/compliance" className="hover:text-blue-400">Source to pay</Link></li>
               <li><Link href="/banking" className="hover:text-blue-400">Current Accounts</Link></li>
               <li><Link href="/instant-settlement" className="hover:text-blue-400">Payouts</Link></li>
@@ -195,19 +195,19 @@ export function Footer() {
         <div className="pt-8 flex flex-col md:flex-row items-start md:items-center justify-between gap-6 text-[11px] text-slate-500">
           <div className="space-y-1">
             <div className="text-slate-400 font-bold">
-              Razorpay Payments Private Limited
+              Buimb-Pay Payments Private Limited
             </div>
             <div>
               1st Floor, SJR Cyber, 22 Laskar Hosur Road, Adugodi, Bengaluru, 560030, Karnataka, India
             </div>
             <div>
-              CIN: U62099KA2024PTC188982 · © Razorpay 2026 All Rights Reserved
+              CIN: U62099KA2024PTC188982 · © Buimb-Pay 2026 All Rights Reserved
             </div>
           </div>
 
           <div className="text-right space-y-1">
             <div className="text-slate-300 font-semibold">
-              Razorpay Payments Private Limited is an RBI Authorised Payment Aggregator
+              Buimb-Pay Payments Private Limited is an RBI Authorised Payment Aggregator
             </div>
             <div className="text-[10px] text-slate-500">
               BuimbPay Enterprise Infrastructure Engine · 99.98% Gateway SLA

@@ -303,7 +303,7 @@ export function Navbar() {
                         </div>
                         <div>
                           <div className="text-xs font-bold text-slate-900 group-hover:text-cyan-600">
-                            Razorpay POS & Soundbox
+                            Buimb-Pay POS & Soundbox
                           </div>
                           <div className="text-[10px] text-slate-500 leading-tight">
                             Smart Android POS devices & audio announcements
@@ -377,7 +377,7 @@ export function Navbar() {
               )}
             </div>
 
-            {/* 3. Banking+ (RazorpayX) Mega-Menu */}
+            {/* 3. Banking+ (Buimb-PayX) Mega-Menu */}
             <div className="relative" onMouseEnter={() => setActiveMenu('banking')}>
               <button
                 className={`flex items-center gap-1 py-1 transition-colors hover:text-[#0B63E5] cursor-pointer ${
@@ -386,7 +386,7 @@ export function Navbar() {
               >
                 <span>Banking+</span>
                 <span className="px-1.5 py-0.5 rounded text-[9px] bg-blue-50 text-[#0B63E5] font-bold border border-blue-200">
-                  RazorpayX
+                  Buimb-PayX
                 </span>
                 <ChevronDown
                   className={`w-3.5 h-3.5 transition-transform duration-200 ${
@@ -417,7 +417,7 @@ export function Navbar() {
                         </div>
                         <div>
                           <div className="text-xs font-bold text-slate-900 group-hover:text-[#0B63E5]">
-                            RazorpayX Current Account
+                            Buimb-PayX Current Account
                           </div>
                           <div className="text-[10px] text-slate-500 leading-tight">
                             Supercharged for modern businesses
@@ -692,7 +692,7 @@ export function Navbar() {
                     onClick={() => setActiveMenu(null)}
                     className="block px-3 py-2 rounded-lg hover:bg-slate-50 text-xs font-bold text-slate-800 hover:text-[#0B63E5]"
                   >
-                    RazorpayX Partners
+                    Buimb-PayX Partners
                   </Link>
                   <Link
                     href="/pricing"
@@ -874,7 +874,7 @@ export function Navbar() {
             </div>
 
             <div className="pt-3 border-t border-slate-200 text-[11px] font-bold text-blue-600 uppercase tracking-wider px-2">
-              Banking+ (RazorpayX)
+              Banking+ (Buimb-PayX)
             </div>
             <div className="grid grid-cols-2 gap-2 text-xs font-semibold">
               <Link href="/banking" onClick={() => setMobileMenuOpen(false)} className="p-2.5 rounded-lg bg-slate-50">Current Account</Link>

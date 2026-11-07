@@ -74,14 +74,14 @@ export default function HomePage() {
   const [calcGstRate, setCalcGstRate] = useState<number>(18);
 
   const codeSnippets = {
-    nodejs: `const Razorpay = require('razorpay');
+    nodejs: `const BuimbPay = require('@buimbpay/sdk');
 
-const instance = new Razorpay({
+const instance = new BuimbPay({
   key_id: 'rzp_test_Nx8Y29kLp102',
   key_secret: 'YOUR_KEY_SECRET',
 });
 
-// Create Order for standard Razorpay checkout
+// Create Order for standard Buimb-Pay checkout
 const order = await instance.orders.create({
   amount: 450000, // amount in paise (₹4,500.00)
   currency: 'INR',
@@ -91,11 +91,11 @@ const order = await instance.orders.create({
     service: 'Pro Annual Cloud Subscription',
   },
 });`,
-    python: `import razorpay
+    python: `import buimbpay
 
-client = razorpay.Client(auth=("rzp_test_Nx8Y29kLp102", "YOUR_KEY_SECRET"))
+client = buimbpay.Client(auth=("rzp_test_Nx8Y29kLp102", "YOUR_KEY_SECRET"))
 
-# Create Order for standard Razorpay checkout
+# Create Order for standard Buimb-Pay checkout
 order = client.order.create({
     'amount': 450000, # amount in paise
     'currency': 'INR',
@@ -106,7 +106,7 @@ order = client.order.create({
     }
 })`,
     curl: `curl -u rzp_test_Nx8Y29kLp102:YOUR_KEY_SECRET \\
-  -X POST https://api.razorpay.com/v1/orders \\
+  -X POST https://api.buimbpay.com/v1/orders \\
   -H "Content-Type: application/json" \\
   -d '{
     "amount": 450000,
@@ -116,21 +116,21 @@ order = client.order.create({
       "customer_name": "Priya Sharma"
     }
   }'`,
-    php: `$api = new Razorpay\\Api\\Api('rzp_test_Nx8Y29kLp102', 'YOUR_KEY_SECRET');
+    php: `$api = new BuimbPay\\Api\\Api('rzp_test_Nx8Y29kLp102', 'YOUR_KEY_SECRET');
 
 $order = $api->order->create([
     'amount'   => 450000,
     'currency' => 'INR',
     'receipt'  => 'receipt_order_7719'
 ]);`,
-    java: `RazorpayClient razorpay = new RazorpayClient("rzp_test_Nx8Y29kLp102", "YOUR_KEY_SECRET");
+    java: `BuimbPayClient buimbpay = new BuimbPayClient("rzp_test_Nx8Y29kLp102", "YOUR_KEY_SECRET");
 
 JSONObject orderRequest = new JSONObject();
 orderRequest.put("amount", 450000);
 orderRequest.put("currency", "INR");
 orderRequest.put("receipt", "receipt_order_7719");
 
-Order order = razorpay.orders.create(orderRequest);`,
+Order order = buimbpay.orders.create(orderRequest);`,
   };
 
   const handleCopyCode = () => {
@@ -141,16 +141,16 @@ Order order = razorpay.orders.create(orderRequest);`,
 
   const faqs = [
     {
-      q: 'What is Razorpay and how does it work for my business?',
-      a: 'Razorpay is India’s leading full-stack payment gateway & business banking platform. It enables merchants to accept payments across 100+ payment methods including UPI (Google Pay, PhonePe, Paytm), Credit & Debit Cards (Visa, Mastercard, RuPay), Net Banking (50+ banks), and Wallets with 99.98% gateway uptime.',
+      q: 'What is Buimb-Pay and how does it work for my business?',
+      a: 'Buimb-Pay is India’s leading full-stack payment gateway & business banking platform. It enables merchants to accept payments across 100+ payment methods including UPI (Google Pay, PhonePe, Paytm), Credit & Debit Cards (Visa, Mastercard, RuPay), Net Banking (50+ banks), and Wallets with 99.98% gateway uptime.',
     },
     {
-      q: 'What is RazorpayX and how are instant payouts executed?',
-      a: 'RazorpayX is our modern business banking platform that provides digital Current Accounts with partner scheduled banks, 24x7 instant automated payouts via IMPS/NEFT/UPI in 15 seconds, smart corporate expense cards with spend controls, automated vendor invoice payments, and ₹1 penny drop bank verification.',
+      q: 'What is Buimb-PayX and how are instant payouts executed?',
+      a: 'Buimb-PayX is our modern business banking platform that provides digital Current Accounts with partner scheduled banks, 24x7 instant automated payouts via IMPS/NEFT/UPI in 15 seconds, smart corporate expense cards with spend controls, automated vendor invoice payments, and ₹1 penny drop bank verification.',
     },
     {
-      q: 'What is Razorpay Route and how do marketplace splits work?',
-      a: 'Razorpay Route automates split payments for multi-vendor marketplaces. When a buyer pays, Route instantly deducts your platform commission and transfers the seller’s share to their linked bank account, eliminating manual reconciliations and accounting errors.',
+      q: 'What is Buimb-Pay Route and how do marketplace splits work?',
+      a: 'Buimb-Pay Route automates split payments for multi-vendor marketplaces. When a buyer pays, Route instantly deducts your platform commission and transfers the seller’s share to their linked bank account, eliminating manual reconciliations and accounting errors.',
     },
     {
       q: 'What is Magic Checkout and how does it prevent COD RTO fraud?',
@@ -158,7 +158,7 @@ Order order = razorpay.orders.create(orderRequest);`,
     },
     {
       q: 'How fast are settlements credited to my bank account?',
-      a: 'Standard settlements are credited on a T+1 business day cycle. With Razorpay Instant Settlements, merchants can access their funds in 15 seconds, 24x7x365, even on bank holidays and weekends with immediate IMPS UTR generation.',
+      a: 'Standard settlements are credited on a T+1 business day cycle. With Buimb-Pay Instant Settlements, merchants can access their funds in 15 seconds, 24x7x365, even on bank holidays and weekends with immediate IMPS UTR generation.',
     },
     {
       q: 'What documents are required for instant merchant onboarding and KYC?',
@@ -201,7 +201,7 @@ Order order = razorpay.orders.create(orderRequest);`,
 
             {/* Subheading */}
             <p className="text-base sm:text-xl text-slate-300 max-w-3xl mx-auto font-normal leading-relaxed">
-              Accept payments from customers across 100+ modes. Automate payouts for vendors & employees with RazorpayX. Never run out of working capital.
+              Accept payments from customers across 100+ modes. Automate payouts for vendors & employees with Buimb-PayX. Never run out of working capital.
             </p>
 
             {/* CTAs */}
@@ -308,7 +308,7 @@ Order order = razorpay.orders.create(orderRequest);`,
                       <div className="w-3 h-3 rounded-full bg-amber-500" />
                       <div className="w-3 h-3 rounded-full bg-emerald-500" />
                       <span className="ml-2 text-xs font-mono text-slate-300">
-                        api.razorpay.com/checkout
+                        checkout.buimbpay.com
                       </span>
                     </div>
                     <span className="text-[11px] font-bold text-emerald-400 bg-emerald-500/10 border border-emerald-500/30 px-2 py-0.5 rounded-full flex items-center gap-1">
@@ -416,7 +416,7 @@ Order order = razorpay.orders.create(orderRequest);`,
                       <div className="p-4 rounded-xl bg-[#09152C] border border-white/10 flex items-center justify-between">
                         <div>
                           <span className="text-[11px] text-slate-400 font-medium block">
-                            RazorpayX Corporate Card
+                            Buimb-PayX Corporate Card
                           </span>
                           <h4 className="text-base font-bold text-white mt-0.5">
                             Smart Virtual Business Card •••• 9012
@@ -445,7 +445,7 @@ Order order = razorpay.orders.create(orderRequest);`,
                     <div className="space-y-4 pt-3">
                       <div className="p-4 rounded-xl bg-[#09152C] border border-white/10 space-y-2">
                         <span className="text-[11px] text-amber-400 font-bold block uppercase tracking-wider">
-                          Razorpay Startup Perks
+                          Buimb-Pay Startup Perks
                         </span>
                         <h4 className="text-xl font-black text-white">
                           Backing Bold Ideas with ₹50L+ in Benefits
@@ -473,7 +473,7 @@ Order order = razorpay.orders.create(orderRequest);`,
                       <div className="p-4 rounded-xl bg-[#09152C] border border-white/10 flex items-center justify-between">
                         <div>
                           <span className="text-[11px] text-slate-400 font-medium block">
-                            RazorpayX Payroll Batch Disbursal
+                            Buimb-PayX Payroll Batch Disbursal
                           </span>
                           <h4 className="text-base font-bold text-white mt-0.5">
                             October 2026 Salary Payroll (42 Employees)
@@ -512,7 +512,7 @@ Order order = razorpay.orders.create(orderRequest);`,
                 <div className="space-y-4">
                   <div className="flex items-center justify-between">
                     <span className="px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-blue-500/20 text-blue-300 border border-blue-400/30">
-                      RazorpayX Nodal Escrow
+                      Buimb-PayX Nodal Escrow
                     </span>
                     <span className="text-xs text-emerald-400 font-mono font-bold flex items-center gap-1">
                       <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
@@ -647,7 +647,7 @@ Order order = razorpay.orders.create(orderRequest);`,
               Every tool your business needs to grow
             </h2>
             <p className="text-slate-600 text-sm sm:text-base leading-relaxed">
-              Explore Razorpay’s comprehensive suite of online and in-store payments, automated banking, and financial compliance.
+              Explore Buimb-Pay’s comprehensive suite of online and in-store payments, automated banking, and financial compliance.
             </p>
           </div>
 
@@ -662,7 +662,7 @@ Order order = razorpay.orders.create(orderRequest);`,
               { id: 'subscriptions', label: 'Subscriptions', icon: RefreshCw },
               { id: 'smart-collect', label: 'Smart Collect', icon: Building },
               { id: 'optimizer', label: 'Optimizer', icon: GitFork },
-              { id: 'payouts', label: 'RazorpayX Payouts', icon: ArrowUpRight },
+              { id: 'payouts', label: 'Buimb-PayX Payouts', icon: ArrowUpRight },
               { id: 'verify', label: 'Bank & VPA Verify', icon: ShieldCheck, badge: '₹1' },
               { id: 'cards', label: 'Corporate Cards', icon: CreditCard },
             ].map((tab) => {
@@ -743,7 +743,7 @@ Order order = razorpay.orders.create(orderRequest);`,
                   </div>
                   <h3 className="text-2xl font-bold text-slate-900 tracking-tight">Magic Checkout & AI RTO Intelligence</h3>
                   <p className="text-slate-600 text-sm leading-relaxed">
-                    Improve conversions by 20% with pre-filled customer details from Razorpay's 50M+ shopper network. Reduce costly Cash-on-Delivery (COD) return-to-origin fraud with machine learning risk evaluation.
+                    Improve conversions by 20% with pre-filled customer details from Buimb-Pay's 50M+ shopper network. Reduce costly Cash-on-Delivery (COD) return-to-origin fraud with machine learning risk evaluation.
                   </p>
                   <ul className="space-y-2 text-xs text-slate-700">
                     <li className="flex items-center gap-2"><CheckCircle2 className="w-4 h-4 text-emerald-600" /> 1-Click checkout with prefilled addresses</li>
@@ -779,7 +779,7 @@ Order order = razorpay.orders.create(orderRequest);`,
                   <div className="w-10 h-10 rounded-xl bg-purple-50 text-purple-600 flex items-center justify-center font-bold">
                     <Split className="w-5 h-5" />
                   </div>
-                  <h3 className="text-2xl font-bold text-slate-900 tracking-tight">Razorpay Route (Marketplace Splits)</h3>
+                  <h3 className="text-2xl font-bold text-slate-900 tracking-tight">Buimb-Pay Route (Marketplace Splits)</h3>
                   <p className="text-slate-600 text-sm leading-relaxed">
                     Easily manage split payments for marketplaces, aggregators, and franchises. Automatically deduct commissions and route funds to linked vendor accounts with instant reversals on refunds.
                   </p>
@@ -856,7 +856,7 @@ Order order = razorpay.orders.create(orderRequest);`,
                   <div className="w-10 h-10 rounded-xl bg-purple-50 text-purple-600 flex items-center justify-center font-bold">
                     <CreditCard className="w-5 h-5" />
                   </div>
-                  <h3 className="text-2xl font-bold text-slate-900 tracking-tight">RazorpayX Corporate Cards</h3>
+                  <h3 className="text-2xl font-bold text-slate-900 tracking-tight">Buimb-PayX Corporate Cards</h3>
                   <p className="text-slate-600 text-sm leading-relaxed">
                     Smart corporate credit and debit cards engineered for startup expenses. Set team spending limits, freeze cards in 1 click, and get automated receipt matching with Tally and Zoho.
                   </p>
@@ -874,7 +874,7 @@ Order order = razorpay.orders.create(orderRequest);`,
 
                 <div className="p-6 rounded-2xl bg-gradient-to-br from-[#0c2340] to-[#12335c] text-white shadow-xl space-y-4">
                   <div className="flex justify-between items-center text-xs">
-                    <span className="font-bold tracking-wider">RAZORPAYX SMART CARD</span>
+                    <span className="font-bold tracking-wider">BUIMB-PAYX SMART CARD</span>
                     <span className="text-[10px] font-bold text-emerald-400 bg-emerald-500/20 px-2 py-0.5 rounded-full">ACTIVE</span>
                   </div>
                   <div className="font-mono text-lg font-bold tracking-widest pt-2">
@@ -994,7 +994,7 @@ Order order = razorpay.orders.create(orderRequest);`,
                 <span>Are you a developer?</span>
               </div>
               <h3 className="text-lg font-bold text-white">
-                Find comprehensive guides and documentation to start with Razorpay as quickly as possible.
+                Find comprehensive guides and documentation to start with Buimb-Pay as quickly as possible.
               </h3>
             </div>
             <Link
@@ -1143,7 +1143,7 @@ Order order = razorpay.orders.create(orderRequest);`,
               Frequently Asked Questions
             </h2>
             <p className="text-xs sm:text-sm text-slate-500">
-              Everything you need to know about getting started with Razorpay.
+              Everything you need to know about getting started with Buimb-Pay.
             </p>
           </div>
 

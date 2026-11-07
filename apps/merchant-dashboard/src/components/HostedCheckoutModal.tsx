@@ -43,7 +43,7 @@ export const HostedCheckoutModal: React.FC<HostedCheckoutModalProps> = ({
 }) => {
   const { showToast } = useToast();
   const [selectedMethod, setSelectedMethod] = useState<'UPI' | 'CARD' | 'NETBANKING' | 'WALLET' | 'PAYLATER'>('UPI');
-  const [receivingVpa] = useState('razorpay.merchant@icici');
+  const [receivingVpa] = useState('buimbpay.merchant@icici');
   
   // Magic Checkout Customer Info
   const [customerPhone, setCustomerPhone] = useState('+91 98765 43210');
@@ -1206,11 +1206,11 @@ export const HostedCheckoutModal: React.FC<HostedCheckoutModalProps> = ({
           </div>
         )}
 
-        {/* Razorpay Authentic Modal Footer */}
+        {/* Buimb-Pay Authentic Modal Footer */}
         <div className="bg-slate-50 border-t border-slate-200 px-5 py-3 flex items-center justify-between text-[11px] text-slate-500">
           <div className="flex items-center gap-1.5 font-medium">
             <ShieldCheck className="w-4 h-4 text-blue-600" />
-            <span>Secured by <strong className="text-slate-800 font-bold">Razorpay</strong> · 256-Bit Bank Encryption</span>
+            <span>Secured by <strong className="text-slate-800 font-bold">Buimb-Pay</strong> · 256-Bit Bank Encryption</span>
           </div>
           <div className="flex items-center gap-2">
             <span className="font-mono text-[10px] text-slate-400">PCI-DSS Level 1</span>

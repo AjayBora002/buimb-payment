@@ -74,7 +74,7 @@ export const MagicCheckoutView: React.FC = () => {
             <div className="p-2 rounded-xl bg-gradient-to-tr from-amber-500 to-orange-500 text-white shadow-sm">
               <Sparkles className="w-5 h-5" />
             </div>
-            <h2 className="text-xl font-black text-slate-900 tracking-tight">Razorpay Magic Checkout</h2>
+            <h2 className="text-xl font-black text-slate-900 tracking-tight">Buimb-Pay Magic Checkout</h2>
             <span className="px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-800 text-[10px] font-bold border border-emerald-200 uppercase">
               1-Click Checkout & RTO AI
             </span>
@@ -143,7 +143,7 @@ export const MagicCheckoutView: React.FC = () => {
             <h3 className="text-sm font-bold text-slate-900">RTO AI Risk Scoring Engine</h3>
           </div>
           <p className="text-xs text-slate-500">
-            Test how Razorpay Magic evaluates delivery pin codes and buyer behavior before confirming Cash on Delivery.
+            Test how Buimb-Pay Magic evaluates delivery pin codes and buyer behavior before confirming Cash on Delivery.
           </p>
 
           <form onSubmit={handlePredictRto} className="space-y-3.5 text-xs">

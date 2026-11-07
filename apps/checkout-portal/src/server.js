@@ -104,14 +104,14 @@ export class CheckoutServer {
 
     let html = this.template;
 
-    const appName = state?.branding?.appName || 'Razorpay';
+    const appName = state?.branding?.appName || 'Buimb-Pay';
     const primaryColor = state?.branding?.primaryColor || '#0b63e5';
     const merchantName = state?.merchantName || 'Acme Technologies';
     const orderId = state?.orderId || 'order_rzp_99214';
     const logoUrl = state?.branding?.logoUrl || '';
     const sidebarNotice = state?.branding?.sidebarNotice || 'Fast & Secure 256-Bit Encrypted Payments';
     const counterInstructions = state?.branding?.counterInstructions || 'Please visit the billing counter and present this screen to the cashier.';
-    const vpa = state?.payeeVpa || state?.vpa || 'razorpay.merchant@icici';
+    const vpa = state?.payeeVpa || state?.vpa || 'buimbpay.merchant@icici';
 
     // In production and localhost, use relative '' so browser requests hit the checkout portal /api proxy
     // This avoids cross-origin blocking, CORS errors, and tunnel DNS resolution issues.
@@ -292,9 +292,9 @@ export class CheckoutServer {
             orderId: 'order_rzp_99214',
             amount: '1,299.00',
             merchantName: 'Acme Technologies',
-            payeeVpa: 'razorpay.merchant@icici',
+            payeeVpa: 'buimbpay.merchant@icici',
             branding: {
-              appName: 'Razorpay',
+              appName: 'Buimb-Pay',
               primaryColor: '#0b63e5',
               sidebarNotice: 'Fast & Secure 256-Bit Encrypted Payments',
               logoUrl: '',

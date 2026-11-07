@@ -39,7 +39,7 @@ export const LoginView: React.FC<LoginViewProps> = ({ onSwitchToRegister }) => {
             </svg>
           </div>
           <span className="text-2xl font-black tracking-tight text-[#0c2340]">
-            Razorpay <span className="text-xs font-bold text-blue-600 uppercase tracking-widest ml-1 px-1.5 py-0.5 rounded bg-blue-50 border border-blue-200">Merchant</span>
+            Buimb-Pay <span className="text-xs font-bold text-blue-600 uppercase tracking-widest ml-1 px-1.5 py-0.5 rounded bg-blue-50 border border-blue-200">Merchant</span>
           </span>
         </div>
 
@@ -55,7 +55,7 @@ export const LoginView: React.FC<LoginViewProps> = ({ onSwitchToRegister }) => {
         <div className="lg:col-span-7 space-y-8 pr-0 lg:pr-12">
           <div className="space-y-4">
             <h1 className="text-3xl sm:text-4xl lg:text-[42px] font-black text-[#0c2340] leading-[1.18] tracking-tight">
-              Join 8 Million Businesses that Trust Razorpay to Supercharge their Business
+              Join 8 Million Businesses that Trust Buimb-Pay to Supercharge their Business
             </h1>
             <p className="text-base text-slate-600 leading-relaxed max-w-xl">
               Accept domestic and international payments, automate vendor payouts, manage subscriptions, and reconcile in real time with 99.98% gateway uptime.
@@ -119,7 +119,7 @@ export const LoginView: React.FC<LoginViewProps> = ({ onSwitchToRegister }) => {
 
             {/* Welcome title */}
             <div className="space-y-1">
-              <span className="text-xs font-bold text-slate-400 block tracking-wider uppercase">Welcome to Razorpay</span>
+              <span className="text-xs font-bold text-slate-400 block tracking-wider uppercase">Welcome to Buimb-Pay</span>
               <h2 className="text-xl font-black text-[#0c2340] tracking-tight">
                 Get started with your email or phone number
               </h2>
@@ -236,8 +236,8 @@ export const LoginView: React.FC<LoginViewProps> = ({ onSwitchToRegister }) => {
             {/* Razorpay Partner Bottom Card (Matching Screenshot) */}
             <div className="bg-slate-50 border border-slate-200/80 rounded-xl p-3 flex items-center justify-between text-xs">
               <div>
-                <span className="font-semibold text-slate-700 block text-[11px]">Helping Clients with Razorpay Solutions?</span>
-                <span className="text-blue-600 font-bold text-[11px] hover:underline cursor-pointer">Become Razorpay Partner &rarr;</span>
+                <span className="font-semibold text-slate-700 block text-[11px]">Helping Clients with Buimb-Pay Solutions?</span>
+                <span className="text-blue-600 font-bold text-[11px] hover:underline cursor-pointer">Become Buimb-Pay Partner &rarr;</span>
               </div>
             </div>
 
@@ -259,7 +259,7 @@ export const LoginView: React.FC<LoginViewProps> = ({ onSwitchToRegister }) => {
 
       {/* Footer */}
       <div className="border-t border-slate-100 py-4 text-center text-xs text-slate-400">
-        © Razorpay 2026. All Rights Reserved. RBI Authorised Payment Aggregator.
+        © Buimb-Pay 2026. All Rights Reserved. RBI Authorised Payment Aggregator.
       </div>
     </div>
   );

@@ -115,7 +115,7 @@ export const CorporateCardsView: React.FC = () => {
             <div className="p-2 rounded-xl bg-blue-50 text-[#0b63e5] border border-blue-200">
               <CreditCard className="w-5 h-5" />
             </div>
-            <h2 className="text-xl font-black text-slate-900 tracking-tight">RazorpayX Corporate Cards</h2>
+            <h2 className="text-xl font-black text-slate-900 tracking-tight">Buimb-PayX Corporate Cards</h2>
             <span className="px-2 py-0.5 rounded-full bg-blue-50 text-blue-700 text-[10px] font-bold border border-blue-200 uppercase">
               Smart Expense Management
             </span>
@@ -145,8 +145,8 @@ export const CorporateCardsView: React.FC = () => {
             {/* Top row */}
             <div className="flex items-center justify-between relative z-10">
               <div className="flex items-center gap-2">
-                <div className="w-6 h-6 rounded bg-blue-600 flex items-center justify-center font-bold text-xs">R</div>
-                <span className="font-black text-sm tracking-tight">RazorpayX <span className="text-[10px] font-normal opacity-80">Corporate</span></span>
+                <div className="w-6 h-6 rounded bg-blue-600 flex items-center justify-center font-bold text-xs">B</div>
+                <span className="font-black text-sm tracking-tight">Buimb-PayX <span className="text-[10px] font-normal opacity-80">Corporate</span></span>
               </div>
               <span className="px-2 py-0.5 rounded bg-white/20 text-[10px] font-bold tracking-wider uppercase backdrop-blur-md">
                 {selectedCard.cardType}

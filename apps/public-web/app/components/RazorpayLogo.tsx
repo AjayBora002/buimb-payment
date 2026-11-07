@@ -36,11 +36,11 @@ export function RazorpayLogo({
 
       <div className="flex items-center gap-1.5">
         <span className={`text-2xl font-black italic tracking-tighter ${textColor}`}>
-          Razorpay
+          Buimb-Pay
         </span>
         {showSubtitle && (
           <span className="text-[10px] font-bold uppercase tracking-widest px-1.5 py-0.5 rounded bg-blue-500/20 text-blue-300 border border-blue-400/30">
-            BuimbPay
+            Sovereign
           </span>
         )}
       </div>

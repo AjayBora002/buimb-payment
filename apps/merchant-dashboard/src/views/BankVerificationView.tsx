@@ -106,7 +106,7 @@ export const BankVerificationView: React.FC = () => {
           <div className="p-2 rounded-xl bg-blue-50 text-[#0b63e5] border border-blue-200">
             <ShieldCheck className="w-5 h-5" />
           </div>
-          <h2 className="text-xl font-black text-slate-900 tracking-tight">RazorpayX Verification Suite</h2>
+          <h2 className="text-xl font-black text-slate-900 tracking-tight">Buimb-PayX Verification Suite</h2>
           <span className="px-2 py-0.5 rounded-full bg-emerald-50 text-emerald-700 text-[10px] font-bold border border-emerald-200 uppercase">
             Penny Drop & VPA Validation
           </span>

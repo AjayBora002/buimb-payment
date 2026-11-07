@@ -8,9 +8,9 @@ import { Footer } from './components/Footer';
 const DASHBOARD_URL = process.env.NEXT_PUBLIC_DASHBOARD_URL || 'http://localhost:5173';
 
 export const metadata: Metadata = {
-  title: 'Razorpay - Best Payment Solution for Online Payments India',
+  title: 'Buimb-Pay - Best Payment Solution for Online Payments India',
   description:
-    "Online Payments India: Start Accepting Payments Instantly with Razorpay's Payment Suite, which Supports Netbanking, Credit Card & Debit Cards, UPI, RazorpayX etc.",
+    "Online Payments India: Start Accepting Payments Instantly with Buimb-Pay's Payment Suite, which Supports Netbanking, Credit Card & Debit Cards, UPI, Buimb-PayX etc.",
 };
 
 export default function RootLayout({

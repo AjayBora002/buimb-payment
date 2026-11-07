@@ -188,7 +188,7 @@ export class CheckoutController {
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-  <title>${session.payeeName} · Razorpay Checkout</title>
+  <title>${session.payeeName} · Buimb-Pay Checkout</title>
   <style>
     :root {
       --primary: #0B63E5;
@@ -347,7 +347,7 @@ export class CheckoutController {
 
     <!-- Footer -->
     <div class="footer">
-      Secured by Razorpay · 256-Bit Bank Encryption
+      Secured by Buimb-Pay · 256-Bit Bank Encryption
     </div>
   </div>
 

@@ -141,7 +141,7 @@ export const PayoutLinksView: React.FC = () => {
             <div className="p-2 rounded-xl bg-blue-50 text-[#0b63e5] border border-blue-200">
               <Link2 className="w-5 h-5" />
             </div>
-            <h2 className="text-xl font-black text-slate-900 tracking-tight">RazorpayX Payout Links</h2>
+            <h2 className="text-xl font-black text-slate-900 tracking-tight">Buimb-PayX Payout Links</h2>
             <span className="px-2 py-0.5 rounded-full bg-blue-50 text-blue-700 text-[10px] font-bold border border-blue-200 uppercase">
               Zero-Details Instant Disbursement
             </span>

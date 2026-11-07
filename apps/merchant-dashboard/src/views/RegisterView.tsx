@@ -59,7 +59,7 @@ export const RegisterView: React.FC<RegisterViewProps> = ({ onSwitchToLogin }) =
             </svg>
           </div>
           <span className="text-2xl font-black tracking-tight text-[#0c2340]">
-            Razorpay <span className="text-xs font-bold text-blue-600 uppercase tracking-widest ml-1 px-1.5 py-0.5 rounded bg-blue-50 border border-blue-200">Merchant</span>
+            Buimb-Pay <span className="text-xs font-bold text-blue-600 uppercase tracking-widest ml-1 px-1.5 py-0.5 rounded bg-blue-50 border border-blue-200">Merchant</span>
           </span>
         </div>
 
@@ -244,7 +244,7 @@ export const RegisterView: React.FC<RegisterViewProps> = ({ onSwitchToLogin }) =
       </div>
 
       <div className="border-t border-slate-100 py-4 text-center text-xs text-slate-400">
-        © Razorpay 2026. All Rights Reserved. RBI Authorised Payment Aggregator.
+        © Buimb-Pay 2026. All Rights Reserved. RBI Authorised Payment Aggregator.
       </div>
     </div>
   );

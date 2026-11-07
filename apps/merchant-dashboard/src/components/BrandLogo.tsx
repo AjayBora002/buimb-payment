@@ -30,7 +30,7 @@ export const BrandLogo: React.FC<BrandLogoProps> = ({ collapsed = false, classNa
       {!collapsed && (
         <div className="flex flex-col min-w-0">
           <div className="flex items-center tracking-tight text-base font-black leading-none">
-            <span className="text-white italic tracking-tighter">Razorpay</span>
+            <span className="text-white italic tracking-tighter">Buimb-Pay</span>
             <span className="ml-1.5 text-[9px] font-bold px-1.5 py-0.5 rounded bg-blue-500/20 text-blue-300 border border-blue-500/30 uppercase tracking-wider">
               Dashboard
             </span>
