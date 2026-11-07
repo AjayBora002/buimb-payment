@@ -65,6 +65,9 @@ jobs:
       - name: Install dependencies
         run: pnpm install
 
+      - name: Generate Prisma Client
+        run: pnpm db:generate
+
       - name: Lint
         run: pnpm turbo lint
 
@@ -88,6 +91,9 @@ jobs:
 
       - name: Install dependencies
         run: pnpm install
+
+      - name: Generate Prisma Client
+        run: pnpm db:generate
 
       - name: Run tests
         run: pnpm turbo test --continue || true
@@ -141,6 +147,9 @@ jobs:
       - name: Install dependencies
         run: pnpm install
 
+      - name: Generate Prisma Client
+        run: pnpm db:generate
+
       - name: Run DB migrations
         run: pnpm db:migrate
         env:
@@ -170,6 +179,9 @@ jobs:
 
       - name: Install dependencies
         run: pnpm install
+
+      - name: Generate Prisma Client
+        run: pnpm db:generate
 
       - name: Build all packages and apps
         run: pnpm turbo build
