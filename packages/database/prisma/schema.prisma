@@ -398,6 +398,14 @@ model Merchant {
   settlements    Settlement[]
   ledgerAccounts LedgerAccount[]
   supportCases   SupportCase[]
+  receivingVpas  ReceivingVpa[]
+  checkoutSessions CheckoutSession[]
+  observerDevices ObserverDevice[]
+  bankObservations BankObservation[]
+  linkedAccounts   LinkedAccount[]
+  bankVerifications BankVerification[]
+  payoutLinks      PayoutLink[]
+  corporateCards   CorporateCard[]
 
   @@index([status])
   @@index([kycStatus])
@@ -566,6 +574,7 @@ model Order {
   merchant       Merchant        @relation(fields: [merchantId], references: [id])
   customer       Customer?       @relation(fields: [customerId], references: [id])
   paymentIntents PaymentIntent[]
+  checkoutSessions CheckoutSession[]
 
   @@index([merchantId])
   @@index([merchantId, externalOrderId])
@@ -601,6 +610,8 @@ model PaymentIntent {
   disputes Dispute[]
   settlementItems SettlementItem[]
   ledgerTransactions LedgerTransaction[]
+  checkoutSessions CheckoutSession[]
+  transfers        PaymentTransfer[]
 
   @@index([merchantId, status])
   @@index([orderId])
@@ -1295,3 +1306,251 @@ model Notification {
   @@index([userId])
   @@map("notifications")
 }
+
+// ─────────────────────────────────────────────────────────────────────────────
+// SOVEREIGN UPI & BANK OBSERVATION ENGINE
+// ─────────────────────────────────────────────────────────────────────────────
+
+model ReceivingVpa {
+  id                String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  merchantId        String    @db.Uuid
+  vpa               String    @db.VarChar(100)
+  accountHolderName String    @db.VarChar(255)
+  bankName          String?   @db.VarChar(100)
+  accountNumber     String?   @db.VarChar(50)
+  ifscCode          String?   @db.VarChar(20)
+  isActive          Boolean   @default(true)
+  activeSessionId   String?   @db.Uuid
+  dailyLimit        BigInt?
+  dailyReceived     BigInt    @default(0)
+  createdAt         DateTime  @default(now())
+  updatedAt         DateTime  @updatedAt
+
+  merchant          Merchant  @relation(fields: [merchantId], references: [id])
+
+  @@index([merchantId, isActive])
+  @@map("receiving_vpas")
+}
+
+model CheckoutSession {
+  id                    String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  merchantId            String    @db.Uuid
+  orderId               String?   @db.Uuid
+  paymentIntentId       String?   @db.Uuid
+  amount                BigInt
+  currency              String    @default("INR") @db.VarChar(3)
+  vpa                   String?   @db.VarChar(100)
+  upiUri                String?   @db.VarChar(2000)
+  status                String    @default("ACTIVE") @db.VarChar(30) // QUEUED, ACTIVE, PROCESSING, SUCCESS, FAILED, EXPIRED, CANCELLED
+  queuePosition         Int       @default(0)
+  customerName          String?   @db.VarChar(255)
+  customerPhone         String?   @db.VarChar(50)
+  customerEmail         String?   @db.VarChar(320)
+  expiresAt             DateTime?
+  verificationExpiresAt DateTime?
+  matchedObservationId  String?   @db.Uuid
+  utr                   String?   @db.VarChar(100)
+  payerVpa              String?   @db.VarChar(100)
+  metadata              Json?
+  createdAt             DateTime  @default(now())
+  updatedAt             DateTime  @updatedAt
+
+  merchant              Merchant       @relation(fields: [merchantId], references: [id])
+  order                 Order?         @relation(fields: [orderId], references: [id])
+  paymentIntent         PaymentIntent? @relation(fields: [paymentIntentId], references: [id])
+
+  @@index([merchantId, status])
+  @@index([vpa, status])
+  @@map("checkout_sessions")
+}
+
+model ObserverDevice {
+  id            String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  merchantId    String    @db.Uuid
+  deviceId      String    @unique @db.VarChar(100)
+  deviceName    String    @db.VarChar(255)
+  deviceType    String    @default("ANDROID") @db.VarChar(50) // ANDROID, SMS_GATEWAY, GMAIL_OAUTH
+  secretKey     String    @db.VarChar(255)
+  pairingToken  String?   @db.VarChar(255)
+  pairedAt      DateTime?
+  lastHeartbeat DateTime?
+  batteryLevel  Int?
+  status        String    @default("ACTIVE") @db.VarChar(30)
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  merchant      Merchant  @relation(fields: [merchantId], references: [id])
+
+  @@index([merchantId, status])
+  @@map("observer_devices")
+}
+
+model BankObservation {
+  id               String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  merchantId       String?   @db.Uuid
+  deviceId         String?   @db.Uuid
+  channel          String    @db.VarChar(50) // SMS, GMAIL, ANDROID
+  sender           String    @db.VarChar(100)
+  rawPayload       String    @db.VarChar(4000)
+  fingerprintHash  String?   @db.VarChar(64)
+  parsedAmount     BigInt?
+  utr              String?   @db.VarChar(100)
+  payerVpa         String?   @db.VarChar(100)
+  receivingVpa     String?   @db.VarChar(100)
+  status           String    @default("RECEIVED") @db.VarChar(30) // RECEIVED, MATCHED, DUPLICATE, UNMATCHED
+  matchedSessionId String?   @db.Uuid
+  observedAt       DateTime  @default(now())
+  createdAt        DateTime  @default(now())
+
+  merchant         Merchant? @relation(fields: [merchantId], references: [id])
+
+  @@index([merchantId, status])
+  @@index([fingerprintHash])
+  @@index([utr])
+  @@map("bank_observations")
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// RAZORPAY ROUTE — LINKED ACCOUNTS & SPLIT TRANSFERS
+// ─────────────────────────────────────────────────────────────────────────────
+
+model LinkedAccount {
+  id            String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  merchantId    String    @db.Uuid
+  name          String    @db.VarChar(255)
+  email         String    @db.VarChar(320)
+  phone         String?   @db.VarChar(50)
+  businessType  String    @default("INDIVIDUAL") @db.VarChar(50)
+  accountNumber String?   @db.VarChar(50)
+  ifsc          String?   @db.VarChar(20)
+  vpa           String?   @db.VarChar(100)
+  status        String    @default("ACTIVE") @db.VarChar(30) // ACTIVE, SUSPENDED, UNDER_REVIEW
+  splitSharePct Decimal?  @db.Decimal(5, 2) // e.g. 90.00%
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  merchant      Merchant  @relation(fields: [merchantId], references: [id])
+  transfers     PaymentTransfer[]
+
+  @@index([merchantId, status])
+  @@map("linked_accounts")
+}
+
+model PaymentTransfer {
+  id              String         @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  paymentIntentId String         @db.Uuid
+  linkedAccountId String         @db.Uuid
+  amount          BigInt
+  currency        String         @default("INR") @db.VarChar(3)
+  status          String         @default("PROCESSED") @db.VarChar(30) // PENDING, PROCESSED, REVERSED, FAILED
+  fee             BigInt         @default(0)
+  tax             BigInt         @default(0)
+  notes           String?        @db.VarChar(1000)
+  settlementId    String?        @db.Uuid
+  createdAt       DateTime       @default(now())
+  updatedAt       DateTime       @updatedAt
+
+  paymentIntent   PaymentIntent  @relation(fields: [paymentIntentId], references: [id])
+  linkedAccount   LinkedAccount  @relation(fields: [linkedAccountId], references: [id])
+  reversals       TransferReversal[]
+
+  @@index([paymentIntentId])
+  @@index([linkedAccountId, status])
+  @@map("payment_transfers")
+}
+
+model TransferReversal {
+  id         String          @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  transferId String          @db.Uuid
+  amount     BigInt
+  currency   String          @default("INR") @db.VarChar(3)
+  reason     String?         @db.VarChar(500)
+  createdAt  DateTime        @default(now())
+
+  transfer   PaymentTransfer @relation(fields: [transferId], references: [id])
+
+  @@index([transferId])
+  @@map("transfer_reversals")
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// RAZORPAYX — BANK ACCOUNT & VPA VERIFICATION (PENNY DROP)
+// ─────────────────────────────────────────────────────────────────────────────
+
+model BankVerification {
+  id               String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  merchantId       String    @db.Uuid
+  verificationType String    @db.VarChar(30) // PENNY_DROP, UPI_VPA, IFSC
+  accountNumber    String?   @db.VarChar(50)
+  ifsc             String?   @db.VarChar(20)
+  vpa              String?   @db.VarChar(100)
+  registeredName   String?   @db.VarChar(255)
+  bankName         String?   @db.VarChar(255)
+  status           String    @default("COMPLETED") @db.VarChar(30) // PENDING, COMPLETED, FAILED
+  utr              String?   @db.VarChar(100)
+  confidenceScore  Decimal?  @db.Decimal(5, 2) // name match score
+  createdAt        DateTime  @default(now())
+
+  merchant         Merchant  @relation(fields: [merchantId], references: [id])
+
+  @@index([merchantId, verificationType])
+  @@map("bank_verifications")
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// RAZORPAYX — PAYOUT LINKS
+// ─────────────────────────────────────────────────────────────────────────────
+
+model PayoutLink {
+  id             String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  merchantId     String    @db.Uuid
+  amount         BigInt
+  currency       String    @default("INR") @db.VarChar(3)
+  purpose        String    @db.VarChar(100) // VENDOR_PAYMENT, REFUND, CASHBACK, SALARY
+  recipientName  String?   @db.VarChar(255)
+  recipientPhone String?   @db.VarChar(50)
+  recipientEmail String?   @db.VarChar(320)
+  shortUrl       String    @unique @db.VarChar(100)
+  status         String    @default("ISSUED") @db.VarChar(30) // ISSUED, CLAIMED, EXPIRED, CANCELLED
+  claimedMethod  String?   @db.VarChar(30) // UPI, BANK_ACCOUNT
+  claimedVpa     String?   @db.VarChar(100)
+  claimedAccount String?   @db.VarChar(50)
+  claimedIfsc    String?   @db.VarChar(20)
+  claimedAt      DateTime?
+  utr            String?   @db.VarChar(100)
+  expiresAt      DateTime
+  createdAt      DateTime  @default(now())
+  updatedAt      DateTime  @updatedAt
+
+  merchant       Merchant  @relation(fields: [merchantId], references: [id])
+
+  @@index([merchantId, status])
+  @@map("payout_links")
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// RAZORPAYX — CORPORATE CARDS & EXPENSE MANAGEMENT
+// ─────────────────────────────────────────────────────────────────────────────
+
+model CorporateCard {
+  id               String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  merchantId       String    @db.Uuid
+  cardholderName   String    @db.VarChar(255)
+  cardNumberMasked String    @db.VarChar(20) // e.g. 4242 •••• •••• 1089
+  expiry           String    @db.VarChar(7)  // MM/YYYY
+  network          String    @default("VISA") @db.VarChar(30) // VISA, MASTERCARD, RUPAY
+  cardType         String    @default("VIRTUAL") @db.VarChar(20) // VIRTUAL, PHYSICAL
+  status           String    @default("ACTIVE") @db.VarChar(30) // ACTIVE, FROZEN, CANCELLED
+  spendingLimit    BigInt    @default(5000000) // in paise (e.g. ₹50,000)
+  spentAmount      BigInt    @default(0)
+  currency         String    @default("INR") @db.VarChar(3)
+  createdAt        DateTime  @default(now())
+  updatedAt        DateTime  @updatedAt
+
+  merchant         Merchant  @relation(fields: [merchantId], references: [id])
+
+  @@index([merchantId, status])
+  @@map("corporate_cards")
+}
+
+
