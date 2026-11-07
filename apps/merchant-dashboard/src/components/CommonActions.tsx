@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link2, Zap, KeyRound, ArrowRightLeft } from 'lucide-react';
+import { Link2, Zap, KeyRound, ArrowRightLeft, FileText, QrCode } from 'lucide-react';
 
 interface CommonActionsProps {
   onAction: (actionKey: string) => void;
@@ -9,35 +9,39 @@ export const CommonActions: React.FC<CommonActionsProps> = ({ onAction }) => {
   const actions = [
     {
       id: 'create-link',
-      title: 'Create payment link',
-      desc: 'Share a hosted payment page with your customer.',
+      title: 'Create Payment Link',
+      desc: 'Share a branded hosted payment link via WhatsApp or SMS.',
       icon: Link2,
+      color: 'text-blue-600 bg-blue-50',
     },
     {
       id: 'test-integration',
-      title: 'Test an integration',
-      desc: 'Create a sandbox payment and inspect the event.',
+      title: 'Simulate Payment',
+      desc: 'Create an instant test payment and inspect the gateway lifecycle.',
       icon: Zap,
+      color: 'text-amber-600 bg-amber-50',
     },
     {
       id: 'view-keys',
-      title: 'View API keys',
-      desc: 'Manage test keys, live keys, and permissions.',
+      title: 'API Keys & Webhooks',
+      desc: 'Access your Key ID, Key Secret, and configure endpoint webhooks.',
       icon: KeyRound,
+      color: 'text-purple-600 bg-purple-50',
     },
     {
       id: 'check-reconciliation',
-      title: 'Check reconciliation',
-      desc: 'Review unmatched or delayed transactions.',
+      title: 'Settlement Reconciliation',
+      desc: 'Review bank UTR deposits and fee deductions.',
       icon: ArrowRightLeft,
+      color: 'text-emerald-600 bg-emerald-50',
     },
   ];
 
   return (
     <div className="space-y-3">
       <div>
-        <h3 className="text-sm font-bold text-[#EDE7D6]">Common Actions</h3>
-        <div className="w-8 h-0.5 bg-[#C9A227] mt-1" />
+        <h3 className="text-sm font-bold text-slate-900">Quick Actions</h3>
+        <p className="text-xs text-slate-500">Fast workflows to collect money and manage developer access</p>
       </div>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
@@ -47,17 +51,17 @@ export const CommonActions: React.FC<CommonActionsProps> = ({ onAction }) => {
             <button
               key={act.id}
               onClick={() => onAction(act.id)}
-              className="group p-4 bg-[#1D2E28] hover:bg-[#243831] border border-[rgba(237,231,214,0.08)] hover:border-[#C9A227]/40 text-left transition-colors flex flex-col justify-between h-32 focus-visible:ring-2 focus-visible:ring-[#C9A227]"
+              className="group p-4 bg-white hover:bg-slate-50/80 border border-slate-200 hover:border-blue-300 rounded-xl text-left transition-all flex flex-col justify-between h-32 shadow-sm hover:shadow-md cursor-pointer"
             >
-              <div className="w-8 h-8 rounded-[4px] bg-[#131B17] border border-[rgba(237,231,214,0.1)] flex items-center justify-center text-[#C9A227]">
+              <div className={`w-8 h-8 rounded-lg ${act.color} flex items-center justify-center`}>
                 <Icon className="w-4 h-4" />
               </div>
 
               <div>
-                <div className="text-xs font-semibold text-[#EDE7D6] group-hover:text-[#C9A227] transition-colors">
+                <div className="text-xs font-bold text-slate-800 group-hover:text-blue-600 transition-colors">
                   {act.title}
                 </div>
-                <p className="text-[11px] text-[#8FA396] leading-tight mt-1 line-clamp-2">
+                <p className="text-[11px] text-slate-500 leading-tight mt-1 line-clamp-2">
                   {act.desc}
                 </p>
               </div>
