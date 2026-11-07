@@ -1,6 +1,7 @@
 import {
   Controller,
   Get,
+  Post,
   Param,
   Query,
   Req,
@@ -16,6 +17,13 @@ import { JwtAuthGuard } from '../iam/guards/jwt-auth.guard.js';
 @Controller({ path: 'settlements', version: '1' })
 export class SettlementsController {
   constructor(private readonly settlementsService: SettlementsService) {}
+
+  @Post('instant')
+  @ApiOperation({ summary: 'Request on-demand instant settlement' })
+  async requestInstant(@Req() req: any) {
+    const merchantId = req.user.merchantId;
+    return this.settlementsService.requestInstantSettlement(merchantId);
+  }
 
   @Get(':id')
   @ApiOperation({ summary: 'Get settlement by ID' })
