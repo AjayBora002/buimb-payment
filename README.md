@@ -162,3 +162,4 @@ Integrate BuimbPay into any web application using the drop-in standard checkout:
 ## 📄 License
 
 Distributed under the MIT License. See `LICENSE` for more information.
+

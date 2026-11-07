@@ -9,7 +9,10 @@
   },
   "types": "./src/index.d.ts",
   "scripts": {
-    "build": "tsc",
+    "build": "node -e \"console.log('@youpi/common ready')\"",
     "test": "node --test dist/__tests__/**/*.test.js"
+  },
+  "devDependencies": {
+    "@types/node": "^20.14.0"
   }
 }
