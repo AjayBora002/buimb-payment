@@ -89,7 +89,7 @@ const PRODUCT_PILLARS = [
     headline: 'AI multi-gateway routing & fallback',
     sub: 'Maximize transaction success rates up to 99.8%. Auto-route transactions across multiple payment rails dynamically.',
     features: [
-      { icon: GitFork, title: 'Dynamic Smart Routing', desc: 'Route payments across HDFC, ICICI, Axis, and Razorpay based on live health.' },
+      { icon: GitFork, title: 'Dynamic Smart Routing', desc: 'Route payments across HDFC, ICICI, Axis, and Yes Bank based on live health.' },
       { icon: Zap, title: 'Real-Time Downtime Detector', desc: 'Monitors bank gateway latency and auto-switches routes before customers see failures.' },
       { icon: RefreshCw, title: 'Zero-Drop Auto Retry', desc: 'If primary gateway returns an error, silently retry on secondary route without asking for re-auth.' },
       { icon: Calculator, title: 'Lowest Cost Routing', desc: 'Automatically pick the acquirer offering the lowest MDR interchange for the payment mode.' },
@@ -149,7 +149,7 @@ export default function FeaturesPage() {
       <section className="max-w-7xl mx-auto px-6 py-20 text-center">
         <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-blue-500/10 border border-blue-500/20 text-xs text-blue-300 font-semibold mb-6">
           <Sparkles className="w-3.5 h-3.5" />
-          Full Razorpay-class Feature Suite
+          Full BuimbPay-class Feature Suite
         </div>
         <h1 className="text-5xl sm:text-6xl font-black tracking-tight text-white leading-tight mb-6">
           Everything a growing<br />
@@ -161,14 +161,12 @@ export default function FeaturesPage() {
           Payments, banking, payroll, QR terminals, and developer tools — all under one platform built for India.
         </p>
         <div className="flex flex-wrap items-center justify-center gap-4">
-          <a
-            href="http://localhost:5173"
-            target="_blank"
-            rel="noreferrer"
+          <Link
+            href="/signup"
             className="px-6 py-3 rounded-xl bg-blue-600 hover:bg-blue-500 text-white font-semibold text-sm flex items-center gap-2 transition-all shadow-lg shadow-blue-600/30"
           >
-            Open Merchant Dashboard <ArrowRight className="w-4 h-4" />
-          </a>
+            Start Free Onboarding <ArrowRight className="w-4 h-4" />
+          </Link>
           <Link
             href="/pricing"
             className="px-6 py-3 rounded-xl bg-slate-900 hover:bg-slate-800 border border-slate-700 text-slate-200 font-semibold text-sm transition-all"

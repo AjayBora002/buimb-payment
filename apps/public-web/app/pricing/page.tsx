@@ -77,14 +77,12 @@ export default function PricingPage() {
           </p>
 
           <div className="pt-4 flex flex-wrap items-center gap-4">
-            <a
-              href="http://localhost:5173"
-              target="_blank"
-              rel="noreferrer"
+            <Link
+              href="/signup"
               className="px-6 py-3 rounded-xl bg-blue-600 hover:bg-blue-500 text-white font-bold text-sm shadow-lg shadow-blue-600/30 transition-all"
             >
               Start for Free in Sandbox
-            </a>
+            </Link>
             <Link
               href="/contact"
               className="px-6 py-3 rounded-xl bg-slate-900 hover:bg-slate-800 border border-slate-700 text-white font-semibold text-sm transition-all"

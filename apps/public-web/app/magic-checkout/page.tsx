@@ -55,10 +55,10 @@ export default function MagicCheckoutPage() {
               Magic Checkout converts 5x more than standard checkout. Pre-filled addresses, saved payments, OTP-less auth — India's largest returning-customer network at your disposal.
             </p>
             <div className="flex flex-wrap gap-4 justify-center">
-              <a href="http://localhost:5173" target="_blank" rel="noreferrer"
+              <Link href="/signup"
                 className="px-8 py-3.5 rounded-xl bg-amber-500 hover:bg-amber-400 text-slate-900 font-bold flex items-center gap-2 shadow-lg shadow-amber-500/30 transition-all">
                 Enable Magic Checkout <ArrowRight className="w-4 h-4" />
-              </a>
+              </Link>
               <Link href="/startup-perks" className="px-8 py-3.5 rounded-xl bg-slate-900 hover:bg-slate-800 border border-slate-700 text-slate-200 font-semibold transition-all">
                 Free for 90 Days (Startup Perks)
               </Link>
@@ -159,10 +159,10 @@ export default function MagicCheckoutPage() {
           <h2 className="text-4xl font-black text-white">Enable Magic Checkout today</h2>
           <p className="text-slate-400">Free for 90 days on Startup Perks. Standard rate: 0.35% per transaction after trial.</p>
           <div className="flex flex-wrap gap-4 justify-center">
-            <a href="http://localhost:5173" target="_blank" rel="noreferrer"
+            <Link href="/signup"
               className="px-8 py-4 rounded-xl bg-amber-500 hover:bg-amber-400 text-slate-900 font-bold flex items-center gap-2 shadow-lg shadow-amber-500/30 transition-all">
               Start Free Trial <ArrowRight className="w-4 h-4" />
-            </a>
+            </Link>
             <Link href="/startup-perks" className="px-8 py-4 rounded-xl bg-slate-900 border border-slate-700 text-slate-200 font-semibold transition-all hover:bg-slate-800">
               View Startup Perks
             </Link>

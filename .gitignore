@@ -58,3 +58,7 @@ prisma/migrations/
 *.pfx
 *.cert
 *.crt
+
+# Reference Archives
+YouPI-PG-main/
+

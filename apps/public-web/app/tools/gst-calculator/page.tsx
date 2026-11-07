@@ -209,15 +209,13 @@ export default function GstCalculatorPage() {
           </div>
 
           <div className="pt-4 border-t border-white/10">
-            <a
-              href="http://localhost:5173"
-              target="_blank"
-              rel="noreferrer"
+            <Link
+              href="/signup"
               className="w-full py-3 rounded-xl bg-blue-600 hover:bg-blue-500 text-white font-bold text-xs flex items-center justify-center gap-2 transition-all shadow-lg shadow-blue-600/30"
             >
               Start Collecting with 0% MDR on BuimbPay
               <ArrowRight className="w-3.5 h-3.5" />
-            </a>
+            </Link>
           </div>
         </div>
       </section>

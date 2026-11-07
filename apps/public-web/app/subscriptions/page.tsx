@@ -49,10 +49,10 @@ export default function SubscriptionsPage() {
               Build SaaS, D2C, or media subscriptions with India-native UPI AutoPay, eNACH mandates, and card-on-file. Handle upgrades, proration, and failed payments automatically.
             </p>
             <div className="flex flex-wrap gap-4">
-              <a href="http://localhost:5173" target="_blank" rel="noreferrer"
+              <Link href="/signup"
                 className="px-6 py-3 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-semibold text-sm flex items-center gap-2 shadow-lg shadow-emerald-600/30 transition-all">
                 Set Up Subscriptions <ArrowRight className="w-4 h-4" />
-              </a>
+              </Link>
               <Link href="/docs" className="px-6 py-3 rounded-xl bg-slate-900 hover:bg-slate-800 border border-slate-700 text-slate-200 font-semibold text-sm transition-all">
                 API Reference
               </Link>
@@ -144,10 +144,10 @@ export default function SubscriptionsPage() {
           <h2 className="text-4xl font-black text-white">Start your subscription business</h2>
           <p className="text-slate-400">No per-subscription fees. Standard payment MDR applies. Cancel anytime.</p>
           <div className="flex flex-wrap gap-4 justify-center">
-            <a href="http://localhost:5173" target="_blank" rel="noreferrer"
+            <Link href="/signup"
               className="px-8 py-4 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-bold flex items-center gap-2 transition-all shadow-lg shadow-emerald-600/30">
               Create Subscription Plan <ArrowRight className="w-4 h-4" />
-            </a>
+            </Link>
             <Link href="/docs" className="px-8 py-4 rounded-xl bg-slate-900 border border-slate-700 text-slate-200 font-semibold transition-all hover:bg-slate-800">
               API Reference
             </Link>

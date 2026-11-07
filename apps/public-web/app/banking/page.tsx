@@ -97,10 +97,10 @@ export default function BankingPage() {
             BuimbPayX is the business banking layer on top of BuimbPay. Current accounts, corporate cards, vendor automation, escrow, forex — all under one API.
           </p>
           <div className="flex flex-wrap gap-4 justify-center">
-            <a href="http://localhost:5173" target="_blank" rel="noreferrer"
+            <Link href="/signup"
               className="px-8 py-3.5 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white font-bold flex items-center gap-2 shadow-lg shadow-indigo-600/30 transition-all">
               Open Current Account <ArrowRight className="w-4 h-4" />
-            </a>
+            </Link>
             <Link href="/contact" className="px-8 py-3.5 rounded-xl bg-slate-900 hover:bg-slate-800 border border-slate-700 text-slate-200 font-semibold transition-all">
               Talk to Banking Expert
             </Link>
@@ -152,10 +152,10 @@ export default function BankingPage() {
                   <h3 className="text-xl font-black text-white mb-1">{title}</h3>
                   <div className={`text-xs font-semibold ${c.text} mb-3`}>{subtitle}</div>
                   <p className="text-sm text-slate-400 leading-relaxed mb-6">{desc}</p>
-                  <a href="http://localhost:5173" target="_blank" rel="noreferrer"
+                  <Link href="/signup"
                     className={`inline-flex items-center gap-2 text-sm font-semibold ${c.text} hover:opacity-80 transition-opacity`}>
                     Get Started <ArrowRight className="w-4 h-4" />
-                  </a>
+                  </Link>
                 </div>
                 <div className="grid grid-cols-2 gap-2">
                   {features.map(f => (
@@ -178,10 +178,10 @@ export default function BankingPage() {
           <h2 className="text-4xl font-black text-white">Open your BuimbPayX account in 2 minutes</h2>
           <p className="text-slate-400">Video KYC · Zero balance · Instant activation · RBI Authorised</p>
           <div className="flex flex-wrap gap-4 justify-center">
-            <a href="http://localhost:5173" target="_blank" rel="noreferrer"
+            <Link href="/signup"
               className="px-8 py-4 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white font-bold flex items-center gap-2 transition-all shadow-lg shadow-indigo-600/30">
               Open Account Now <ArrowRight className="w-4 h-4" />
-            </a>
+            </Link>
             <Link href="/contact" className="px-8 py-4 rounded-xl bg-slate-900 border border-slate-700 text-slate-200 font-semibold transition-all hover:bg-slate-800">
               Schedule Demo
             </Link>

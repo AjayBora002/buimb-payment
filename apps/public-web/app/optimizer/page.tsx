@@ -55,10 +55,10 @@ export default function OptimizerPage() {
               Connect multiple acquirers. Define smart rules. Optimizer automatically routes each transaction for maximum success rate, minimum MDR, and zero downtime.
             </p>
             <div className="flex flex-wrap gap-4">
-              <a href="http://localhost:5173" target="_blank" rel="noreferrer"
+              <Link href="/signup"
                 className="px-6 py-3 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white font-semibold text-sm flex items-center gap-2 shadow-lg shadow-indigo-600/30 transition-all">
                 Configure Optimizer <ArrowRight className="w-4 h-4" />
-              </a>
+              </Link>
               <Link href="/docs" className="px-6 py-3 rounded-xl bg-slate-900 hover:bg-slate-800 border border-slate-700 text-slate-200 font-semibold text-sm transition-all">
                 API Reference
               </Link>
@@ -172,10 +172,10 @@ export default function OptimizerPage() {
           <h2 className="text-4xl font-black text-white">Stop losing revenue to gateway failures</h2>
           <p className="text-slate-400">Optimizer is included in all BuimbPay plans. No additional fee.</p>
           <div className="flex flex-wrap gap-4 justify-center">
-            <a href="http://localhost:5173" target="_blank" rel="noreferrer"
+            <Link href="/signup"
               className="px-8 py-4 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white font-bold flex items-center gap-2 transition-all shadow-lg shadow-indigo-600/30">
               Enable Optimizer <ArrowRight className="w-4 h-4" />
-            </a>
+            </Link>
             <Link href="/contact" className="px-8 py-4 rounded-xl bg-slate-900 border border-slate-700 text-slate-200 font-semibold transition-all hover:bg-slate-800">
               Talk to an Engineer
             </Link>

@@ -52,10 +52,10 @@ export default function PaymentLinksPage() {
                 Create a payment link in 30 seconds. Share via SMS, WhatsApp, email, or QR code. Get paid instantly. No code. No website needed.
               </p>
               <div className="flex flex-wrap gap-4">
-                <a href="http://localhost:5173" target="_blank" rel="noreferrer"
+                <Link href="/signup"
                   className="px-6 py-3 rounded-xl bg-purple-600 hover:bg-purple-500 text-white font-semibold text-sm flex items-center gap-2 shadow-lg shadow-purple-600/30 transition-all">
                   Create Your First Link <ArrowRight className="w-4 h-4" />
-                </a>
+                </Link>
                 <Link href="/pricing" className="px-6 py-3 rounded-xl bg-slate-900 hover:bg-slate-800 border border-slate-700 text-slate-200 font-semibold text-sm transition-all">
                   View Pricing
                 </Link>
@@ -161,10 +161,10 @@ export default function PaymentLinksPage() {
               Creating payment links is completely free. We charge a small MDR only when your customer pays. Standard rates: 2% UPI, 2% Debit Card, 2.5% Credit Card.
             </p>
             <div className="flex flex-wrap gap-4 justify-center">
-              <a href="http://localhost:5173" target="_blank" rel="noreferrer"
+              <Link href="/signup"
                 className="px-6 py-3 rounded-xl bg-purple-600 hover:bg-purple-500 text-white font-semibold text-sm flex items-center gap-2 transition-all">
                 Create Link for Free <ArrowRight className="w-4 h-4" />
-              </a>
+              </Link>
               <Link href="/pricing" className="px-6 py-3 rounded-xl bg-slate-800 border border-slate-700 text-slate-200 font-semibold text-sm transition-all hover:bg-slate-700">
                 View Full Pricing
               </Link>

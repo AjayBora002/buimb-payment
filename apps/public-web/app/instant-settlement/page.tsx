@@ -61,10 +61,10 @@ export default function InstantSettlementPage() {
             Don't wait for T+1 settlement. With Instant Settlement, your UPI, card, and netbanking collections hit your bank account within 15 minutes — 24×7, 365 days.
           </p>
           <div className="flex flex-wrap gap-4 justify-center">
-            <a href="http://localhost:5173" target="_blank" rel="noreferrer"
+            <Link href="/signup"
               className="px-8 py-3.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-bold flex items-center gap-2 shadow-lg shadow-emerald-600/30 transition-all">
               Enable Instant Settlement <ArrowRight className="w-4 h-4" />
-            </a>
+            </Link>
             <Link href="/contact" className="px-8 py-3.5 rounded-xl bg-slate-900 hover:bg-slate-800 border border-slate-700 text-slate-200 font-semibold transition-all">
               Talk to Sales
             </Link>
@@ -156,10 +156,10 @@ export default function InstantSettlementPage() {
       <section className="border-t border-slate-800 py-20 text-center">
         <h2 className="text-4xl font-black text-white mb-4">Cash flow, accelerated.</h2>
         <p className="text-slate-400 mb-8 max-w-xl mx-auto">Enable Instant Settlement from your dashboard settings. No paperwork. No calls.</p>
-        <a href="http://localhost:5173" target="_blank" rel="noreferrer"
+        <Link href="/signup"
           className="inline-flex items-center gap-2 px-8 py-4 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-bold shadow-lg shadow-emerald-600/30 transition-all">
           Enable Now <ArrowRight className="w-4 h-4" />
-        </a>
+        </Link>
       </section>
     </div>
   );

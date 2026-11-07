@@ -35,15 +35,13 @@ export default function StartupPerksPage() {
           </p>
 
           <div className="flex flex-wrap items-center gap-4 pt-2">
-            <a
-              href="http://localhost:5173"
-              target="_blank"
-              rel="noreferrer"
+            <Link
+              href="/signup"
               className="px-6 py-3 rounded-xl bg-blue-600 hover:bg-blue-500 text-white font-semibold text-sm flex items-center gap-2 transition-all shadow-lg shadow-blue-600/30"
             >
               Get Started
               <ArrowRight className="w-4 h-4" />
-            </a>
+            </Link>
             <Link
               href="/contact"
               className="px-6 py-3 rounded-xl bg-slate-900 hover:bg-slate-800 border border-slate-800 text-slate-200 font-semibold text-sm transition-all"
@@ -158,14 +156,12 @@ export default function StartupPerksPage() {
               </div>
             </div>
 
-            <a
-              href="http://localhost:5173"
-              target="_blank"
-              rel="noreferrer"
+            <Link
+              href="/signup"
               className="block w-full py-3 rounded-xl bg-slate-800 hover:bg-slate-700 text-center font-bold text-white text-xs transition-all"
             >
               Claim Angel Tier
-            </a>
+            </Link>
           </div>
 
           {/* VC Funded Tier */}
@@ -207,14 +203,12 @@ export default function StartupPerksPage() {
               </div>
             </div>
 
-            <a
-              href="http://localhost:5173"
-              target="_blank"
-              rel="noreferrer"
+            <Link
+              href="/signup"
               className="block w-full py-3 rounded-xl bg-blue-600 hover:bg-blue-500 text-center font-bold text-white text-xs transition-all shadow-lg shadow-blue-600/30"
             >
               Claim VC Tier
-            </a>
+            </Link>
           </div>
         </div>
       </section>

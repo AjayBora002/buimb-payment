@@ -59,10 +59,10 @@ export default function PaymentGatewayPage() {
               India's most reliable payment gateway. 100+ payment methods, 3DS2, smart routing, instant settlements — integrated in under 2 hours.
             </p>
             <div className="flex flex-wrap gap-4">
-              <a href="http://localhost:5173" target="_blank" rel="noreferrer"
+              <Link href="/signup"
                 className="px-6 py-3 rounded-xl bg-blue-600 hover:bg-blue-500 text-white font-semibold text-sm flex items-center gap-2 shadow-lg shadow-blue-600/30 transition-all">
                 Start for Free <ArrowRight className="w-4 h-4" />
-              </a>
+              </Link>
               <Link href="/docs" className="px-6 py-3 rounded-xl bg-slate-900 hover:bg-slate-800 border border-slate-700 text-slate-200 font-semibold text-sm transition-all">
                 View API Docs
               </Link>
@@ -191,10 +191,10 @@ export default function PaymentGatewayPage() {
         <h2 className="text-4xl font-black text-white mb-4">Ready to accept payments?</h2>
         <p className="text-slate-400 mb-8">Join 8M+ businesses. Free for 90 days. No credit card required.</p>
         <div className="flex flex-wrap gap-4 justify-center">
-          <a href="http://localhost:5173" target="_blank" rel="noreferrer"
+          <Link href="/signup"
             className="px-8 py-4 rounded-xl bg-blue-600 hover:bg-blue-500 text-white font-bold flex items-center gap-2 shadow-lg shadow-blue-600/30 transition-all">
             Create Free Account <ArrowRight className="w-4 h-4" />
-          </a>
+          </Link>
           <Link href="/contact" className="px-8 py-4 rounded-xl bg-slate-900 border border-slate-700 text-slate-200 font-semibold transition-all hover:bg-slate-800">
             Talk to Sales
           </Link>
