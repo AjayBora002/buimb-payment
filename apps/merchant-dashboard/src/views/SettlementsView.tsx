@@ -12,6 +12,7 @@ import {
   ShieldCheck,
   RefreshCw,
   Info,
+  Zap,
 } from 'lucide-react';
 import { apiClient } from '../lib/api-client.js';
 import type {
@@ -107,6 +108,23 @@ export const SettlementsView: React.FC = () => {
   const [isDetailLoading, setIsDetailLoading] = useState<boolean>(false);
   const [detailError, setDetailError] = useState<string | null>(null);
 
+  // Instant Settlement State
+  const [isInstantLoading, setIsInstantLoading] = useState<boolean>(false);
+  const [instantSuccess, setInstantSuccess] = useState<any | null>(null);
+
+  const handleInstantSettlement = async () => {
+    setIsInstantLoading(true);
+    try {
+      const res = await apiClient.post<any>('/v1/settlements/instant');
+      setInstantSuccess(res);
+      await fetchSettlements();
+    } catch (err: any) {
+      alert(err?.message || 'Failed to trigger instant settlement');
+    } finally {
+      setIsInstantLoading(false);
+    }
+  };
+
   const fetchSettlements = useCallback(async () => {
     setIsLoading(true);
     try {
@@ -170,15 +188,50 @@ export const SettlementsView: React.FC = () => {
             Automated T+1 daily settlement cycles credited to verified bank accounts
           </p>
         </div>
-        <button
-          onClick={fetchSettlements}
-          disabled={isLoading}
-          className="px-3 py-1.5 rounded-[4px] bg-[#1D2E28] hover:bg-[#1D2E28]/80 text-[#EDE7D6] border border-[#EDE7D6]/[0.12] text-xs font-semibold flex items-center gap-1.5 transition-colors disabled:opacity-50"
-        >
-          <RefreshCw className={`w-3.5 h-3.5 ${isLoading ? 'animate-spin' : ''}`} />
-          Refresh
-        </button>
+        <div className="flex items-center gap-2">
+          <button
+            onClick={handleInstantSettlement}
+            disabled={isInstantLoading}
+            className="px-3.5 py-1.5 rounded-[4px] bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white border border-blue-500/40 text-xs font-semibold flex items-center gap-1.5 transition-all shadow-md shadow-blue-500/20 disabled:opacity-50"
+          >
+            <Zap className={`w-3.5 h-3.5 ${isInstantLoading ? 'animate-spin' : 'fill-amber-300 text-amber-300'}`} />
+            {isInstantLoading ? 'Processing Settlement…' : 'Instant Settlement (T+0)'}
+          </button>
+          <button
+            onClick={fetchSettlements}
+            disabled={isLoading}
+            className="px-3 py-1.5 rounded-[4px] bg-[#1D2E28] hover:bg-[#1D2E28]/80 text-[#EDE7D6] border border-[#EDE7D6]/[0.12] text-xs font-semibold flex items-center gap-1.5 transition-colors disabled:opacity-50"
+          >
+            <RefreshCw className={`w-3.5 h-3.5 ${isLoading ? 'animate-spin' : ''}`} />
+            Refresh
+          </button>
+        </div>
       </div>
+
+      {/* Instant Settlement Success Banner */}
+      {instantSuccess && (
+        <div className="p-4 rounded bg-emerald-950/40 border border-emerald-500/40 flex items-start justify-between text-xs animate-in fade-in">
+          <div className="flex items-center gap-3">
+            <div className="w-8 h-8 rounded-full bg-emerald-500/20 border border-emerald-500/40 flex items-center justify-center text-emerald-400">
+              <CheckCircle2 className="w-4 h-4" />
+            </div>
+            <div>
+              <div className="font-bold text-emerald-300">
+                ₹{instantSuccess.netAmountRupees} Instantly Credited to {instantSuccess.destinationBank}
+              </div>
+              <div className="text-slate-400 font-mono text-[11px] mt-0.5">
+                IMPS UTR: <span className="text-emerald-400 font-bold">{instantSuccess.utr}</span> · Settlement ID: {instantSuccess.settlementId}
+              </div>
+            </div>
+          </div>
+          <button
+            onClick={() => setInstantSuccess(null)}
+            className="text-slate-400 hover:text-white p-1"
+          >
+            <X className="w-4 h-4" />
+          </button>
+        </div>
+      )}
 
       {/* Summary Cards */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">

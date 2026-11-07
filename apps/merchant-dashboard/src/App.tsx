@@ -10,7 +10,9 @@ import { CommandPalette } from './components/CommandPalette.js';
 import { HostedCheckoutModal } from './components/HostedCheckoutModal.js';
 import { OverviewView } from './views/OverviewView.js';
 import { TransactionsView } from './views/TransactionsView.js';
+import { OrdersView } from './views/OrdersView.js';
 import { PaymentLinksView } from './views/PaymentLinksView.js';
+import { PaymentPagesView } from './views/PaymentPagesView.js';
 import { SubscriptionsView } from './views/SubscriptionsView.js';
 import { RefundsView } from './views/RefundsView.js';
 import { SettlementsView } from './views/SettlementsView.js';
@@ -24,6 +26,16 @@ import { PayoutsView } from './views/PayoutsView.js';
 import { CompanyOpsView } from './views/CompanyOpsView.js';
 import { QrCodesView } from './views/QrCodesView.js';
 import { OptimizerView } from './views/OptimizerView.js';
+import { SmartCollectView } from './views/SmartCollectView.js';
+import { DisputesView } from './views/DisputesView.js';
+import { ReportsView } from './views/ReportsView.js';
+import { UpiObserversView } from './views/UpiObserversView.js';
+import { RouteView } from './views/RouteView.js';
+import { BankVerificationView } from './views/BankVerificationView.js';
+import { PayoutLinksView } from './views/PayoutLinksView.js';
+import { CorporateCardsView } from './views/CorporateCardsView.js';
+import { MagicCheckoutView } from './views/MagicCheckoutView.js';
+import { ToolsView } from './views/ToolsView.js';
 
 const PLATFORM_STAFF_ROLES = new Set(['PLATFORM_ADMIN', 'OPS_SUPERVISOR']);
 
@@ -50,39 +62,64 @@ function DashboardShell() {
 
   const titles: Record<string, string> = {
     overview: 'Overview',
-    transactions: 'Transactions & Payments',
-    'qr-codes': 'Smart QR & Merchant Exchange',
+    transactions: 'Payments & Transactions',
+    orders: 'Orders',
+    refunds: 'Refunds',
     'payment-links': 'Payment Links',
-    subscriptions: 'Subscriptions & Mandates',
+    'payment-pages': 'Payment Pages (Storefronts)',
+    route: 'Route (Marketplace Split Payments)',
+    'magic-checkout': 'Magic Checkout & AI RTO Intelligence',
+    'upi-observers': 'Sovereign UPI & Bank Observers (0% Fees)',
+    'qr-codes': 'Smart QR & Soundbox',
+    invoices: 'Invoices & GST Billing',
+    subscriptions: 'Subscriptions & e-Mandates',
+    'smart-collect': 'Smart Collect (Virtual Accounts)',
     optimizer: 'Optimizer (Multi-Gateway Routing)',
-    invoices: 'Invoices & GST',
-    customers: 'Customers',
-    refunds: 'Refunds & Disputes',
-    settlements: 'Settlements & Escrow',
-    reconciliation: 'Reconciliation',
+    customers: 'Customer Directory',
+    payouts: 'Payouts (BuimbPayX)',
+    'payout-links': 'Payout Links (Self-Serve Vendor Payouts)',
+    verification: 'Bank & VPA Verification (Penny Drop ₹1)',
+    'corporate-cards': 'Corporate Cards (BuimbPayX Smart Cards)',
+    'account-statement': 'Account Statement & Ledger',
     ledger: 'Ledger & Audit',
-    payouts: 'Payouts',
-    developers: 'Developers & API Keys',
-    'settings-kyc': 'Business Settings & KYC',
+    disputes: 'Disputes & Chargebacks',
+    settlements: 'Settlements & Instant On-Demand T+0',
+    tools: 'Business Compliance & Tax Calculators (GST/TDS)',
+    reports: 'Reports Center',
+    developers: 'API Keys & Webhooks',
+    'settings-kyc': 'Business Profile & KYC',
+    reconciliation: 'Reconciliation',
     'company-ops': 'Company Operations',
   };
 
-  const handlePortalSwitch = () => {
-    const next = portalMode === 'merchant' ? 'ops' : 'merchant';
-    setPortalMode(next);
-    if (next === 'ops') {
-      setCurrentTab('company-ops');
-    } else {
-      setCurrentTab('overview');
+  const handleQuickAction = (action: string) => {
+    switch (action) {
+      case 'create-link':
+        setCurrentTab('payment-links');
+        break;
+      case 'create-invoice':
+        setCurrentTab('invoices');
+        break;
+      case 'instant-payout':
+        setCurrentTab('payouts');
+        break;
+      case 'create-qr':
+        setCurrentTab('qr-codes');
+        break;
+      case 'issue-refund':
+        setCurrentTab('refunds');
+        break;
+      default:
+        break;
     }
   };
 
   if (status === 'checking') {
     return (
-      <div className="min-h-screen bg-[#131B17] flex items-center justify-center text-[#8FA396] font-['Public_Sans',sans-serif]">
+      <div className="min-h-screen bg-[#0C1938] flex items-center justify-center text-slate-300 font-sans">
         <div className="flex flex-col items-center gap-3">
-          <div className="w-6 h-6 border-2 border-[#C9A227] border-t-transparent rounded-full animate-spin" />
-          <span className="text-xs font-mono">Authenticating session…</span>
+          <div className="w-8 h-8 border-3 border-blue-500 border-t-transparent rounded-full animate-spin" />
+          <span className="text-xs font-mono text-slate-400">Loading BuimbPay Dashboard…</span>
         </div>
       </div>
     );
@@ -98,7 +135,7 @@ function DashboardShell() {
 
   return (
     <ToastProvider>
-      <div className="min-h-screen bg-[#131B17] text-[#EDE7D6] flex font-['Public_Sans',sans-serif] overflow-x-hidden antialiased">
+      <div className="min-h-screen bg-[#F8FAFC] text-slate-800 flex font-sans overflow-x-hidden antialiased">
         {/* Navigation Sidebar */}
         <Sidebar
           currentTab={currentTab}
@@ -122,36 +159,44 @@ function DashboardShell() {
             onOpenCommandPalette={() => setIsCommandPaletteOpen(true)}
             onOpenCheckoutPreview={() => setIsCheckoutOpen(true)}
             portalMode={portalMode}
-            onTogglePortalMode={isPlatformStaff ? handlePortalSwitch : undefined}
+            onTogglePortalMode={isPlatformStaff ? () => setPortalMode(portalMode === 'merchant' ? 'ops' : 'merchant') : undefined}
+            onQuickAction={handleQuickAction}
           />
 
-          <main className="flex-1 p-8 max-w-[1440px] mx-auto w-full">
+          <main className="flex-1 p-6 md:p-8 max-w-[1440px] mx-auto w-full">
             {currentTab === 'overview' && (
-              <OverviewView onNavigate={setCurrentTab} merchantName={currentPersona.name.split(' ')[0]} />
+              <OverviewView onNavigate={setCurrentTab} merchantName={user?.firstName || 'Ajay'} />
             )}
             {currentTab === 'transactions' && <TransactionsView />}
-            {currentTab === 'qr-codes' && <QrCodesView />}
+            {currentTab === 'orders' && <OrdersView />}
+            {currentTab === 'refunds' && <RefundsView />}
             {currentTab === 'payment-links' && (
               <PaymentLinksView onOpenCheckout={() => setIsCheckoutOpen(true)} />
             )}
-            {currentTab === 'subscriptions' && <SubscriptionsView />}
-            {currentTab === 'optimizer' && <OptimizerView />}
+            {currentTab === 'payment-pages' && <PaymentPagesView />}
+            {currentTab === 'route' && <RouteView />}
+            {currentTab === 'magic-checkout' && <MagicCheckoutView />}
+            {currentTab === 'upi-observers' && <UpiObserversView />}
+            {currentTab === 'qr-codes' && <QrCodesView />}
             {currentTab === 'invoices' && <InvoicesView />}
+            {currentTab === 'subscriptions' && <SubscriptionsView />}
+            {currentTab === 'smart-collect' && <SmartCollectView />}
+            {currentTab === 'optimizer' && <OptimizerView />}
             {currentTab === 'customers' && <CustomersView />}
-            {currentTab === 'refunds' && <RefundsView />}
-            {currentTab === 'settlements' && <SettlementsView />}
-            {currentTab === 'reconciliation' && <ReconciliationView />}
-            {currentTab === 'ledger' && <LedgerView />}
             {currentTab === 'payouts' && <PayoutsView />}
+            {currentTab === 'payout-links' && <PayoutLinksView />}
+            {currentTab === 'verification' && <BankVerificationView />}
+            {currentTab === 'corporate-cards' && <CorporateCardsView />}
+            {currentTab === 'account-statement' && <LedgerView />}
+            {currentTab === 'ledger' && <LedgerView />}
+            {currentTab === 'disputes' && <DisputesView />}
+            {currentTab === 'settlements' && <SettlementsView />}
+            {currentTab === 'tools' && <ToolsView />}
+            {currentTab === 'reports' && <ReportsView />}
+            {currentTab === 'reconciliation' && <ReconciliationView />}
             {currentTab === 'developers' && <DevelopersView />}
             {currentTab === 'settings-kyc' && <KycSettingsView />}
-            {currentTab === 'company-ops' && (
-              isPlatformStaff ? (
-                <CompanyOpsView />
-              ) : (
-                <OverviewView onNavigate={setCurrentTab} merchantName={currentPersona.name.split(' ')[0]} />
-              )
-            )}
+            {currentTab === 'company-ops' && <CompanyOpsView />}
           </main>
         </div>
 
@@ -160,6 +205,7 @@ function DashboardShell() {
           isOpen={isCommandPaletteOpen}
           onClose={() => setIsCommandPaletteOpen(false)}
           onNavigate={setCurrentTab}
+          onAction={handleQuickAction}
         />
 
         {/* Hosted Checkout Simulator Modal */}
@@ -168,7 +214,7 @@ function DashboardShell() {
           onClose={() => setIsCheckoutOpen(false)}
           orderAmount="₹1,299.00"
           orderAmountRaw={1299}
-          orderDesc="BuimbPay Demo Order"
+          orderDesc="BuimbPay Standard Checkout Demo"
         />
       </div>
     </ToastProvider>

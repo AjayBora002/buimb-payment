@@ -1,14 +1,13 @@
 import React, { useState } from 'react';
 import { useAuth } from '../lib/auth-context.js';
-import { Lock, Mail, AlertTriangle, ArrowRight, ShieldCheck, User, Building2 } from 'lucide-react';
-import { BrandLogo } from '../components/BrandLogo.js';
+import { Lock, Mail, AlertTriangle, ArrowRight, ShieldCheck, User, Building2, Plus, Sparkles } from 'lucide-react';
 
 export interface RegisterViewProps {
   onSwitchToLogin: () => void;
 }
 
 export const RegisterView: React.FC<RegisterViewProps> = ({ onSwitchToLogin }) => {
-  const { register } = useAuth();
+  const { register, enterDemoMode } = useAuth();
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
   const [email, setEmail] = useState('');
@@ -27,8 +26,8 @@ export const RegisterView: React.FC<RegisterViewProps> = ({ onSwitchToLogin }) =
       return;
     }
 
-    if (password.length < 12) {
-      setError('Password must be at least 12 characters long and include uppercase, lowercase, numbers, and symbols.');
+    if (password.length < 8) {
+      setError('Password must be at least 8 characters long.');
       return;
     }
 
@@ -50,177 +49,202 @@ export const RegisterView: React.FC<RegisterViewProps> = ({ onSwitchToLogin }) =
   };
 
   return (
-    <div className="min-h-screen bg-[#131B17] text-[#EDE7D6] flex flex-col justify-center items-center p-4 font-['Public_Sans',sans-serif] select-none antialiased">
-      {/* Background radial glow */}
-      <div className="absolute top-1/4 w-96 h-96 bg-[#C9A227]/5 rounded-full blur-3xl pointer-events-none" />
-
-      <div className="w-full max-w-lg relative z-10 space-y-6 my-8">
-        {/* Brand header */}
-        <div className="flex flex-col items-center space-y-2 text-center">
-          <BrandLogo collapsed={false} />
-          <p className="text-xs text-[#8FA396] pt-1">
-            Merchant Operating System & Unified Payments Platform
-          </p>
+    <div className="min-h-screen bg-white text-slate-900 font-sans select-none antialiased flex flex-col justify-between">
+      {/* Top Navbar */}
+      <div className="w-full max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
+        <div className="flex items-center gap-2">
+          <div className="w-8 h-8 rounded-lg bg-[#0b63e5] flex items-center justify-center text-white shadow-md shadow-blue-500/20">
+            <svg viewBox="0 0 24 24" fill="none" className="w-5 h-5">
+              <path d="M14 2L4 14h7l-1 8 10-12h-7l1-8z" fill="currentColor" />
+            </svg>
+          </div>
+          <span className="text-2xl font-black tracking-tight text-[#0c2340]">
+            Razorpay <span className="text-xs font-bold text-blue-600 uppercase tracking-widest ml-1 px-1.5 py-0.5 rounded bg-blue-50 border border-blue-200">Merchant</span>
+          </span>
         </div>
 
-        {/* Card container */}
-        <div className="bg-[#1D2E28] border border-[rgba(237,231,214,0.12)] p-8 rounded-[4px] shadow-2xl space-y-6">
-          <div className="border-b border-[rgba(237,231,214,0.08)] pb-4">
-            <h1 className="text-lg font-bold text-[#EDE7D6] tracking-tight">Create Merchant Account</h1>
-            <p className="text-xs text-[#8FA396] mt-1">
-              Set up your merchant organisation and start accepting payments
+        <div className="flex items-center gap-4 text-xs font-semibold">
+          <span className="text-slate-500">Already registered?</span>
+          <button
+            type="button"
+            onClick={onSwitchToLogin}
+            className="text-blue-600 hover:text-blue-700 font-bold"
+          >
+            Sign In &rarr;
+          </button>
+        </div>
+      </div>
+
+      {/* Main Split Grid */}
+      <div className="w-full max-w-7xl mx-auto px-6 py-8 flex-1 grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+        {/* Left Column */}
+        <div className="lg:col-span-7 space-y-8 pr-0 lg:pr-12">
+          <div className="space-y-4">
+            <span className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-50 text-blue-700 text-xs font-bold border border-blue-200">
+              <span className="w-2 h-2 rounded-full bg-blue-600 animate-pulse" />
+              Direct Instant Merchant Onboarding
+            </span>
+            <h1 className="text-3xl sm:text-4xl lg:text-[42px] font-black text-[#0c2340] leading-[1.18] tracking-tight">
+              Power Your Business with India's #1 Payments Gateway
+            </h1>
+            <p className="text-base text-slate-600 leading-relaxed max-w-xl">
+              Accept credit cards, debit cards, 100+ UPI apps, netbanking, and international payments with automated instant settlement directly to your bank.
             </p>
           </div>
 
-          {/* Error Banner */}
-          {error && (
-            <div className="p-3.5 rounded-[4px] border border-[#B0503F]/40 bg-[#B0503F]/10 text-[#EDE7D6] text-xs flex items-start gap-2.5">
-              <AlertTriangle className="w-4 h-4 text-[#C98A2E] flex-shrink-0 mt-0.5" />
-              <div className="space-y-1">
-                <span className="font-bold block">Registration Error</span>
-                <span className="text-[#EDE7D6]/80 text-[11px] leading-relaxed block">{error}</span>
+          <div className="flex flex-wrap items-center gap-6 pt-4 text-sm font-bold text-slate-800">
+            <div className="flex items-center gap-2">
+              <div className="w-5 h-5 rounded-full bg-emerald-100 text-emerald-600 flex items-center justify-center">
+                <Plus className="w-3.5 h-3.5 stroke-[3]" />
               </div>
+              <span>Zero Setup Cost</span>
             </div>
-          )}
-
-          <form onSubmit={handleSubmit} className="space-y-4">
-            {/* Name Fields */}
-            <div className="grid grid-cols-2 gap-3">
-              <div className="space-y-1.5">
-                <label className="block text-xs font-semibold text-[#8FA396]">First Name</label>
-                <div className="relative">
-                  <User className="w-4 h-4 text-[#8FA396] absolute left-3 top-2.5" />
-                  <input
-                    type="text"
-                    required
-                    placeholder="Aditi"
-                    value={firstName}
-                    onChange={(e) => setFirstName(e.target.value)}
-                    className="w-full h-9 bg-[#131B17] border border-[rgba(237,231,214,0.12)] rounded-[4px] pl-9 pr-3 text-xs text-[#EDE7D6] placeholder:text-[#5C5646] focus:outline-none focus:border-[#C9A227] transition-colors"
-                  />
-                </div>
+            <div className="flex items-center gap-2">
+              <div className="w-5 h-5 rounded-full bg-emerald-100 text-emerald-600 flex items-center justify-center">
+                <Plus className="w-3.5 h-3.5 stroke-[3]" />
               </div>
-
-              <div className="space-y-1.5">
-                <label className="block text-xs font-semibold text-[#8FA396]">Last Name</label>
-                <div className="relative">
-                  <User className="w-4 h-4 text-[#8FA396] absolute left-3 top-2.5" />
-                  <input
-                    type="text"
-                    required
-                    placeholder="Sharma"
-                    value={lastName}
-                    onChange={(e) => setLastName(e.target.value)}
-                    className="w-full h-9 bg-[#131B17] border border-[rgba(237,231,214,0.12)] rounded-[4px] pl-9 pr-3 text-xs text-[#EDE7D6] placeholder:text-[#5C5646] focus:outline-none focus:border-[#C9A227] transition-colors"
-                  />
-                </div>
+              <span>Paperless KYC</span>
+            </div>
+            <div className="flex items-center gap-2">
+              <div className="w-5 h-5 rounded-full bg-emerald-100 text-emerald-600 flex items-center justify-center">
+                <Plus className="w-3.5 h-3.5 stroke-[3]" />
               </div>
+              <span>Live in 2 Minutes</span>
+            </div>
+          </div>
+        </div>
+
+        {/* Right Column: Register Card */}
+        <div className="lg:col-span-5 w-full max-w-md mx-auto">
+          <div className="bg-white rounded-2xl border border-slate-200/90 shadow-[0_20px_50px_rgba(0,0,0,0.08)] p-7 relative overflow-hidden space-y-4">
+            <div className="space-y-1">
+              <span className="text-xs font-bold text-slate-400 block tracking-wider uppercase">Merchant Registration</span>
+              <h2 className="text-xl font-black text-[#0c2340] tracking-tight">
+                Create your merchant account
+              </h2>
             </div>
 
-            {/* Email */}
-            <div className="space-y-1.5">
-              <label className="block text-xs font-semibold text-[#8FA396]">Corporate Email Address</label>
-              <div className="relative">
-                <Mail className="w-4 h-4 text-[#8FA396] absolute left-3 top-2.5" />
-                <input
-                  type="email"
-                  required
-                  placeholder="aditi@fintech.in"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  className="w-full h-9 bg-[#131B17] border border-[rgba(237,231,214,0.12)] rounded-[4px] pl-9 pr-3 text-xs text-[#EDE7D6] placeholder:text-[#5C5646] focus:outline-none focus:border-[#C9A227] transition-colors"
-                />
+            {error && (
+              <div className="p-3 rounded-lg border text-xs flex items-start gap-2.5 bg-rose-50 border-rose-200 text-rose-700">
+                <AlertTriangle className="w-4 h-4 flex-shrink-0 mt-0.5 text-rose-500" />
+                <span className="text-[11px] leading-relaxed">{error}</span>
               </div>
-            </div>
-
-            {/* Organisation / Business Name */}
-            <div className="space-y-1.5">
-              <div className="flex justify-between items-center">
-                <label className="block text-xs font-semibold text-[#8FA396]">Business / Company Name</label>
-                <span className="text-[10px] text-[#8FA396]/60">Optional</span>
-              </div>
-              <div className="relative">
-                <Building2 className="w-4 h-4 text-[#8FA396] absolute left-3 top-2.5" />
-                <input
-                  type="text"
-                  placeholder="Acme Technologies Pvt Ltd"
-                  value={organisationName}
-                  onChange={(e) => setOrganisationName(e.target.value)}
-                  className="w-full h-9 bg-[#131B17] border border-[rgba(237,231,214,0.12)] rounded-[4px] pl-9 pr-3 text-xs text-[#EDE7D6] placeholder:text-[#5C5646] focus:outline-none focus:border-[#C9A227] transition-colors"
-                />
-              </div>
-            </div>
-
-            {/* Password */}
-            <div className="space-y-1.5">
-              <label className="block text-xs font-semibold text-[#8FA396]">Password</label>
-              <div className="relative">
-                <Lock className="w-4 h-4 text-[#8FA396] absolute left-3 top-2.5" />
-                <input
-                  type="password"
-                  required
-                  placeholder="••••••••••••"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  className="w-full h-9 bg-[#131B17] border border-[rgba(237,231,214,0.12)] rounded-[4px] pl-9 pr-3 text-xs text-[#EDE7D6] placeholder:text-[#5C5646] focus:outline-none focus:border-[#C9A227] transition-colors"
-                />
-              </div>
-              <p className="text-[10px] text-[#5C5646] pt-0.5">
-                Min 12 characters, uppercase, lowercase, number & symbol
-              </p>
-            </div>
-
-            {/* Confirm Password */}
-            <div className="space-y-1.5">
-              <label className="block text-xs font-semibold text-[#8FA396]">Confirm Password</label>
-              <div className="relative">
-                <Lock className="w-4 h-4 text-[#8FA396] absolute left-3 top-2.5" />
-                <input
-                  type="password"
-                  required
-                  placeholder="••••••••••••"
-                  value={confirmPassword}
-                  onChange={(e) => setConfirmPassword(e.target.value)}
-                  className="w-full h-9 bg-[#131B17] border border-[rgba(237,231,214,0.12)] rounded-[4px] pl-9 pr-3 text-xs text-[#EDE7D6] placeholder:text-[#5C5646] focus:outline-none focus:border-[#C9A227] transition-colors"
-                />
-              </div>
-            </div>
+            )}
 
             <button
-              type="submit"
-              disabled={isLoading}
-              className="w-full h-10 mt-3 rounded-[4px] bg-[#C9A227] hover:bg-[#DBB53B] text-[#131B17] text-xs font-bold flex items-center justify-center gap-2 border border-[#B08C1E] transition-all disabled:opacity-50 cursor-pointer"
+              type="button"
+              onClick={enterDemoMode}
+              className="w-full py-2.5 px-4 rounded-xl bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-600 hover:to-orange-600 text-white text-xs font-bold flex items-center justify-center gap-2 shadow-md shadow-amber-500/20 transition-all cursor-pointer"
             >
-              {isLoading ? (
-                <span>Creating merchant account…</span>
-              ) : (
-                <>
-                  <span>Create Account & Continue</span>
-                  <ArrowRight className="w-3.5 h-3.5" />
-                </>
-              )}
+              <Sparkles className="w-4 h-4 text-white" />
+              <span>🚀 Or Launch Sandbox Demo Dashboard</span>
             </button>
 
-            <div className="text-center pt-2 text-xs text-[#8FA396]">
-              Already have an account?{' '}
+            <form onSubmit={handleSubmit} className="space-y-3">
+              <div className="grid grid-cols-2 gap-3">
+                <div>
+                  <label className="block text-[11px] font-bold text-slate-700 mb-1">First Name</label>
+                  <input
+                    type="text"
+                    value={firstName}
+                    onChange={(e) => setFirstName(e.target.value)}
+                    placeholder="Priya"
+                    required
+                    className="w-full h-10 px-3 rounded-lg border border-slate-300 text-xs font-medium focus:outline-none focus:border-blue-600 focus:ring-1 focus:ring-blue-100"
+                  />
+                </div>
+                <div>
+                  <label className="block text-[11px] font-bold text-slate-700 mb-1">Last Name</label>
+                  <input
+                    type="text"
+                    value={lastName}
+                    onChange={(e) => setLastName(e.target.value)}
+                    placeholder="Sharma"
+                    required
+                    className="w-full h-10 px-3 rounded-lg border border-slate-300 text-xs font-medium focus:outline-none focus:border-blue-600 focus:ring-1 focus:ring-blue-100"
+                  />
+                </div>
+              </div>
+
+              <div>
+                <label className="block text-[11px] font-bold text-slate-700 mb-1">Business / Company Name</label>
+                <input
+                  type="text"
+                  value={organisationName}
+                  onChange={(e) => setOrganisationName(e.target.value)}
+                  placeholder="Acme Digital Pvt Ltd"
+                  className="w-full h-10 px-3 rounded-lg border border-slate-300 text-xs font-medium focus:outline-none focus:border-blue-600 focus:ring-1 focus:ring-blue-100"
+                />
+              </div>
+
+              <div>
+                <label className="block text-[11px] font-bold text-slate-700 mb-1">Business Email</label>
+                <input
+                  type="email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  placeholder="priya@acmedigital.com"
+                  required
+                  className="w-full h-10 px-3 rounded-lg border border-slate-300 text-xs font-medium focus:outline-none focus:border-blue-600 focus:ring-1 focus:ring-blue-100"
+                />
+              </div>
+
+              <div className="grid grid-cols-2 gap-3">
+                <div>
+                  <label className="block text-[11px] font-bold text-slate-700 mb-1">Password</label>
+                  <input
+                    type="password"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    placeholder="••••••••"
+                    required
+                    className="w-full h-10 px-3 rounded-lg border border-slate-300 text-xs font-medium focus:outline-none focus:border-blue-600 focus:ring-1 focus:ring-blue-100 font-mono"
+                  />
+                </div>
+                <div>
+                  <label className="block text-[11px] font-bold text-slate-700 mb-1">Confirm</label>
+                  <input
+                    type="password"
+                    value={confirmPassword}
+                    onChange={(e) => setConfirmPassword(e.target.value)}
+                    placeholder="••••••••"
+                    required
+                    className="w-full h-10 px-3 rounded-lg border border-slate-300 text-xs font-medium focus:outline-none focus:border-blue-600 focus:ring-1 focus:ring-blue-100 font-mono"
+                  />
+                </div>
+              </div>
+
+              <button
+                type="submit"
+                disabled={isLoading}
+                className="w-full h-11 rounded-lg bg-[#0b63e5] hover:bg-[#0957cb] text-white text-xs font-bold shadow-md shadow-blue-500/20 transition-all flex items-center justify-center gap-2 cursor-pointer disabled:opacity-70 mt-2"
+              >
+                {isLoading ? (
+                  <span className="animate-spin w-4 h-4 border-2 border-white border-t-transparent rounded-full" />
+                ) : (
+                  <>
+                    <span>Create Free Account</span>
+                    <ArrowRight className="w-4 h-4" />
+                  </>
+                )}
+              </button>
+            </form>
+
+            <div className="text-center pt-2">
               <button
                 type="button"
                 onClick={onSwitchToLogin}
-                className="text-[#C9A227] hover:underline font-semibold cursor-pointer bg-transparent border-none p-0 inline"
+                className="text-xs text-slate-600 hover:text-blue-600 font-semibold transition-colors"
               >
-                Sign in
+                Already have an account? <span className="text-blue-600 font-bold">Sign In &rarr;</span>
               </button>
             </div>
-          </form>
-
-          <div className="pt-2 border-t border-[rgba(237,231,214,0.08)] flex items-center justify-between text-[11px] text-[#5C5646]">
-            <div className="flex items-center gap-1.5">
-              <ShieldCheck className="w-3.5 h-3.5 text-[#4E8B6F]" />
-              <span>TLS 1.3 / AES-256 Auth</span>
-            </div>
-            <span className="font-mono">v1.0 (Sandbox)</span>
           </div>
         </div>
+      </div>
+
+      <div className="border-t border-slate-100 py-4 text-center text-xs text-slate-400">
+        © Razorpay 2026. All Rights Reserved. RBI Authorised Payment Aggregator.
       </div>
     </div>
   );
