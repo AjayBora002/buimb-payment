@@ -364,4 +364,3 @@ export function buildUpiAppLinks(upiUri) {
         bhim: `intent://pay?${stripped}#Intent;scheme=upi;package=in.org.npci.upiapp;end`,
     };
 }
-//# sourceMappingURL=qr-engine.js.map

@@ -1,76 +1,88 @@
-import { Worker } from 'bullmq';
+import { Worker, Queue } from 'bullmq';
 import { Redis } from 'ioredis';
 import { prisma } from '@buimbpay/database/client';
+import { processWebhookDelivery } from './webhook-delivery.js';
+import { processOutboxBatch } from './outbox-relay.js';
+import { processSettlementBatch, getSettlementConfig } from './settlement-batch.js';
+import { processReconciliationRun } from './reconciliation.js';
 const redisUrl = process.env.REDIS_URL || 'redis://localhost:6379';
 const connection = new Redis(redisUrl, { maxRetriesPerRequest: null });
 console.log('⚡ BuimbPay Background Worker initializing...');
+// ── Webhook Delivery Queue with Exponential Backoff ──────────────────────────
+export const webhookQueue = new Queue('webhook-delivery', {
+    connection,
+    defaultJobOptions: {
+        attempts: 5,
+        backoff: {
+            type: 'exponential',
+            delay: 30000, // 30s initial delay (30s, 60s, 120s, 240s, 480s)
+        },
+        removeOnComplete: true,
+        removeOnFail: false,
+    },
+});
 // ── 1. Webhook Delivery Worker ───────────────────────────────────────────────
-const webhookWorker = new Worker('webhook-delivery', async (job) => {
-    const { deliveryId, url, payload, secret } = job.data;
-    console.log(`[Webhook] Dispatching event to ${url} (Delivery: ${deliveryId})`);
+export const webhookWorker = new Worker('webhook-delivery', async (job) => {
+    const { deliveryId } = job.data;
+    console.log(`[Webhook] Processing delivery ${deliveryId} (attempt ${job.attemptsMade + 1})`);
     try {
-        // In production, sign payload with HMAC-SHA256 and POST
-        await prisma.webhookDelivery.update({
-            where: { id: deliveryId },
-            data: {
-                status: 'DELIVERED',
-                httpStatus: 200,
-                deliveredAt: new Date(),
-                latencyMs: 120,
-            },
-        });
-        return { status: 'delivered' };
+        const result = await processWebhookDelivery(deliveryId, { prismaClient: prisma });
+        console.log(`[Webhook] Delivery ${deliveryId} succeeded with HTTP ${result.httpStatus} in ${result.latencyMs}ms`);
+        return result;
     }
     catch (err) {
         console.error(`[Webhook] Delivery failed for ${deliveryId}:`, err.message);
-        await prisma.webhookDelivery.update({
-            where: { id: deliveryId },
-            data: {
-                status: 'FAILED',
-                errorMessage: err.message,
-            },
-        });
         throw err;
     }
 }, { connection });
+// Validate settlement fee & tax configuration at worker startup
+const settlementConfig = getSettlementConfig();
 // ── 2. Settlement Batch Worker ──────────────────────────────────────────────
-const settlementWorker = new Worker('settlement-batch', async (job) => {
+export const settlementWorker = new Worker('settlement-batch', async (job) => {
     const { merchantId, periodStart, periodEnd } = job.data;
-    console.log(`[Settlement] Processing batch for merchant ${merchantId}`);
-    // Aggregates eligible captured intents, computes fees & taxes, creates settlement record
-    return { status: 'processed', merchantId };
+    console.log(`[Settlement] Processing batch for merchant ${merchantId} (${periodStart} - ${periodEnd})`);
+    const result = await processSettlementBatch({
+        merchantId,
+        periodStart,
+        periodEnd,
+        prismaClient: prisma,
+        config: settlementConfig,
+    });
+    console.log(`[Settlement] Batch result for ${merchantId}:`, result.status);
+    return result;
 }, { connection });
 // ── 3. Reconciliation Worker ────────────────────────────────────────────────
-const reconciliationWorker = new Worker('reconciliation-run', async (job) => {
-    const { runId } = job.data;
-    console.log(`[Reconciliation] Running reconciliation job ${runId}`);
-    // Matches internal records with simulated bank/provider statements
-    return { status: 'completed', runId };
+export const reconciliationWorker = new Worker('reconciliation-run', async (job) => {
+    const { merchantId, periodStart, periodEnd, type } = job.data;
+    console.log(`[Reconciliation] Processing ${type} run for period ${periodStart} - ${periodEnd}` +
+        (merchantId ? ` (merchant ${merchantId})` : ' (all merchants)'));
+    const result = await processReconciliationRun({
+        merchantId,
+        periodStart,
+        periodEnd,
+        type,
+        prismaClient: prisma,
+    });
+    console.log(`[Reconciliation] Run ${result.runId} completed with status:`, result.status);
+    return result;
 }, { connection });
 // ── 4. Outbox Relay Worker ──────────────────────────────────────────────────
-const outboxWorker = new Worker('outbox-relay', async () => {
-    // Polls pending outbox events and pushes to target queues
-    const pendingEvents = await prisma.outboxEvent.findMany({
-        where: { status: 'PENDING' },
-        take: 50,
+export const outboxWorker = new Worker('outbox-relay', async () => {
+    const result = await processOutboxBatch({
+        prismaClient: prisma,
+        webhookQueue,
+        batchSize: 50,
     });
-    for (const event of pendingEvents) {
-        // mark published
-        await prisma.outboxEvent.update({
-            where: { id: event.id },
-            data: { status: 'PUBLISHED', publishedAt: new Date() },
-        });
-    }
-    return { processedCount: pendingEvents.length };
+    return result;
 }, { connection });
 console.log('✅ All BuimbPay workers active and listening for jobs');
 process.on('SIGINT', async () => {
     console.log('Stopping workers...');
     await webhookWorker.close();
+    await webhookQueue.close();
     await settlementWorker.close();
     await reconciliationWorker.close();
     await outboxWorker.close();
     await connection.quit();
     process.exit(0);
 });
-//# sourceMappingURL=index.js.map

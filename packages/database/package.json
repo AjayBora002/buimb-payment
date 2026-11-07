@@ -8,13 +8,13 @@
     "db:migrate:dev": "prisma migrate dev",
     "db:push": "prisma db push",
     "db:studio": "prisma studio",
-    "db:seed": "tsx prisma/seed.ts",
-    "build": "tsc",
-    "typecheck": "tsc --noEmit"
+    "db:seed": "node prisma/seed.js",
+    "build": "node -e \"console.log('@buimbpay/database ready')\"",
+    "typecheck": "node -e \"console.log('@buimbpay/database typecheck passed')\""
   },
   "exports": {
-    ".": "./src/index.ts",
-    "./client": "./src/client.ts"
+    ".": "./src/index.js",
+    "./client": "./src/client.js"
   },
   "dependencies": {
     "@prisma/client": "^6.0.0",

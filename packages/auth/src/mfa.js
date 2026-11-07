@@ -19,4 +19,3 @@ export function verifyMfaToken(token, secret) {
 export function generateBackupCodes(count = 10) {
     return Array.from({ length: count }, () => randomBytes(5).toString('hex').toUpperCase().match(/.{1,5}/g).join('-'));
 }
-//# sourceMappingURL=mfa.js.map

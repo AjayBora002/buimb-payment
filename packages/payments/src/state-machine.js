@@ -106,4 +106,3 @@ export function canCapture(status) {
     ];
     return capturable.includes(status);
 }
-//# sourceMappingURL=state-machine.js.map

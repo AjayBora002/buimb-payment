@@ -124,4 +124,3 @@ export class BankSmsParser {
         };
     }
 }
-//# sourceMappingURL=bank-sms-parser.js.map

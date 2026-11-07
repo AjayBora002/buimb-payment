@@ -33,4 +33,3 @@ export function verifyRefreshToken(token) {
 export function generateSessionToken() {
     return randomBytes(48).toString('hex');
 }
-//# sourceMappingURL=jwt.js.map

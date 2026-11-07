@@ -389,6 +389,9 @@ importers:
       '@youpi/common':
         specifier: workspace:*
         version: link:../common
+      '@youpi/db':
+        specifier: workspace:*
+        version: link:../db
 
   packages/observer-sdk:
     dependencies:

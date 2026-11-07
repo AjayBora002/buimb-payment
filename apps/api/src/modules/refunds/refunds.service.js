@@ -1,99 +1,59 @@
-"use strict";
-var __esDecorate = (this && this.__esDecorate) || function (ctor, descriptorIn, decorators, contextIn, initializers, extraInitializers) {
-    function accept(f) { if (f !== void 0 && typeof f !== "function") throw new TypeError("Function expected"); return f; }
-    var kind = contextIn.kind, key = kind === "getter" ? "get" : kind === "setter" ? "set" : "value";
-    var target = !descriptorIn && ctor ? contextIn["static"] ? ctor : ctor.prototype : null;
-    var descriptor = descriptorIn || (target ? Object.getOwnPropertyDescriptor(target, contextIn.name) : {});
-    var _, done = false;
-    for (var i = decorators.length - 1; i >= 0; i--) {
-        var context = {};
-        for (var p in contextIn) context[p] = p === "access" ? {} : contextIn[p];
-        for (var p in contextIn.access) context.access[p] = contextIn.access[p];
-        context.addInitializer = function (f) { if (done) throw new TypeError("Cannot add initializers after decoration has completed"); extraInitializers.push(accept(f || null)); };
-        var result = (0, decorators[i])(kind === "accessor" ? { get: descriptor.get, set: descriptor.set } : descriptor[key], context);
-        if (kind === "accessor") {
-            if (result === void 0) continue;
-            if (result === null || typeof result !== "object") throw new TypeError("Object expected");
-            if (_ = accept(result.get)) descriptor.get = _;
-            if (_ = accept(result.set)) descriptor.set = _;
-            if (_ = accept(result.init)) initializers.unshift(_);
-        }
-        else if (_ = accept(result)) {
-            if (kind === "field") initializers.unshift(_);
-            else descriptor[key] = _;
-        }
-    }
-    if (target) Object.defineProperty(target, contextIn.name, descriptor);
-    done = true;
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
-var __runInitializers = (this && this.__runInitializers) || function (thisArg, initializers, value) {
-    var useValue = arguments.length > 2;
-    for (var i = 0; i < initializers.length; i++) {
-        value = useValue ? initializers[i].call(thisArg, value) : initializers[i].call(thisArg);
-    }
-    return useValue ? value : void 0;
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.RefundsService = void 0;
-const common_1 = require("@nestjs/common");
-const payments_1 = require("@buimbpay/payments");
-const client_1 = require("@prisma/client");
-const crypto_1 = require("crypto");
-let RefundsService = (() => {
-    let _classDecorators = [(0, common_1.Injectable)()];
-    let _classDescriptor;
-    let _classExtraInitializers = [];
-    let _classThis;
-    var RefundsService = class {
-        static { _classThis = this; }
-        static {
-            const _metadata = typeof Symbol === "function" && Symbol.metadata ? Object.create(null) : void 0;
-            __esDecorate(null, _classDescriptor = { value: _classThis }, _classDecorators, { kind: "class", name: _classThis.name, metadata: _metadata }, null, _classExtraInitializers);
-            RefundsService = _classThis = _classDescriptor.value;
-            if (_metadata) Object.defineProperty(_classThis, Symbol.metadata, { enumerable: true, configurable: true, writable: true, value: _metadata });
-            __runInitializers(_classThis, _classExtraInitializers);
+var _a, _b;
+import { Injectable, NotFoundException, BadRequestException, } from '@nestjs/common';
+import { PrismaService } from '../../common/database/prisma.service.js';
+import { MockProvider, canRefund } from '@buimbpay/payments';
+import { RefundStatus, PaymentIntentStatus } from '@prisma/client';
+import { LedgerService } from '../ledger/ledger.service.js';
+import { randomUUID } from 'crypto';
+let RefundsService = class RefundsService {
+    prisma;
+    ledgerService;
+    mockProvider = new MockProvider();
+    constructor(prisma, ledgerService) {
+        this.prisma = prisma;
+        this.ledgerService = ledgerService;
+    }
+    async createRefund(merchantId, userId, data) {
+        const key = data.idempotencyKey || `ref_idem_${randomUUID().replace(/-/g, '')}`;
+        const pi = await this.prisma.paymentIntent.findFirst({
+            where: { id: data.paymentIntentId, merchantId },
+            include: { refunds: true },
+        });
+        if (!pi) {
+            throw new NotFoundException(`Payment intent ${data.paymentIntentId} not found`);
         }
-        prisma;
-        mockProvider = new payments_1.MockProvider();
-        constructor(prisma) {
-            this.prisma = prisma;
+        if (!canRefund(pi.status)) {
+            throw new BadRequestException(`Cannot refund payment intent in status ${pi.status}`);
         }
-        async createRefund(merchantId, userId, data) {
-            const key = data.idempotencyKey || `ref_idem_${(0, crypto_1.randomUUID)().replace(/-/g, '')}`;
-            const existing = await this.prisma.refund.findUnique({
-                where: { idempotencyKey: key },
-            });
-            if (existing) {
-                return existing;
-            }
-            const pi = await this.prisma.paymentIntent.findFirst({
-                where: { id: data.paymentIntentId, merchantId },
-                include: { refunds: true },
-            });
-            if (!pi) {
-                throw new common_1.NotFoundException(`Payment intent ${data.paymentIntentId} not found`);
-            }
-            if (!(0, payments_1.canRefund)(pi.status)) {
-                throw new common_1.BadRequestException(`Cannot refund payment intent in status ${pi.status}`);
-            }
-            const totalRefunded = pi.refunds
-                .filter((r) => r.status === client_1.RefundStatus.SUCCESS)
-                .reduce((sum, r) => sum + r.amount, 0n);
-            const refundAmount = data.amount ? BigInt(data.amount) : pi.amount - totalRefunded;
-            if (refundAmount <= 0n) {
-                throw new common_1.BadRequestException('Refund amount must be positive');
-            }
-            if (totalRefunded + refundAmount > pi.amount) {
-                throw new common_1.BadRequestException(`Refund amount exceeds remaining captured amount (${pi.amount - totalRefunded})`);
-            }
-            // Call provider (MockProvider in sandbox)
-            const providerResult = await this.mockProvider.refundPayment({
-                providerPaymentId: pi.providerRef || 'sim_pay_demo',
-                amount: Number(refundAmount),
-                currency: pi.currency,
-                reason: data.reason,
-            });
-            return this.prisma.$transaction(async (tx) => {
+        const totalRefunded = pi.refunds
+            .filter((r) => r.status === RefundStatus.SUCCEEDED)
+            .reduce((sum, r) => sum + r.amount, 0n);
+        const refundAmount = data.amount ? BigInt(data.amount) : pi.amount - totalRefunded;
+        if (refundAmount <= 0n) {
+            throw new BadRequestException('Refund amount must be positive');
+        }
+        if (totalRefunded + refundAmount > pi.amount) {
+            throw new BadRequestException(`Refund amount exceeds remaining captured amount (${pi.amount - totalRefunded})`);
+        }
+        // Call provider (MockProvider in sandbox) — providerRef is the field name in MockRefundRequest
+        const providerResult = await this.mockProvider.refundPayment({
+            providerRef: pi.providerRef || 'sim_pay_demo',
+            amount: Number(refundAmount),
+            currency: pi.currency,
+        });
+        const refundStatus = providerResult.status === 'succeeded' ? RefundStatus.SUCCEEDED : RefundStatus.FAILED;
+        // Use transaction with unique constraint error handling for idempotency
+        try {
+            return await this.prisma.$transaction(async (tx) => {
                 const refund = await tx.refund.create({
                     data: {
                         paymentIntentId: pi.id,
@@ -101,64 +61,98 @@ let RefundsService = (() => {
                         idempotencyKey: key,
                         amount: refundAmount,
                         currency: pi.currency,
-                        status: providerResult.status === 'success' ? client_1.RefundStatus.SUCCESS : client_1.RefundStatus.FAILED,
+                        status: refundStatus,
                         reason: data.reason,
                         notes: data.notes,
-                        providerRef: providerResult.providerRefundId,
-                        providerResponse: providerResult.rawResponse,
+                        providerRef: providerResult.providerRefundRef,
                         initiatedBy: userId,
                         processedAt: new Date(),
                     },
                 });
-                const newTotalRefunded = totalRefunded + (refund.status === client_1.RefundStatus.SUCCESS ? refundAmount : 0n);
+                const newTotalRefunded = totalRefunded + (refund.status === RefundStatus.SUCCEEDED ? refundAmount : 0n);
                 const isFullyRefunded = newTotalRefunded >= pi.amount;
                 await tx.paymentIntent.update({
                     where: { id: pi.id },
                     data: {
                         status: isFullyRefunded
-                            ? client_1.PaymentIntentStatus.REFUNDED
-                            : client_1.PaymentIntentStatus.PARTIALLY_REFUNDED,
+                            ? PaymentIntentStatus.REFUNDED
+                            : PaymentIntentStatus.PARTIALLY_REFUNDED,
                         version: { increment: 1 },
                     },
                 });
+                if (refund.status === RefundStatus.SUCCEEDED) {
+                    const [cashAccount, escrowAccount] = await Promise.all([
+                        this.ledgerService.getOrCreateAccount('PLATFORM_CASH', { name: 'Platform Cash', type: 'ASSET' }, tx),
+                        this.ledgerService.getOrCreateAccount('PLATFORM_ESCROW', { name: 'Merchant Escrow Payable', type: 'LIABILITY' }, tx),
+                    ]);
+                    await this.ledgerService.recordTransaction({
+                        type: 'REFUND',
+                        description: `Refund ${refund.id} for payment intent ${pi.id}`,
+                        paymentIntentId: pi.id,
+                        referenceId: refund.id,
+                        entries: [
+                            {
+                                debitAccountId: escrowAccount.id,
+                                creditAccountId: cashAccount.id,
+                                amount: refundAmount,
+                                currency: pi.currency,
+                                description: `Refund debited from escrow: ${refund.id}`,
+                            },
+                        ],
+                    }, tx);
+                }
                 return refund;
             });
         }
-        async findRefund(merchantId, id) {
-            const refund = await this.prisma.refund.findFirst({
-                where: { id, merchantId },
-                include: { paymentIntent: true },
-            });
-            if (!refund) {
-                throw new common_1.NotFoundException(`Refund ${id} not found`);
+        catch (err) {
+            // If it's a unique constraint violation (idempotency key conflict), return existing refund
+            if (err?.code === 'P2002' && err?.meta?.target?.includes('idempotencyKey')) {
+                const existing = await this.prisma.refund.findUnique({
+                    where: { idempotencyKey: key },
+                });
+                if (existing) {
+                    return existing;
+                }
             }
-            return refund;
+            throw err;
         }
-        async listRefunds(merchantId, query = {}) {
-            const limit = Math.min(query.limit ?? 20, 100);
-            const items = await this.prisma.refund.findMany({
-                where: { merchantId },
-                take: limit + 1,
-                ...(query.cursor ? { cursor: { id: query.cursor }, skip: 1 } : {}),
-                orderBy: { createdAt: 'desc' },
-                include: {
-                    paymentIntent: {
-                        select: {
-                            id: true,
-                            amount: true,
-                            currency: true,
-                            status: true,
-                        },
+    }
+    async findRefund(merchantId, id) {
+        const refund = await this.prisma.refund.findFirst({
+            where: { id, merchantId },
+            include: { paymentIntent: true },
+        });
+        if (!refund) {
+            throw new NotFoundException(`Refund ${id} not found`);
+        }
+        return refund;
+    }
+    async listRefunds(merchantId, query = {}) {
+        const limit = Math.min(query.limit ?? 20, 100);
+        const items = await this.prisma.refund.findMany({
+            where: { merchantId },
+            take: limit + 1,
+            ...(query.cursor ? { cursor: { id: query.cursor }, skip: 1 } : {}),
+            orderBy: { createdAt: 'desc' },
+            include: {
+                paymentIntent: {
+                    select: {
+                        id: true,
+                        amount: true,
+                        currency: true,
+                        status: true,
                     },
                 },
-            });
-            const hasMore = items.length > limit;
-            const result = hasMore ? items.slice(0, limit) : items;
-            const nextCursor = hasMore ? result[result.length - 1].id : null;
-            return { items: result, nextCursor };
-        }
-    };
-    return RefundsService = _classThis;
-})();
-exports.RefundsService = RefundsService;
-//# sourceMappingURL=refunds.service.js.map
+            },
+        });
+        const hasMore = items.length > limit;
+        const result = hasMore ? items.slice(0, limit) : items;
+        const nextCursor = hasMore ? result[result.length - 1].id : null;
+        return { items: result, nextCursor };
+    }
+};
+RefundsService = __decorate([
+    Injectable(),
+    __metadata("design:paramtypes", [typeof (_a = typeof PrismaService !== "undefined" && PrismaService) === "function" ? _a : Object, typeof (_b = typeof LedgerService !== "undefined" && LedgerService) === "function" ? _b : Object])
+], RefundsService);
+export { RefundsService };

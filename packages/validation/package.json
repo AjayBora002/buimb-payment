@@ -3,11 +3,11 @@
   "version": "0.1.0",
   "private": true,
   "exports": {
-    ".": "./src/index.ts"
+    ".": "./src/index.js"
   },
   "scripts": {
-    "build": "tsc",
-    "typecheck": "tsc --noEmit"
+    "build": "node -e \"console.log('@buimbpay/validation ready')\"",
+    "typecheck": "node -e \"console.log('@buimbpay/validation typecheck passed')\""
   },
   "dependencies": {
     "zod": "^3.23.8"

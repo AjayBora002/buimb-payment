@@ -73,4 +73,3 @@ export class BankEmailParser {
         };
     }
 }
-//# sourceMappingURL=bank-email-parser.js.map

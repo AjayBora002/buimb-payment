@@ -1,10 +1,22 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-const core_1 = require("@nestjs/core");
-const platform_fastify_1 = require("@nestjs/platform-fastify");
-const swagger_1 = require("@nestjs/swagger");
-const common_1 = require("@nestjs/common");
-const app_module_js_1 = require("./app.module.js");
+// Load environment variables from .env if present
+try {
+    process.loadEnvFile?.('.env');
+}
+catch { }
+try {
+    process.loadEnvFile?.('../../.env');
+}
+catch { }
+import { NestFactory } from '@nestjs/core';
+import { FastifyAdapter, } from '@nestjs/platform-fastify';
+import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
+import { ValidationPipe, VersioningType } from '@nestjs/common';
+import { AppModule } from './app.module.js';
+// Root BigInt serialization shim for Fastify/JSON.stringify
+// Prevents "TypeError: Do not know how to serialize a BigInt" on monetary fields
+BigInt.prototype.toJSON = function () {
+    return this.toString();
+};
 async function bootstrap() {
     // ── Safety guard: refuse to bind to production without explicit flag ──────
     const productionEnabled = process.env.PAYMENT_PRODUCTION_ENABLED === 'true';
@@ -15,29 +27,30 @@ async function bootstrap() {
             'banking, security, and compliance approvals are complete.');
         process.exit(1);
     }
-    const app = await core_1.NestFactory.create(app_module_js_1.AppModule, new platform_fastify_1.FastifyAdapter({ logger: false }));
+    const app = await NestFactory.create(AppModule, new FastifyAdapter({ logger: false }));
     // ── Security headers ───────────────────────────────────────────────────────
     const fastifyInstance = app.getHttpAdapter().getInstance();
     await fastifyInstance.register(import('@fastify/helmet'), {
         contentSecurityPolicy: {
             directives: {
                 defaultSrc: ["'self'"],
-                scriptSrc: ["'self'"],
+                scriptSrc: ["'self'", "'unsafe-inline'"],
                 styleSrc: ["'self'", "'unsafe-inline'"],
                 imgSrc: ["'self'", 'data:', 'https:'],
+                frameAncestors: ["*"],
             },
         },
     });
-    // ── CORS — restrictive by default ─────────────────────────────────────────
+    // ── CORS ──────────────────────────────────────────────────────────────────
     app.enableCors({
-        origin: process.env.ALLOWED_ORIGINS?.split(',') ?? ['http://localhost:3000'],
+        origin: nodeEnv !== 'production' ? true : (process.env.ALLOWED_ORIGINS?.split(',') ?? ['http://localhost:3000']),
         credentials: true,
         methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
     });
     // ── API versioning ────────────────────────────────────────────────────────
-    app.enableVersioning({ type: common_1.VersioningType.URI });
+    app.enableVersioning({ type: VersioningType.URI });
     // ── Global validation pipe ─────────────────────────────────────────────────
-    app.useGlobalPipes(new common_1.ValidationPipe({
+    app.useGlobalPipes(new ValidationPipe({
         whitelist: true, // strip unknown fields
         forbidNonWhitelisted: true,
         transform: true,
@@ -45,15 +58,15 @@ async function bootstrap() {
     }));
     // ── OpenAPI documentation ─────────────────────────────────────────────────
     if (nodeEnv !== 'production') {
-        const config = new swagger_1.DocumentBuilder()
+        const config = new DocumentBuilder()
             .setTitle('BuimbPay API')
             .setDescription('Payment infrastructure API — sandbox mode only until production approval')
             .setVersion('1.0')
             .addBearerAuth()
             .addApiKey({ type: 'apiKey', in: 'header', name: 'X-API-Key' }, 'api-key')
             .build();
-        const document = swagger_1.SwaggerModule.createDocument(app, config);
-        swagger_1.SwaggerModule.setup('docs', app, document);
+        const document = SwaggerModule.createDocument(app, config);
+        SwaggerModule.setup('docs', app, document);
     }
     const port = parseInt(process.env.PORT ?? '4000', 10);
     await app.listen(port, '0.0.0.0');
@@ -68,4 +81,3 @@ bootstrap().catch((err) => {
     console.error('Fatal startup error:', err);
     process.exit(1);
 });
-//# sourceMappingURL=main.js.map

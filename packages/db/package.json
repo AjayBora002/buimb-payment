@@ -4,6 +4,9 @@
   "description": "Database layer, migrations, and repository abstractions for YOUPI PG",
   "type": "module",
   "main": "./src/index.js",
+  "exports": {
+    ".": "./src/index.js"
+  },
   "scripts": {
     "test": "node --test src/__tests__/**/*.test.js"
   },

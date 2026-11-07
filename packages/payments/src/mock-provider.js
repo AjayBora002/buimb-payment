@@ -56,4 +56,3 @@ export class MockProvider {
         return true;
     }
 }
-//# sourceMappingURL=mock-provider.js.map
