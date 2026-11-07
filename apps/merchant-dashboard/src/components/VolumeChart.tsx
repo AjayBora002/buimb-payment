@@ -11,7 +11,7 @@ export const VolumeChart: React.FC = () => {
     y: number;
   } | null>(null);
 
-  // 14 data points for clean curvature
+  // 14 data points
   const dataPoints = [
     { date: 'Sep 09', amount: 32000, failed: 1200, count: 42 },
     { date: 'Sep 10', amount: 48000, failed: 2100, count: 68 },
@@ -48,39 +48,31 @@ export const VolumeChart: React.FC = () => {
   const areaD = `${pathD} L ${coords[coords.length - 1].x} ${svgHeight - paddingY} L ${coords[0].x} ${svgHeight - paddingY} Z`;
 
   return (
-    <div className="p-6 bg-[#1D2E28] border border-[rgba(237,231,214,0.08)] flex flex-col justify-between relative space-y-4">
+    <div className="p-6 bg-white rounded-xl border border-slate-200 shadow-sm flex flex-col justify-between relative space-y-4">
       {/* Header & Range Filters */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
         <div>
           <div className="flex items-center gap-2">
-            <h3 className="text-sm font-bold text-[#EDE7D6]">Payment Volume</h3>
-            <span className="px-1.5 py-0.5 rounded-[2px] text-[10px] font-mono text-[#8FA396] border border-[rgba(237,231,214,0.12)]">
-              Sandbox
+            <h3 className="text-sm font-bold text-slate-900">Payment Volume Trend</h3>
+            <span className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-blue-50 text-blue-700 border border-blue-200">
+              Live Gateway Feed
             </span>
           </div>
-          <div className="w-8 h-0.5 bg-[#C9A227] mt-1" />
-
-          <div className="flex items-center gap-2 mt-2">
-            <span className="text-2xl font-bold font-mono text-[#C9A227] tabular-nums tracking-tight">
-              ₹14,82,500.00
-            </span>
-            <span className="text-xs font-mono font-bold text-[#4E8B6F] flex items-center gap-0.5">
-              +18.2%
-            </span>
-            <span className="text-xs font-mono text-[#8FA396]">(30d trend)</span>
-          </div>
+          <p className="text-xs text-slate-500 mt-0.5">
+            Daily gross collections processed across all payment methods
+          </p>
         </div>
 
-        {/* Time Filters */}
-        <div className="flex items-center p-0.5 bg-[#131B17] rounded-[4px] border border-[rgba(237,231,214,0.08)] text-xs">
+        {/* Range Buttons */}
+        <div className="flex items-center gap-1 p-0.5 bg-slate-100 rounded-lg text-xs font-semibold self-start sm:self-auto">
           {(['7d', '30d', '90d'] as const).map((r) => (
             <button
               key={r}
               onClick={() => setRange(r)}
-              className={`px-2.5 py-1 rounded-[2px] font-mono text-[11px] font-semibold transition-colors ${
+              className={`px-3 py-1 rounded-md transition-all ${
                 range === r
-                  ? 'bg-[#C9A227] text-[#131B17]'
-                  : 'text-[#8FA396] hover:text-[#EDE7D6]'
+                  ? 'bg-white text-blue-600 shadow-xs font-bold'
+                  : 'text-slate-600 hover:text-slate-900'
               }`}
             >
               {r.toUpperCase()}
@@ -89,110 +81,98 @@ export const VolumeChart: React.FC = () => {
         </div>
       </div>
 
-      {/* SVG Chart */}
-      <div className="relative w-full h-[210px] select-none pt-2">
+      {/* SVG Chart Area */}
+      <div className="relative w-full overflow-hidden pt-2">
         <svg
           viewBox={`0 0 ${svgWidth} ${svgHeight}`}
-          className="w-full h-full overflow-visible"
-          preserveAspectRatio="none"
+          className="w-full h-48 overflow-visible"
         >
-          {/* Grid lines */}
-          <line
-            x1={paddingX}
-            y1={paddingY}
-            x2={svgWidth - paddingX}
-            y2={paddingY}
-            stroke="rgba(237,231,214,0.06)"
-            strokeDasharray="2 2"
-          />
-          <line
-            x1={paddingX}
-            y1={svgHeight / 2}
-            x2={svgWidth - paddingX}
-            y2={svgHeight / 2}
-            stroke="rgba(237,231,214,0.06)"
-            strokeDasharray="2 2"
-          />
-          <line
-            x1={paddingX}
-            y1={svgHeight - paddingY}
-            x2={svgWidth - paddingX}
-            y2={svgHeight - paddingY}
-            stroke="rgba(237,231,214,0.12)"
-          />
+          <defs>
+            <linearGradient id="buimbpayVolumeGrad" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stopColor="#0D6EFD" stopOpacity="0.25" />
+              <stop offset="100%" stopColor="#0D6EFD" stopOpacity="0.0" />
+            </linearGradient>
+          </defs>
 
-          {/* Area Fill: Flat hairline tint without gradient */}
-          <path d={areaD} fill="rgba(201, 162, 39, 0.08)" />
+          {/* Horizontal Grid lines */}
+          {[0.25, 0.5, 0.75, 1].map((pct) => {
+            const y = svgHeight - paddingY - pct * (svgHeight - 2 * paddingY);
+            return (
+              <line
+                key={pct}
+                x1={paddingX}
+                y1={y}
+                x2={svgWidth - paddingX}
+                y2={y}
+                stroke="#E2E8F0"
+                strokeWidth="1"
+                strokeDasharray="4 4"
+              />
+            );
+          })}
 
-          {/* Line Stroke */}
+          {/* Area Fill */}
+          <path d={areaD} fill="url(#buimbpayVolumeGrad)" />
+
+          {/* Main Trend Line */}
           <path
             d={pathD}
             fill="none"
-            stroke="#C9A227"
-            strokeWidth="2"
+            stroke="#0D6EFD"
+            strokeWidth="3"
             strokeLinecap="round"
             strokeLinejoin="round"
           />
 
           {/* Interactive Data Points */}
           {coords.map((c, i) => (
-            <circle
-              key={i}
-              cx={c.x}
-              cy={c.y}
-              r={hoveredPoint?.date === c.pt.date ? 5 : 3}
-              fill="#131B17"
-              stroke="#C9A227"
-              strokeWidth="2"
-              className="cursor-pointer transition-all duration-150"
-              onMouseEnter={() =>
-                setHoveredPoint({
-                  date: c.pt.date,
-                  successful: `₹${c.pt.amount.toLocaleString('en-IN')}`,
-                  failed: `₹${c.pt.failed.toLocaleString('en-IN')}`,
-                  count: c.pt.count,
-                  x: c.x,
-                  y: c.y,
-                })
-              }
-              onMouseLeave={() => setHoveredPoint(null)}
-            />
+            <g key={i}>
+              <circle
+                cx={c.x}
+                cy={c.y}
+                r="4"
+                className="fill-white stroke-blue-600 stroke-2 hover:r-6 transition-all cursor-pointer"
+                onMouseEnter={() =>
+                  setHoveredPoint({
+                    date: c.pt.date,
+                    successful: `₹${c.pt.amount.toLocaleString('en-IN')}`,
+                    failed: `₹${c.pt.failed.toLocaleString('en-IN')}`,
+                    count: c.pt.count,
+                    x: c.x,
+                    y: c.y,
+                  })
+                }
+              />
+            </g>
           ))}
         </svg>
 
         {/* Hover Tooltip */}
         {hoveredPoint && (
           <div
-            className="absolute z-30 pointer-events-none p-3 rounded-[4px] bg-[#131B17] border border-[rgba(237,231,214,0.15)] text-xs space-y-1 transform -translate-x-1/2 -translate-y-full"
+            className="absolute z-20 pointer-events-none p-3 bg-slate-900 text-white rounded-lg shadow-xl text-xs space-y-1 transform -translate-x-1/2 -translate-y-full"
             style={{
               left: `${(hoveredPoint.x / svgWidth) * 100}%`,
-              top: `${(hoveredPoint.y / svgHeight) * 100 - 12}%`,
+              top: `${(hoveredPoint.y / svgHeight) * 100}%`,
             }}
           >
-            <div className="text-[11px] font-mono font-bold text-[#EDE7D6] border-b border-[rgba(237,231,214,0.08)] pb-1">
-              {hoveredPoint.date} (Simulated)
+            <div className="font-bold text-slate-200 border-b border-slate-700 pb-1 flex justify-between gap-4">
+              <span>{hoveredPoint.date}</span>
+              <span className="text-slate-400 font-normal">{hoveredPoint.count} txns</span>
             </div>
-            <div className="flex items-center justify-between gap-4 text-[#8FA396]">
-              <span>Captured:</span>
-              <span className="font-mono font-bold text-[#4E8B6F] tabular-nums">{hoveredPoint.successful}</span>
-            </div>
-            <div className="flex items-center justify-between gap-4 text-[#8FA396]">
-              <span>Failed:</span>
-              <span className="font-mono text-[#B0503F] tabular-nums">{hoveredPoint.failed}</span>
-            </div>
-            <div className="flex items-center justify-between gap-4 text-[#8FA396] text-[10px] font-mono">
-              <span>Count:</span>
-              <span>{hoveredPoint.count} txns</span>
+            <div className="text-emerald-400 font-mono font-bold">
+              Captured: {hoveredPoint.successful}
             </div>
           </div>
         )}
       </div>
 
-      {/* Footer Dates */}
-      <div className="flex justify-between text-[11px] font-mono text-[#8FA396] px-2 pt-2 border-t border-[rgba(237,231,214,0.08)]">
-        <span>Sep 09, 2026</span>
-        <span>Sep 15, 2026</span>
-        <span>Today (Sep 22)</span>
+      {/* Footer Metrics */}
+      <div className="flex items-center justify-between pt-2 border-t border-slate-100 text-xs text-slate-500">
+        <span className="flex items-center gap-1.5 font-medium">
+          <span className="w-2.5 h-2.5 rounded-full bg-blue-600" /> Gross Volume
+        </span>
+        <span className="font-mono text-slate-700 font-semibold">Peak Day: Sep 22 (₹1,48,250.00)</span>
       </div>
     </div>
   );

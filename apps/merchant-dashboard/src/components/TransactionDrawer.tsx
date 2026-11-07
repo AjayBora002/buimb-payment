@@ -1,10 +1,16 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
   X,
   Copy,
   CheckCircle2,
   Clock,
   RotateCcw,
+  AlertCircle,
+  ExternalLink,
+  CreditCard,
+  Smartphone,
+  Building2,
+  FileCode,
 } from 'lucide-react';
 import { useToast } from './Toast.js';
 
@@ -37,6 +43,8 @@ export const TransactionDrawer: React.FC<TransactionDrawerProps> = ({
   onInitiateRefund,
 }) => {
   const { showToast } = useToast();
+  const [showJson, setShowJson] = useState(false);
+  const [showRefundConfirm, setShowRefundConfirm] = useState(false);
 
   if (!transaction) return null;
 
@@ -45,198 +53,220 @@ export const TransactionDrawer: React.FC<TransactionDrawerProps> = ({
     showToast(`Copied ${label} to clipboard`, 'success');
   };
 
-  const getStatusBadge = (status: TransactionRecord['status']) => {
-    switch (status) {
-      case 'CAPTURED':
-        return 'border-[#4E8B6F] text-[#4E8B6F] bg-[#4E8B6F]/5';
-      case 'PROCESSING':
-        return 'border-[#C98A2E] text-[#C98A2E] bg-[#C98A2E]/5';
-      case 'FAILED':
-        return 'border-[#B0503F] text-[#B0503F] bg-[#B0503F]/5';
-      case 'REFUNDED':
-        return 'border-[#8FA396] text-[#8FA396] bg-transparent';
-      case 'DISPUTED':
-        return 'border-[#C98A2E] text-[#C98A2E] bg-[#C98A2E]/5';
-      default:
-        return 'border-[#8FA396] text-[#8FA396] bg-transparent';
-    }
-  };
+  const mdrFee = (transaction.amountRaw * 0.02).toFixed(2);
+  const gstOnFee = (parseFloat(mdrFee) * 0.18).toFixed(2);
+  const netSettled = (transaction.amountRaw - parseFloat(mdrFee) - parseFloat(gstOnFee)).toFixed(2);
 
   return (
     <div className="fixed inset-0 z-50 overflow-hidden">
       {/* Backdrop */}
       <div
-        className="absolute inset-0 bg-[#131B17]/80 backdrop-blur-sm transition-opacity"
+        className="absolute inset-0 bg-slate-900/40 backdrop-blur-xs transition-opacity"
         onClick={onClose}
       />
 
-      {/* Slide-over panel */}
+      {/* Slide-over Panel */}
       <div className="fixed inset-y-0 right-0 max-w-full flex pl-10">
-        <div className="w-screen max-w-md bg-[#131B17] border-l border-[rgba(237,231,214,0.12)] flex flex-col justify-between overflow-y-auto animate-in slide-in-from-right duration-200">
+        <div className="w-screen max-w-md bg-white border-l border-slate-200 flex flex-col justify-between overflow-y-auto shadow-2xl animate-in slide-in-from-right duration-200">
           <div>
             {/* Header */}
-            <div className="p-6 border-b border-[rgba(237,231,214,0.08)] bg-[#1D2E28] flex items-center justify-between">
+            <div className="p-6 border-b border-slate-200 bg-slate-50 flex items-center justify-between">
               <div>
-                <span className="text-[10px] font-mono font-bold text-[#8FA396] uppercase block">
-                  Sandbox Transaction Detail
+                <span className="text-[10px] font-mono font-bold text-slate-500 uppercase block tracking-wider">
+                  Payment Details
                 </span>
                 <div className="flex items-center gap-2 mt-1">
-                  <h3 className="text-sm font-mono font-bold text-[#EDE7D6]">{transaction.id}</h3>
+                  <span className="text-base font-bold font-mono text-slate-900">{transaction.id}</span>
                   <button
                     onClick={() => copyToClipboard(transaction.id, 'Payment ID')}
-                    className="p-1 rounded-[2px] text-[#8FA396] hover:text-[#EDE7D6] hover:bg-[#131B17] transition-colors"
+                    className="text-slate-400 hover:text-slate-700 transition-colors"
                   >
                     <Copy className="w-3.5 h-3.5" />
                   </button>
                 </div>
               </div>
+
               <button
                 onClick={onClose}
-                className="p-2 rounded-[4px] text-[#8FA396] hover:text-[#EDE7D6] hover:bg-[#131B17] transition-colors"
+                className="p-1.5 rounded-lg text-slate-400 hover:text-slate-700 hover:bg-slate-200/60 transition-colors"
               >
                 <X className="w-4 h-4" />
               </button>
             </div>
 
-            <div className="p-6 space-y-6 text-xs">
-              {/* Gross Amount & Status */}
-              <div className="p-4 bg-[#1D2E28] border border-[rgba(237,231,214,0.08)] flex items-center justify-between">
+            {/* Content Body */}
+            <div className="p-6 space-y-6">
+              {/* Main Amount & Status Banner */}
+              <div className="p-4 rounded-xl bg-slate-50 border border-slate-200 flex items-center justify-between">
                 <div>
-                  <span className="text-[11px] text-[#8FA396]">Gross Amount</span>
-                  <div className="text-2xl font-bold font-mono text-[#EDE7D6] tabular-nums mt-0.5">
-                    {transaction.amount}
-                  </div>
-                  <span className="text-[10px] font-mono text-[#8FA396]">Currency: {transaction.currency}</span>
+                  <span className="text-xs text-slate-500 font-medium">Captured Amount</span>
+                  <div className="text-2xl font-bold font-mono text-slate-900">{transaction.amount}</div>
                 </div>
-                <div className="text-right space-y-1">
-                  <span
-                    className={`inline-flex items-center px-2 py-0.5 rounded-[2px] font-mono text-xs font-bold border ${getStatusBadge(
-                      transaction.status
-                    )}`}
+                <span
+                  className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold ${
+                    transaction.status === 'CAPTURED'
+                      ? 'bg-emerald-50 text-emerald-700 border border-emerald-200'
+                      : transaction.status === 'PROCESSING'
+                      ? 'bg-amber-50 text-amber-700 border border-amber-200'
+                      : transaction.status === 'FAILED'
+                      ? 'bg-rose-50 text-rose-700 border border-rose-200'
+                      : 'bg-slate-100 text-slate-700 border border-slate-200'
+                  }`}
+                >
+                  {transaction.status === 'CAPTURED' && <CheckCircle2 className="w-3 h-3" />}
+                  {transaction.status}
+                </span>
+              </div>
+
+              {/* Payment Timeline Steps */}
+              <div className="space-y-3">
+                <h4 className="text-xs font-bold text-slate-900 uppercase tracking-wider">
+                  Payment Lifecycle Timeline
+                </h4>
+                <div className="space-y-2 pl-2 border-l-2 border-slate-200 text-xs">
+                  {transaction.steps.map((step, idx) => (
+                    <div key={step} className="relative pl-4">
+                      <span className="absolute -left-[17px] top-0.5 w-2.5 h-2.5 rounded-full bg-emerald-500 ring-4 ring-white" />
+                      <div className="font-bold text-slate-800">{step}</div>
+                      <div className="text-[10px] text-slate-400">Step {idx + 1} processed successfully</div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              {/* Customer & Order Details */}
+              <div className="space-y-2 pt-2 border-t border-slate-200">
+                <h4 className="text-xs font-bold text-slate-900 uppercase tracking-wider">
+                  Customer & Order
+                </h4>
+                <div className="bg-slate-50 rounded-xl p-3.5 border border-slate-200 space-y-2 text-xs">
+                  <div className="flex justify-between">
+                    <span className="text-slate-500">Customer Name:</span>
+                    <span className="font-semibold text-slate-900">{transaction.customerName}</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="text-slate-500">Email Address:</span>
+                    <span className="font-semibold text-slate-900">{transaction.customerEmail}</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="text-slate-500">Order ID:</span>
+                    <span className="font-mono font-bold text-blue-600">{transaction.orderId}</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="text-slate-500">Payment Instrument:</span>
+                    <span className="font-semibold text-slate-900">{transaction.methodDetail}</span>
+                  </div>
+                </div>
+              </div>
+
+              {/* Fee & GST Breakdown */}
+              <div className="space-y-2 pt-2 border-t border-slate-200">
+                <h4 className="text-xs font-bold text-slate-900 uppercase tracking-wider">
+                  MDR Fee & Settlement Calculation
+                </h4>
+                <div className="bg-slate-50 rounded-xl p-3.5 border border-slate-200 space-y-2 text-xs font-mono">
+                  <div className="flex justify-between text-slate-600">
+                    <span>Gross Amount:</span>
+                    <span>₹{transaction.amountRaw.toFixed(2)}</span>
+                  </div>
+                  <div className="flex justify-between text-slate-600">
+                    <span>Gateway Fee (2.0% MDR):</span>
+                    <span className="text-rose-600">- ₹{mdrFee}</span>
+                  </div>
+                  <div className="flex justify-between text-slate-600">
+                    <span>GST (18% on fee):</span>
+                    <span className="text-rose-600">- ₹{gstOnFee}</span>
+                  </div>
+                  <div className="pt-2 border-t border-slate-200 flex justify-between text-slate-900 font-bold text-sm">
+                    <span>Net Settled Amount:</span>
+                    <span className="text-emerald-600">₹{netSettled}</span>
+                  </div>
+                </div>
+              </div>
+
+              {/* Gateway References */}
+              <div className="p-3 bg-blue-50/60 rounded-xl border border-blue-100 text-xs space-y-1">
+                <div className="text-slate-500">Bank Reference (RRN / ARN):</div>
+                <div className="font-mono font-bold text-blue-900 flex items-center justify-between">
+                  <span>{transaction.arn || 'ARN99281029381'}</span>
+                  <button
+                    onClick={() => copyToClipboard(transaction.arn || 'ARN99281029381', 'ARN')}
+                    className="text-blue-600 hover:text-blue-800"
                   >
-                    {transaction.status}
-                  </span>
-                  <div className="text-[10px] font-mono text-[#8FA396]">Simulated Auth</div>
+                    <Copy className="w-3 h-3" />
+                  </button>
                 </div>
               </div>
 
-              {/* State Machine Transition Timeline */}
-              <div className="space-y-2">
-                <div>
-                  <h4 className="text-xs font-bold text-[#EDE7D6] uppercase">
-                    State Machine Lifecycle
-                  </h4>
-                  <div className="w-8 h-0.5 bg-[#C9A227] mt-1" />
-                </div>
-                <div className="p-4 bg-[#1D2E28] border border-[rgba(237,231,214,0.08)] space-y-3">
-                  {['CREATED', 'PROCESSING', 'AUTHORISED', 'CAPTURED'].map((step, idx) => {
-                    const isDone = transaction.steps.includes(step);
-                    return (
-                      <div key={step} className="flex items-start gap-3 relative">
-                        {idx < 3 && (
-                          <div
-                            className={`absolute left-2 top-4 w-0.5 h-6 ${
-                              isDone ? 'bg-[#4E8B6F]' : 'bg-[rgba(237,231,214,0.1)]'
-                            }`}
-                          />
-                        )}
-                        <div
-                          className={`w-4 h-4 rounded-[2px] flex items-center justify-center flex-shrink-0 z-10 ${
-                            isDone
-                              ? 'bg-[#4E8B6F] text-[#131B17]'
-                              : 'bg-[#131B17] text-[#8FA396] border border-[rgba(237,231,214,0.1)]'
-                          }`}
-                        >
-                          {isDone ? <CheckCircle2 className="w-3 h-3" /> : <Clock className="w-2.5 h-2.5" />}
-                        </div>
-                        <div className="flex-1 flex items-center justify-between">
-                          <span className={`font-mono text-[11px] ${isDone ? 'text-[#EDE7D6] font-semibold' : 'text-[#8FA396]'}`}>
-                            {step}
-                          </span>
-                          <span className="text-[10px] font-mono text-[#8FA396]">
-                            {isDone ? 'Complete' : 'Pending'}
-                          </span>
-                        </div>
-                      </div>
-                    );
-                  })}
-                </div>
-              </div>
-
-              {/* Metadata Attributes */}
-              <div className="space-y-2">
-                <div>
-                  <h4 className="text-xs font-bold text-[#EDE7D6] uppercase">
-                    Transaction Metadata
-                  </h4>
-                  <div className="w-8 h-0.5 bg-[#C9A227] mt-1" />
-                </div>
-                <div className="p-4 bg-[#1D2E28] border border-[rgba(237,231,214,0.08)] divide-y divide-[rgba(237,231,214,0.06)]">
-                  <div className="py-2.5 flex items-center justify-between">
-                    <span className="text-[#8FA396]">Order ID</span>
-                    <div className="flex items-center gap-1.5 font-mono text-[#EDE7D6]">
-                      {transaction.orderId}
-                      <button
-                        onClick={() => copyToClipboard(transaction.orderId, 'Order ID')}
-                        className="text-[#8FA396] hover:text-[#EDE7D6]"
-                      >
-                        <Copy className="w-3 h-3" />
-                      </button>
-                    </div>
-                  </div>
-
-                  <div className="py-2.5 flex items-center justify-between">
-                    <span className="text-[#8FA396]">Customer</span>
-                    <div className="text-right">
-                      <div className="text-[#EDE7D6] font-semibold">{transaction.customerName}</div>
-                      <div className="text-[11px] font-mono text-[#8FA396]">{transaction.customerEmail}</div>
-                    </div>
-                  </div>
-
-                  <div className="py-2.5 flex items-center justify-between">
-                    <span className="text-[#8FA396]">Instrument / Rail</span>
-                    <div className="text-right">
-                      <div className="text-[#EDE7D6] font-semibold">{transaction.method}</div>
-                      <div className="text-[11px] text-[#8FA396]">{transaction.methodDetail}</div>
-                    </div>
-                  </div>
-
-                  <div className="py-2.5 flex items-center justify-between">
-                    <span className="text-[#8FA396]">Created At</span>
-                    <span className="font-mono text-[#EDE7D6] tabular-nums">{transaction.createdAt}</span>
-                  </div>
-
-                  {transaction.arn && (
-                    <div className="py-2.5 flex items-center justify-between">
-                      <span className="text-[#8FA396]">Bank ARN</span>
-                      <span className="font-mono text-[#C9A227]">{transaction.arn}</span>
-                    </div>
-                  )}
-                </div>
+              {/* Raw JSON Toggle */}
+              <div>
+                <button
+                  onClick={() => setShowJson(!showJson)}
+                  className="flex items-center gap-1.5 text-xs text-slate-500 hover:text-blue-600 font-medium transition-colors"
+                >
+                  <FileCode className="w-3.5 h-3.5" />
+                  {showJson ? 'Hide Raw API JSON' : 'Inspect Raw API Payload'}
+                </button>
+                {showJson && (
+                  <pre className="mt-2 p-3 bg-slate-900 text-slate-200 rounded-lg text-[10px] font-mono overflow-x-auto">
+                    {JSON.stringify(transaction, null, 2)}
+                  </pre>
+                )}
               </div>
             </div>
           </div>
 
-          {/* Footer Actions */}
-          <div className="p-6 border-t border-[rgba(237,231,214,0.08)] bg-[#1D2E28] flex gap-3">
-            {transaction.status === 'CAPTURED' && (
-              <button
-                onClick={() => onInitiateRefund?.(transaction)}
-                className="flex-1 py-2 px-3 rounded-[4px] bg-[#131B17] hover:bg-[#243831] text-[#EDE7D6] font-semibold flex items-center justify-center gap-1.5 border border-[rgba(237,231,214,0.1)] transition-colors"
-              >
-                <RotateCcw className="w-3.5 h-3.5 text-[#C9A227]" />
-                Initiate Refund
-              </button>
-            )}
+          {/* Footer Action Buttons */}
+          <div className="p-4 border-t border-slate-200 bg-slate-50 flex items-center justify-between gap-3">
+            <button
+              onClick={() => setShowRefundConfirm(true)}
+              className="flex items-center gap-1.5 px-3.5 py-2 rounded-lg bg-white border border-rose-200 text-rose-600 hover:bg-rose-50 text-xs font-bold transition-all shadow-xs"
+            >
+              <RotateCcw className="w-3.5 h-3.5" />
+              Issue Refund
+            </button>
+
             <button
               onClick={onClose}
-              className="py-2 px-4 rounded-[4px] bg-[#C9A227] hover:bg-[#DBB53B] text-[#131B17] font-bold transition-colors border border-[#B08C1E]"
+              className="px-4 py-2 rounded-lg bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold transition-all shadow-xs"
             >
-              Close
+              Done
             </button>
           </div>
         </div>
       </div>
+
+      {/* Refund Confirmation Modal */}
+      {showRefundConfirm && (
+        <div className="fixed inset-0 bg-slate-900/60 backdrop-blur-xs z-50 flex items-center justify-center p-4">
+          <div className="bg-white border border-slate-200 rounded-xl w-full max-w-sm p-6 space-y-4 shadow-2xl">
+            <div className="flex items-center gap-2 text-rose-600">
+              <RotateCcw className="w-5 h-5" />
+              <h3 className="text-sm font-bold text-slate-900">Confirm Instant Refund</h3>
+            </div>
+            <p className="text-xs text-slate-600 leading-relaxed">
+              Are you sure you want to refund <span className="font-bold font-mono text-slate-900">{transaction.amount}</span> to <span className="font-semibold text-slate-900">{transaction.customerName}</span>? Funds will be credited back via original payment rail within 1-2 hours.
+            </p>
+            <div className="flex justify-end gap-2 pt-2">
+              <button
+                onClick={() => setShowRefundConfirm(false)}
+                className="px-3.5 py-1.5 rounded-lg bg-slate-100 text-slate-700 text-xs font-semibold hover:bg-slate-200"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={() => {
+                  setShowRefundConfirm(false);
+                  onInitiateRefund?.(transaction);
+                }}
+                className="px-3.5 py-1.5 rounded-lg bg-rose-600 hover:bg-rose-700 text-white text-xs font-bold shadow-xs"
+              >
+                Proceed Refund
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
