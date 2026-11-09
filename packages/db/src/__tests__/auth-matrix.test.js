@@ -9,10 +9,7 @@ import { CustomerSessionRepository } from '../repositories/customer-session.repo
 import { PaymentSessionRepository } from '../repositories/payment-session.repository.js';
 import { ObservationRepository } from '../repositories/observation.repository.js';
 import { AuditLogRepository } from '../repositories/audit-log.repository.js';
-import { QueueEngine } from '@youpi/core';
-import { TimingEngine } from '@youpi/core';
-import { AttributionEngine } from '@youpi/core';
-import { WebhookEngine } from '@youpi/core';
+import { QueueEngine, TimingEngine, AttributionEngine, WebhookEngine } from '../../../core/src/index.js';
 import { generateQrSvg } from '../../../../apps/checkout-portal/src/qr.js';
 import {
   buildUpiUri,
@@ -29,7 +26,7 @@ import {
 } from '@youpi/common';
 import { startServer as startPaymentApi } from '../../../../apps/payment-api/src/index.js';
 import { CoinWalletStoreServer } from '../../../../apps/coin-wallet-store/src/server.js';
-import { YoupiPaymentClient } from '@youpi/merchant-sdk';
+import { YoupiPaymentClient } from '../../../merchant-sdk/src/index.js';
 import { authHeadersFor } from '../../../../scripts/test-support.js';
 
 test('Full 53-Point Customer Identity, Authentication & Payment Invariant Matrix', async () => {

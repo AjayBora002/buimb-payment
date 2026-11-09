@@ -81,6 +81,19 @@ export const SenderType = Object.freeze({
 });
 
 /**
+ * Enterprise Admin Role hierarchy and RBAC classifications.
+ */
+export const AdminRole = Object.freeze({
+  SUPER_ADMIN: 'SUPER_ADMIN',
+  OPERATIONS: 'OPERATIONS',
+  RISK_FRAUD: 'RISK_FRAUD',
+  FINANCE_SETTLEMENT: 'FINANCE_SETTLEMENT',
+  COMPLIANCE_KYC: 'COMPLIANCE_KYC',
+  SUPPORT: 'SUPPORT',
+  AUDITOR: 'AUDITOR'
+});
+
+/**
  * Audit log actor classifications.
  */
 export const AuditActorType = Object.freeze({

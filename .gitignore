@@ -65,4 +65,5 @@ YouPI-PG-main/
 # Runtime data & generated secrets
 data/
 .secrets/
+.gradle/
 

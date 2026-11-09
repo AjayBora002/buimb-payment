@@ -971,21 +971,363 @@
       border-bottom: none;
       padding: 8px 12px;
     }
+
+    /* ── Buimb-Pay Genuine Admin Authentication Portal & Header ── */
+    #adminAuthOverlay {
+      position: fixed;
+      inset: 0;
+      z-index: 999999;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: radial-gradient(circle at 50% 20%, rgba(37, 99, 235, 0.12) 0%, rgba(10, 15, 30, 0.96) 75%);
+      backdrop-filter: blur(16px);
+      padding: 1.5rem;
+      transition: opacity 0.3s ease, visibility 0.3s ease;
+    }
+
+    #adminAuthOverlay.is-hidden {
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+    }
+
+    .admin-login-card {
+      width: 100%;
+      max-width: 580px;
+      background: #0b1329;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: 20px;
+      padding: 2.25rem;
+      box-shadow: 0 30px 80px rgba(0, 0, 0, 0.65), 0 0 40px rgba(37, 99, 235, 0.2);
+      color: #f8fafc;
+      animation: adminModalPop 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    @keyframes adminModalPop {
+      0% { transform: scale(0.95) translateY(12px); opacity: 0; }
+      100% { transform: scale(1) translateY(0); opacity: 1; }
+    }
+
+    .admin-brand-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 1.5rem;
+    }
+
+    .admin-brand-icon {
+      width: 44px;
+      height: 44px;
+      background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-size: 20px;
+      font-weight: 900;
+      box-shadow: 0 8px 20px rgba(37, 99, 235, 0.35);
+    }
+
+    .admin-brand-title {
+      font-size: 1.35rem;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      color: #ffffff;
+      line-height: 1.2;
+    }
+
+    .admin-brand-subtitle {
+      font-size: 0.78rem;
+      color: #94a3b8;
+      font-weight: 500;
+    }
+
+    .admin-role-quickselect {
+      margin-bottom: 1.5rem;
+      background: rgba(15, 23, 42, 0.7);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 12px;
+      padding: 1rem;
+    }
+
+    .admin-role-pills {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-top: 8px;
+    }
+
+    .role-pill-btn {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      color: #cbd5e1;
+      border-radius: 9999px;
+      padding: 5px 11px;
+      font-size: 0.72rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.15s ease;
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    .role-pill-btn:hover {
+      background: rgba(37, 99, 235, 0.2);
+      border-color: #3b82f6;
+      color: #ffffff;
+    }
+
+    .role-pill-btn.active {
+      background: #2563eb;
+      border-color: #3b82f6;
+      color: #ffffff;
+      box-shadow: 0 4px 12px rgba(37, 99, 235, 0.4);
+    }
+
+    .admin-input-group {
+      margin-bottom: 1.1rem;
+    }
+
+    .admin-input-label {
+      display: block;
+      font-size: 0.78rem;
+      font-weight: 700;
+      color: #cbd5e1;
+      margin-bottom: 6px;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .admin-input-field {
+      width: 100%;
+      background: #070c18;
+      border: 1px solid #1e293b;
+      border-radius: 10px;
+      padding: 10px 14px;
+      color: #ffffff;
+      font-size: 0.88rem;
+      outline: none;
+      transition: border-color 0.2s ease, box-shadow 0.2s ease;
+      box-sizing: border-box;
+    }
+
+    .admin-input-field:focus {
+      border-color: #38bdf8;
+      box-shadow: 0 0 0 3px rgba(56, 189, 248, 0.15);
+    }
+
+    .admin-login-submit-btn {
+      width: 100%;
+      background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
+      color: #ffffff;
+      border: none;
+      border-radius: 10px;
+      padding: 12px;
+      font-size: 0.95rem;
+      font-weight: 800;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      margin-top: 1.5rem;
+      box-shadow: 0 8px 25px rgba(37, 99, 235, 0.35);
+      transition: all 0.2s ease;
+    }
+
+    .admin-login-submit-btn:hover {
+      background: linear-gradient(135deg, #1d4ed8 0%, #1e40af 100%);
+      transform: translateY(-1px);
+    }
+
+    .admin-role-info-box {
+      margin-top: 8px;
+      padding: 8px 10px;
+      border-radius: 8px;
+      font-size: 0.73rem;
+      line-height: 1.45;
+      background: rgba(37, 99, 235, 0.08);
+      border-left: 3px solid #38bdf8;
+      color: #93c5fd;
+    }
+
+    /* Top Header Admin Profile Pill */
+    .admin-header-profile {
+      display: flex;
+      align-items: center;
+      gap: 9px;
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 9999px;
+      padding: 4px 12px 4px 5px;
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+
+    .admin-header-profile:hover {
+      border-color: var(--primary);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    }
+
+    .admin-header-avatar {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #2563eb 0%, #4f46e5 100%);
+      color: #ffffff;
+      font-size: 11px;
+      font-weight: 900;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-transform: uppercase;
+    }
+
+    .admin-header-details {
+      display: flex;
+      flex-direction: column;
+      line-height: 1.15;
+    }
+
+    .admin-header-name {
+      font-size: 0.78rem;
+      font-weight: 800;
+      color: var(--text-heading);
+    }
+
+    .admin-header-role-badge {
+      font-size: 0.65rem;
+      font-weight: 800;
+      letter-spacing: 0.03em;
+      border-radius: 4px;
+      padding: 1px 5px;
+      display: inline-block;
+      width: fit-content;
+    }
+
+    .role-badge-super { background: #fee2e2; color: #991b1b; border: 1px solid #fca5a5; }
+    .role-badge-ops { background: #eff6ff; color: #1e40af; border: 1px solid #bfdbfe; }
+    .role-badge-risk { background: #f3e8ff; color: #6b21a8; border: 1px solid #d8b4fe; }
+    .role-badge-finance { background: #ecfdf5; color: #065f46; border: 1px solid #a7f3d0; }
+    .role-badge-compliance { background: #fffbeb; color: #92400e; border: 1px solid #fde68a; }
+    .role-badge-support { background: #ecfeff; color: #155e75; border: 1px solid #a5f3fc; }
+    .role-badge-auditor { background: #f1f5f9; color: #334155; border: 1px solid #cbd5e1; }
   </style>
 </head>
 
 <body>
 
+  <!-- ── BUIMB-PAY GENUINE ADMIN AUTHENTICATION OVERLAY ── -->
+  <div id="adminAuthOverlay">
+    <div class="admin-login-card">
+      <div class="admin-brand-header">
+        <div class="admin-brand-icon">
+          <svg viewBox="0 0 24 24" fill="none" style="width:24px; height:24px;">
+            <path d="M14 2L4 14h7l-1 8 10-12h-7l1-8z" fill="#ffffff"/>
+          </svg>
+        </div>
+        <div>
+          <div class="admin-brand-title">Buimb-Pay <span style="font-size:0.75rem; color:#38bdf8; font-weight:700; background:rgba(56,189,248,0.12); padding:2px 8px; border-radius:6px; border:1px solid rgba(56,189,248,0.25); text-transform:uppercase; vertical-align:middle; margin-left:6px;">Control Hub</span></div>
+          <div class="admin-brand-subtitle">Enterprise Gateway Administration &amp; Multi-Tier RBAC Access</div>
+        </div>
+      </div>
+
+      <!-- Quick Switch Admin Roles Selector -->
+      <div class="admin-role-quickselect">
+        <div style="display:flex; justify-content:space-between; align-items:center;">
+          <span style="font-size:0.72rem; font-weight:800; text-transform:uppercase; letter-spacing:0.05em; color:#94a3b8;">
+            Select Administrative Tier to Authenticate
+          </span>
+          <span style="font-size:0.68rem; color:#38bdf8; font-weight:700;">7 Standard Enterprise Roles</span>
+        </div>
+        <div class="admin-role-pills" id="adminRolePills">
+          <button type="button" class="role-pill-btn active" onclick="quickSelectRole('SUPER_ADMIN')" id="pill-SUPER_ADMIN">
+            <span>👑</span> <span>Super Admin</span>
+          </button>
+          <button type="button" class="role-pill-btn" onclick="quickSelectRole('OPERATIONS')" id="pill-OPERATIONS">
+            <span>🛠️</span> <span>Operations</span>
+          </button>
+          <button type="button" class="role-pill-btn" onclick="quickSelectRole('RISK_FRAUD')" id="pill-RISK_FRAUD">
+            <span>🛡️</span> <span>Risk &amp; Fraud</span>
+          </button>
+          <button type="button" class="role-pill-btn" onclick="quickSelectRole('FINANCE_SETTLEMENT')" id="pill-FINANCE_SETTLEMENT">
+            <span>💰</span> <span>Finance</span>
+          </button>
+          <button type="button" class="role-pill-btn" onclick="quickSelectRole('COMPLIANCE_KYC')" id="pill-COMPLIANCE_KYC">
+            <span>⚖️</span> <span>Compliance</span>
+          </button>
+          <button type="button" class="role-pill-btn" onclick="quickSelectRole('SUPPORT')" id="pill-SUPPORT">
+            <span>🎧</span> <span>Support</span>
+          </button>
+          <button type="button" class="role-pill-btn" onclick="quickSelectRole('AUDITOR')" id="pill-AUDITOR">
+            <span>📋</span> <span>Auditor</span>
+          </button>
+        </div>
+        <div class="admin-role-info-box" id="roleDescriptionBox">
+          <strong>👑 Super Administrator (Root Platform Owner):</strong> Unrestricted master authority across all infrastructure, master API keys, ledger settlements, bank nodes, and staff privileges.
+        </div>
+      </div>
+
+      <!-- Direct Login Form -->
+      <form id="adminLoginForm" onsubmit="handleAdminLogin(event)">
+        <div class="admin-input-group">
+          <label class="admin-input-label" for="adminEmailInput">Admin Work Email</label>
+          <input type="email" id="adminEmailInput" class="admin-input-field" value="superadmin@buimbpay.com" required placeholder="admin@buimbpay.com" />
+        </div>
+
+        <div class="admin-input-group">
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;">
+            <label class="admin-input-label" style="margin-bottom:0;" for="adminPasswordInput">Password</label>
+            <span style="font-size:0.72rem; color:#94a3b8; cursor:pointer;" onclick="togglePasswordVisibility()">Show Password</span>
+          </div>
+          <input type="password" id="adminPasswordInput" class="admin-input-field" value="Admin@BuimbPay2026!" required placeholder="Enter administrative password" />
+        </div>
+
+        <div id="adminLoginError" style="display:none; padding:10px 12px; border-radius:8px; background:rgba(239,68,68,0.15); border:1px solid #ef4444; color:#fca5a5; font-size:0.78rem; margin-top:10px;"></div>
+
+        <button type="submit" id="adminLoginSubmitBtn" class="admin-login-submit-btn">
+          <span id="adminLoginBtnSpinner" style="display:none;">⏳</span>
+          <span id="adminLoginBtnText">Authenticate &amp; Enter Sovereign Hub</span>
+          <span>→</span>
+        </button>
+      </form>
+
+      <div style="margin-top:1.5rem; text-align:center; font-size:0.72rem; color:#64748b;">
+        🔒 Protected by Dual-Token PBKDF2-SHA512 Cryptographic Hashing &amp; Brute-Force Rate Limiting (5 Attempts)
+      </div>
+    </div>
+  </div>
+
   <!-- TOP HEADER -->
   <header>
     <div class="brand-group">
-      <div class="brand-title">
-        <span>🛡️ YOUPI PG</span>
+      <div class="brand-title" style="display:flex; align-items:center; gap:8px;">
+        <div style="width:28px; height:28px; border-radius:7px; background:#0b63e5; display:flex; align-items:center; justify-content:center; color:white;">
+          <svg viewBox="0 0 24 24" fill="none" style="width:16px; height:16px;">
+            <path d="M14 2L4 14h7l-1 8 10-12h-7l1-8z" fill="currentColor"/>
+          </svg>
+        </div>
+        <span style="font-weight:900; letter-spacing:-0.03em;">Buimb-Pay</span>
       </div>
-      <span class="brand-badge">Merchant &amp; Supervisor Hub</span>
+      <span class="brand-badge" style="background:#0b63e5; color:white; font-weight:800; border:none; letter-spacing:0.04em;">SOVEREIGN CONTROL HUB</span>
     </div>
 
     <div class="header-quick-stats">
+      <!-- Admin Profile Pill -->
+      <div class="admin-header-profile" id="adminProfileHeaderBtn" onclick="openAdminAccountMenu()" title="Click to view Admin Profile or Switch Role">
+        <div class="admin-header-avatar" id="headerAdminAvatar">SA</div>
+        <div class="admin-header-details">
+          <span class="admin-header-name" id="headerAdminName">Super Admin</span>
+          <span class="admin-header-role-badge role-badge-super" id="headerAdminBadge">SUPER ADMIN</span>
+        </div>
+        <button type="button" onclick="event.stopPropagation(); handleAdminLogout();" style="background:transparent; border:none; color:var(--text-muted); cursor:pointer; font-size:0.85rem; padding:2px 4px; margin-left:4px;" title="Sign Out">
+          🚪
+        </button>
+      </div>
+
       <!-- Real Light / Dark Mode Toggle Pill -->
       <div class="theme-mode-pill" id="headerThemeBadge" onclick="toggleThemeManual()"
         title="Auto-switches to Dark Mode in Developer Hub and Bright White Mode in Operations &amp; Store Settings. Click to toggle manually anytime.">
@@ -7108,38 +7450,284 @@
       }
     }
 
-    // --- INITIALIZATION ---
-    const validSections = ['operations', 'storeSettings', 'developerHub', 'security'];
-    const hashSec = (window.location.hash || '').replace('#', '').trim();
-    const searchSec = new URLSearchParams(window.location.search).get('section');
-    const initialSec = validSections.includes(hashSec) ? hashSec : (validSections.includes(searchSec) ? searchSec : 'operations');
-    switchSection(initialSec);
-
-    window.addEventListener('hashchange', () => {
-      const h = (window.location.hash || '').replace('#', '').trim();
-      if (validSections.includes(h) && h !== activeSection) {
-        switchSection(h);
+    // ── BUIMB-PAY ADMIN AUTHENTICATION ENGINE ──
+    const ADMIN_TIER_PRESETS = {
+      SUPER_ADMIN: {
+        email: 'superadmin@buimbpay.com',
+        password: 'Admin@BuimbPay2026!',
+        label: '👑 Super Administrator (Root Platform Owner)',
+        color: '#ef4444',
+        badgeClass: 'role-badge-super',
+        desc: 'Unrestricted master authority across all infrastructure, master API keys, ledger settlements, bank nodes, and staff privileges.'
+      },
+      OPERATIONS: {
+        email: 'ops@buimbpay.com',
+        password: 'Admin@BuimbPay2026!',
+        label: '🛠️ Operations & Gateway DevOps Lead',
+        color: '#3b82f6',
+        badgeClass: 'role-badge-ops',
+        desc: 'Direct process controls, service restarting, Android observer pairing, queuing engine oversight, and webhook re-deliveries.'
+      },
+      RISK_FRAUD: {
+        email: 'risk@buimbpay.com',
+        password: 'Admin@BuimbPay2026!',
+        label: '🛡️ Risk, Fraud & Security Officer',
+        color: '#8b5cf6',
+        badgeClass: 'role-badge-risk',
+        desc: 'Real-time fraud detection, velocity rule calibration, suspicious transaction reports (STR/SAR), PAN/VPA blacklists, and merchant freeze authority.'
+      },
+      FINANCE_SETTLEMENT: {
+        email: 'finance@buimbpay.com',
+        password: 'Admin@BuimbPay2026!',
+        label: '💰 Finance, Settlement & Nodal Escrow Admin',
+        color: '#10b981',
+        badgeClass: 'role-badge-finance',
+        desc: 'Escrow balance audits, automated/on-demand settlement batch execution, double-entry ledger verification, fee/MDR setup, and bank payout reconciliation.'
+      },
+      COMPLIANCE_KYC: {
+        email: 'compliance@buimbpay.com',
+        password: 'Admin@BuimbPay2026!',
+        label: '⚖️ Compliance & KYC Verification Officer',
+        color: '#f59e0b',
+        badgeClass: 'role-badge-compliance',
+        desc: 'Merchant onboarding approval, KYC document scrutiny (PAN, GSTIN, CIN, Bank Cheque), AML sanctions screening, and RBI PA regulatory adherence.'
+      },
+      SUPPORT: {
+        email: 'support@buimbpay.com',
+        password: 'Admin@BuimbPay2026!',
+        label: '🎧 Customer Support & Disputes Lead',
+        color: '#06b6d4',
+        badgeClass: 'role-badge-support',
+        desc: 'Merchant support tickets, chargeback responses, transaction tracking, customer query resolution, and live assistance.'
+      },
+      AUDITOR: {
+        email: 'auditor@buimbpay.com',
+        password: 'Admin@BuimbPay2026!',
+        label: '📋 Internal & RBI Regulatory Auditor',
+        color: '#64748b',
+        badgeClass: 'role-badge-auditor',
+        desc: 'Forensic audit log inspection, financial reporting, regulatory compliance verification (Strict Zero-Write Access).'
       }
-    });
+    };
 
-    fetchGatewaySettings();
-    fetchObserversStatus();
-    fetchWhatsAppStatus();
-    loadServices();
-    fetchFalseNarrativeStatus();
-    fetchTestModeStatus();
-    connectServicesLogsSse();
-    connectAdminEventsSse();
-    pollGlobalCounterPending();
+    let activeAdminRole = 'SUPER_ADMIN';
+    let isDashboardInitialized = false;
 
-    pollingTimer = setInterval(fetchLiveData, 2500);
-    setInterval(pollGlobalCounterPending, 4000);
-    setInterval(fetchTunnelStatus, 4000);
-    setInterval(fetchWhatsAppStatus, 4000);
-    setInterval(fetchSmsGatewayDevices, 3500);
-    setInterval(loadServices, 5000);
-    setInterval(fetchFalseNarrativeStatus, 15000);
-    setInterval(fetchTestModeStatus, 15000);
+    function quickSelectRole(roleKey) {
+      activeAdminRole = roleKey;
+      const preset = ADMIN_TIER_PRESETS[roleKey];
+      if (!preset) return;
+
+      document.querySelectorAll('.role-pill-btn').forEach(btn => {
+        btn.classList.toggle('active', btn.id === `pill-${roleKey}`);
+      });
+
+      const emailInput = document.getElementById('adminEmailInput');
+      const passInput = document.getElementById('adminPasswordInput');
+      const descBox = document.getElementById('roleDescriptionBox');
+
+      if (emailInput) emailInput.value = preset.email;
+      if (passInput) passInput.value = preset.password;
+      if (descBox) {
+        descBox.innerHTML = `<strong>${preset.label}:</strong> ${preset.desc}`;
+        descBox.style.borderLeftColor = preset.color;
+      }
+    }
+
+    function togglePasswordVisibility() {
+      const p = document.getElementById('adminPasswordInput');
+      if (p) p.type = p.type === 'password' ? 'text' : 'password';
+    }
+
+    function openAdminAccountMenu() {
+      const overlay = document.getElementById('adminAuthOverlay');
+      if (overlay) overlay.classList.remove('is-hidden');
+    }
+
+    async function handleAdminLogin(event) {
+      if (event) event.preventDefault();
+      const email = document.getElementById('adminEmailInput').value.trim();
+      const password = document.getElementById('adminPasswordInput').value;
+      const errBox = document.getElementById('adminLoginError');
+      const btnSpinner = document.getElementById('adminLoginBtnSpinner');
+      const btnText = document.getElementById('adminLoginBtnText');
+      const submitBtn = document.getElementById('adminLoginSubmitBtn');
+
+      if (errBox) { errBox.style.display = 'none'; errBox.textContent = ''; }
+      if (btnSpinner) btnSpinner.style.display = 'inline-block';
+      if (btnText) btnText.textContent = 'Verifying Credentials...';
+      if (submitBtn) submitBtn.disabled = true;
+
+      try {
+        const res = await fetch(`${API_BASE}/api/admin/auth/login`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ email, password })
+        });
+        const data = await res.json();
+        if (!res.ok || !data.success) {
+          throw new Error(data.error || 'Invalid administrative credentials.');
+        }
+
+        if (data.sessionToken) {
+          localStorage.setItem('buimb_admin_token', data.sessionToken);
+        }
+
+        await checkAdminAuth();
+      } catch (err) {
+        if (errBox) {
+          errBox.textContent = err.message;
+          errBox.style.display = 'block';
+        }
+      } finally {
+        if (btnSpinner) btnSpinner.style.display = 'none';
+        if (btnText) btnText.textContent = 'Authenticate & Enter Sovereign Hub';
+        if (submitBtn) submitBtn.disabled = false;
+      }
+    }
+
+    async function handleAdminLogout() {
+      try {
+        const token = localStorage.getItem('buimb_admin_token');
+        await fetch(`${API_BASE}/api/admin/auth/logout`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': token ? `Bearer ${token}` : ''
+          }
+        });
+      } catch {}
+      localStorage.removeItem('buimb_admin_token');
+      window.currentAdmin = null;
+      const overlay = document.getElementById('adminAuthOverlay');
+      if (overlay) overlay.classList.remove('is-hidden');
+      const errBox = document.getElementById('adminLoginError');
+      if (errBox) {
+        errBox.textContent = 'Session terminated. Please authenticate to re-enter.';
+        errBox.style.display = 'block';
+        errBox.style.background = 'rgba(59, 130, 246, 0.15)';
+        errBox.style.borderColor = '#3b82f6';
+        errBox.style.color = '#93c5fd';
+      }
+    }
+
+    async function checkAdminAuth() {
+      const token = localStorage.getItem('buimb_admin_token') || '';
+      try {
+        const res = await fetch(`${API_BASE}/api/admin/auth/me`, {
+          headers: token ? { 'Authorization': `Bearer ${token}` } : {}
+        });
+        if (res.ok) {
+          const data = await res.json();
+          if (data.authenticated && data.user) {
+            window.currentAdmin = data.user;
+            updateHeaderAdminProfile(data.user);
+            const overlay = document.getElementById('adminAuthOverlay');
+            if (overlay) overlay.classList.add('is-hidden');
+            if (!isDashboardInitialized) {
+              startDashboardSync();
+            }
+            return true;
+          }
+        }
+      } catch (e) {
+        console.warn('Admin auth check failed:', e);
+      }
+
+      // Not authenticated: show login gate
+      const overlay = document.getElementById('adminAuthOverlay');
+      if (overlay) overlay.classList.remove('is-hidden');
+      return false;
+    }
+
+    function updateHeaderAdminProfile(user) {
+      const nameEl = document.getElementById('headerAdminName');
+      const badgeEl = document.getElementById('headerAdminBadge');
+      const avatarEl = document.getElementById('headerAdminAvatar');
+      if (!user) return;
+
+      if (nameEl) nameEl.textContent = user.fullName || user.email;
+      if (avatarEl) {
+        const initials = (user.fullName || 'Admin').split(' ').map(p => p[0]).slice(0, 2).join('');
+        avatarEl.textContent = initials;
+      }
+      if (badgeEl) {
+        const role = user.role || 'SUPER_ADMIN';
+        badgeEl.textContent = role.replace(/_/g, ' ');
+        badgeEl.className = 'admin-header-role-badge';
+        const preset = ADMIN_TIER_PRESETS[role];
+        if (preset) {
+          badgeEl.classList.add(preset.badgeClass);
+        } else {
+          badgeEl.classList.add('role-badge-super');
+        }
+      }
+
+      // Enforce read-only UI if AUDITOR or SUPPORT
+      if (user.role === 'AUDITOR' || user.role === 'SUPPORT') {
+        document.querySelectorAll('.btn-danger, button[onclick*="restart"], button[onclick*="stop"]').forEach(b => {
+          b.title = `Disabled for role '${user.role}' (Segregation of Duties)`;
+          b.style.opacity = '0.5';
+          b.style.cursor = 'not-allowed';
+        });
+      }
+    }
+
+    function startDashboardSync() {
+      isDashboardInitialized = true;
+      const validSections = ['operations', 'storeSettings', 'developerHub', 'security'];
+      const hashSec = (window.location.hash || '').replace('#', '').trim();
+      const searchSec = new URLSearchParams(window.location.search).get('section');
+      const initialSec = validSections.includes(hashSec) ? hashSec : (validSections.includes(searchSec) ? searchSec : 'operations');
+      switchSection(initialSec);
+
+      window.addEventListener('hashchange', () => {
+        const h = (window.location.hash || '').replace('#', '').trim();
+        if (validSections.includes(h) && h !== activeSection) {
+          switchSection(h);
+        }
+      });
+
+      fetchGatewaySettings();
+      fetchObserversStatus();
+      fetchWhatsAppStatus();
+      loadServices();
+      fetchFalseNarrativeStatus();
+      fetchTestModeStatus();
+      connectServicesLogsSse();
+      connectAdminEventsSse();
+      pollGlobalCounterPending();
+
+      pollingTimer = setInterval(fetchLiveData, 2500);
+      setInterval(pollGlobalCounterPending, 4000);
+      setInterval(fetchTunnelStatus, 4000);
+      setInterval(fetchWhatsAppStatus, 4000);
+      setInterval(fetchSmsGatewayDevices, 3500);
+      setInterval(loadServices, 5000);
+      setInterval(fetchFalseNarrativeStatus, 15000);
+      setInterval(fetchTestModeStatus, 15000);
+    }
+
+    // Attach Authorization header to all internal fetches
+    const originalFetch = window.fetch;
+    window.fetch = function(url, options = {}) {
+      const token = localStorage.getItem('buimb_admin_token');
+      if (token && typeof url === 'string' && (url.startsWith('/api') || url.includes('/api/'))) {
+        options = options || {};
+        options.headers = options.headers || {};
+        if (options.headers instanceof Headers) {
+          if (!options.headers.has('Authorization')) {
+            options.headers.set('Authorization', `Bearer ${token}`);
+          }
+        } else if (!options.headers['Authorization'] && !options.headers['authorization']) {
+          options.headers['Authorization'] = `Bearer ${token}`;
+        }
+      }
+      return originalFetch.call(this, url, options);
+    };
+
+    // Kick off authentication check on load
+    checkAdminAuth();
   </script>
 
 </body>

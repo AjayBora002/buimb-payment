@@ -7,6 +7,8 @@ import { getDatabase } from './database.js';
 import { MerchantRepository } from './repositories/merchant.repository.js';
 import { ReceivingAccountRepository } from './repositories/receiving-account.repository.js';
 import { CustomerRepository } from './repositories/customer.repository.js';
+import { AdminUserRepository } from './repositories/admin-user.repository.js';
+import { AdminRole } from '@youpi/common';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -170,6 +172,63 @@ export function runMigrations(targetDb) {
         isPhoneVerified: false
       });
     }
+  }
+
+  // Seed Enterprise Admin Tiers (7 Core RBAC Roles)
+  try {
+    const adminRepo = new AdminUserRepository(db);
+    const defaultPassword = process.env.BUIMBPAY_ADMIN_DEFAULT_PASSWORD || 'Admin@BuimbPay2026!';
+    const adminTiers = [
+      {
+        email: 'superadmin@buimbpay.com',
+        fullName: 'Rajesh Sharma (Platform Owner)',
+        role: AdminRole.SUPER_ADMIN
+      },
+      {
+        email: 'ops@buimbpay.com',
+        fullName: 'Vikram Patel (DevOps & Gateway Lead)',
+        role: AdminRole.OPERATIONS
+      },
+      {
+        email: 'risk@buimbpay.com',
+        fullName: 'Sunita Rao (Risk & Fraud Officer)',
+        role: AdminRole.RISK_FRAUD
+      },
+      {
+        email: 'finance@buimbpay.com',
+        fullName: 'Arun Mehta (Treasury & Settlements Admin)',
+        role: AdminRole.FINANCE_SETTLEMENT
+      },
+      {
+        email: 'compliance@buimbpay.com',
+        fullName: 'Pooja Deshmukh (KYC & Legal Counsel)',
+        role: AdminRole.COMPLIANCE_KYC
+      },
+      {
+        email: 'support@buimbpay.com',
+        fullName: 'Ananya Verma (Merchant Support Lead)',
+        role: AdminRole.SUPPORT
+      },
+      {
+        email: 'auditor@buimbpay.com',
+        fullName: 'Naveen Nair (RBI Regulatory Auditor)',
+        role: AdminRole.AUDITOR
+      }
+    ];
+
+    for (const tier of adminTiers) {
+      if (!adminRepo.findByEmail(tier.email)) {
+        adminRepo.create({
+          email: tier.email,
+          fullName: tier.fullName,
+          password: defaultPassword,
+          role: tier.role,
+          status: 'ACTIVE'
+        });
+      }
+    }
+  } catch (err) {
+    console.error('[migrate] Admin seeding notice:', err.message);
   }
 
   return {

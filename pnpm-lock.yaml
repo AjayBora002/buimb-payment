@@ -383,6 +383,10 @@ importers:
       '@youpi/common':
         specifier: workspace:*
         version: link:../common
+    devDependencies:
+      '@youpi/core':
+        specifier: workspace:*
+        version: link:../core
 
   packages/merchant-sdk:
     dependencies:
