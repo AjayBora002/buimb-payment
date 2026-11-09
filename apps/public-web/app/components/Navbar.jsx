@@ -133,7 +133,7 @@ export function Navbar() {
                     </span>
                     <div className="grid grid-cols-2 gap-2.5">
                       <Link
-                        href="/payment-gateway"
+                        href="/payment-aggregator"
                         onClick={() => setActiveMenu(null)}
                         className="flex items-start gap-2.5 p-2 rounded-xl hover:bg-slate-50 transition-colors group"
                       >
@@ -318,7 +318,7 @@ export function Navbar() {
                           <div className="text-[10px] text-slate-500">Accept global cards & Apple Pay</div>
                         </Link>
                         <Link
-                          href="/international"
+                          href="/international-transfers"
                           onClick={() => setActiveMenu(null)}
                           className="block p-2 rounded-xl hover:bg-slate-50 transition-colors"
                         >
@@ -333,7 +333,7 @@ export function Navbar() {
                         Built for Global Businesses
                       </span>
                       <Link
-                        href="/international"
+                        href="/accept-payments-india"
                         onClick={() => setActiveMenu(null)}
                         className="block p-2 rounded-xl hover:bg-slate-50 transition-colors"
                       >
@@ -350,7 +350,7 @@ export function Navbar() {
                         All-in-One Payments
                       </span>
                       <Link
-                        href="/payment-gateway"
+                        href="/omnichannel"
                         onClick={() => setActiveMenu(null)}
                         className="block p-2 rounded-xl hover:bg-slate-50 transition-colors"
                       >
@@ -626,7 +626,7 @@ export function Navbar() {
                     For Startups & SMEs
                   </Link>
                   <Link
-                    href="/payroll"
+                    href="/payroll-enterprise"
                     onClick={() => setActiveMenu(null)}
                     className="flex items-center justify-between px-3 py-2 rounded-lg hover:bg-slate-50 text-xs font-bold text-slate-800 hover:text-[#0B63E5]"
                   >
