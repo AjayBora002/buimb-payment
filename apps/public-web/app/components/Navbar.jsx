@@ -43,6 +43,11 @@ export function Navbar() {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
+  useEffect(() => {
+    setActiveMenu(null);
+    setMobileMenuOpen(false);
+  }, [pathname]);
+
   return (
     <>
       {/* ── Top Announcement Banner ── */}
@@ -106,8 +111,14 @@ export function Navbar() {
             </Link>
 
             {/* 2. Payments Mega-Menu */}
-            <div className="relative" onMouseEnter={() => setActiveMenu('payments')}>
+            <div
+              className="relative"
+              onMouseEnter={() => setActiveMenu('payments')}
+              onMouseLeave={() => setActiveMenu(null)}
+            >
               <button
+                type="button"
+                onClick={() => setActiveMenu(activeMenu === 'payments' ? null : 'payments')}
                 className={`flex items-center gap-1 py-1 transition-colors hover:text-[#0B63E5] cursor-pointer ${
                   activeMenu === 'payments' ? 'text-[#0B63E5]' : 'text-slate-800'
                 }`}
@@ -367,8 +378,14 @@ export function Navbar() {
             </div>
 
             {/* 3. Banking+ (Buimb-PayX) Mega-Menu */}
-            <div className="relative" onMouseEnter={() => setActiveMenu('banking')}>
+            <div
+              className="relative"
+              onMouseEnter={() => setActiveMenu('banking')}
+              onMouseLeave={() => setActiveMenu(null)}
+            >
               <button
+                type="button"
+                onClick={() => setActiveMenu(activeMenu === 'banking' ? null : 'banking')}
                 className={`flex items-center gap-1 py-1 transition-colors hover:text-[#0B63E5] cursor-pointer ${
                   activeMenu === 'banking' ? 'text-[#0B63E5]' : 'text-slate-800'
                 }`}
@@ -595,8 +612,14 @@ export function Navbar() {
             </div>
 
             {/* 4. Payroll Dropdown */}
-            <div className="relative" onMouseEnter={() => setActiveMenu('payroll')}>
+            <div
+              className="relative"
+              onMouseEnter={() => setActiveMenu('payroll')}
+              onMouseLeave={() => setActiveMenu(null)}
+            >
               <button
+                type="button"
+                onClick={() => setActiveMenu(activeMenu === 'payroll' ? null : 'payroll')}
                 className={`flex items-center gap-1 py-1 transition-colors hover:text-[#0B63E5] cursor-pointer ${
                   activeMenu === 'payroll' ? 'text-[#0B63E5]' : 'text-slate-800'
                 }`}
@@ -643,8 +666,14 @@ export function Navbar() {
             </Link>
 
             {/* 6. Partners Dropdown */}
-            <div className="relative" onMouseEnter={() => setActiveMenu('partners')}>
+            <div
+              className="relative"
+              onMouseEnter={() => setActiveMenu('partners')}
+              onMouseLeave={() => setActiveMenu(null)}
+            >
               <button
+                type="button"
+                onClick={() => setActiveMenu(activeMenu === 'partners' ? null : 'partners')}
                 className={`flex items-center gap-1 py-1 transition-colors hover:text-[#0B63E5] cursor-pointer ${
                   activeMenu === 'partners' ? 'text-[#0B63E5]' : 'text-slate-800'
                 }`}
@@ -702,8 +731,14 @@ export function Navbar() {
             </Link>
 
             {/* 8. Resources Mega-Menu */}
-            <div className="relative" onMouseEnter={() => setActiveMenu('resources')}>
+            <div
+              className="relative"
+              onMouseEnter={() => setActiveMenu('resources')}
+              onMouseLeave={() => setActiveMenu(null)}
+            >
               <button
+                type="button"
+                onClick={() => setActiveMenu(activeMenu === 'resources' ? null : 'resources')}
                 className={`flex items-center gap-1 py-1 transition-colors hover:text-[#0B63E5] cursor-pointer ${
                   activeMenu === 'resources' ? 'text-[#0B63E5]' : 'text-slate-800'
                 }`}
