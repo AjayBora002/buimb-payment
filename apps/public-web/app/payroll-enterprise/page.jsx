@@ -1,4 +1,3 @@
-'use client';
 import Link from 'next/link';
 import { CheckCircle, Shield, Zap, Users, ArrowRight, Building2, FileText, BarChart3, Lock, Globe, Briefcase, HeadphonesIcon, Settings } from 'lucide-react';
 
@@ -211,3 +210,4 @@ export default function PayrollEnterprisePage() {
     </main>
   );
 }
+

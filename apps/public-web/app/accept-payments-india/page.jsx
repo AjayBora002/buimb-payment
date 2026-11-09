@@ -1,4 +1,3 @@
-'use client';
 import Link from 'next/link';
 import { CheckCircle, ArrowRight, Globe, Shield, Zap, TrendingUp, Smartphone, Building2, Users, Lock } from 'lucide-react';
 
@@ -143,3 +142,4 @@ export default function AcceptPaymentsIndiaPage() {
     </main>
   );
 }
+

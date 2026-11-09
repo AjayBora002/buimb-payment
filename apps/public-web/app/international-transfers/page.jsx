@@ -1,4 +1,3 @@
-'use client';
 import Link from 'next/link';
 import { CheckCircle, ArrowRight, Globe, Shield, Zap, TrendingUp, DollarSign, Building2, RefreshCw, Lock } from 'lucide-react';
 
@@ -155,3 +154,4 @@ export default function InternationalTransfersPage() {
     </main>
   );
 }
+

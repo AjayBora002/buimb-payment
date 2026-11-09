@@ -1,4 +1,3 @@
-'use client';
 import Link from 'next/link';
 import { CheckCircle, ArrowRight, Globe, Shield, Zap, TrendingUp, Smartphone, Store, Monitor, BarChart3, RefreshCw, Users } from 'lucide-react';
 
@@ -153,3 +152,4 @@ export default function OmnichannelPage() {
     </main>
   );
 }
+

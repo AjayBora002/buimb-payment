@@ -1,4 +1,3 @@
-'use client';
 import Link from 'next/link';
 import { CheckCircle, Shield, Zap, TrendingUp, Users, FileText, ArrowRight, Building2, CreditCard, RefreshCw, BarChart3, Lock, Globe } from 'lucide-react';
 
@@ -233,3 +232,4 @@ export default function PaymentAggregatorPage() {
     </main>
   );
 }
+
