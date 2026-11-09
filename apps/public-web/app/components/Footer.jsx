@@ -1,42 +1,25 @@
-'use client';
 import React from 'react';
 import Link from 'next/link';
-import { ShieldCheck, Lock, CheckCircle2, } from 'lucide-react';
+import { ShieldCheck, ArrowUpRight } from 'lucide-react';
 import { RazorpayLogo } from './RazorpayLogo';
+
 export function Footer() {
-    return (<footer className="w-full bg-[#0C1A30] text-slate-300 pt-16 pb-12 px-4 sm:px-6 lg:px-8 border-t border-slate-800 text-xs font-sans select-none antialiased">
-      <div className="max-w-7xl mx-auto">
-        {/* Main 6-Column Grid matching Official Razorpay Mega-Footer */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-6 gap-8 pb-12 border-b border-slate-800">
-          {/* Col 1: Brand Info & Compliance Badges */}
-          <div className="lg:col-span-2 space-y-4 pr-0 lg:pr-6">
-            <RazorpayLogo size={32} textColor="text-white"/>
-
-            <p className="text-[11px] text-slate-400 leading-relaxed">
-              A comprehensive payments suite in India designed to help businesses seamlessly accept, process, and disburse payments. It gives you access to all payment modes including credit card, debit card, netbanking, UPI and popular wallets including JioMoney, Mobikwik, Airtel Money, FreeCharge, Ola Money and PayZapp.
+  return (
+    <footer className="bg-[#0A1128] text-slate-300 pt-16 pb-12 border-t border-slate-800 text-xs">
+      <div className="max-w-7xl mx-auto px-4 sm:px-8 space-y-12">
+        {/* Top 5-Column Navigation Grid */}
+        <div className="grid grid-cols-2 md:grid-cols-5 gap-8">
+          {/* Col 1: Brand & Security */}
+          <div className="col-span-2 md:col-span-1 space-y-4">
+            <RazorpayLogo size={26} textColor="text-white" showSubtitle />
+            <p className="text-slate-400 text-xs leading-relaxed">
+              Buimb-Pay is India’s sovereign financial infrastructure platform, powering payments, payouts, business banking, and payroll for 5M+ businesses.
             </p>
 
-            <p className="text-[11px] text-slate-400 leading-relaxed">
-              Buimb-PayX supercharges your business banking experience, bringing effectiveness, efficiency, and excellence to all financial processes. With Buimb-PayX, businesses can get access to fully-functional current accounts, supercharge their payouts and automate payroll compliance.
-            </p>
-
-            <div className="text-[10px] text-slate-500 leading-normal pt-2">
-              Disclaimer: The Buimb-PayX powered Current Account and VISA corporate credit card are provided by RBI licensed banks. Your Buimb-PayX powered current account is provided by our partner banks i.e, ICICI, RBL, Yes bank, in accordance with RBI regulations.
-            </div>
-
-            {/* Certifications Badges */}
-            <div className="flex items-center gap-3 pt-3 flex-wrap">
-              <div className="px-2.5 py-1 rounded bg-slate-800/80 border border-slate-700 text-[10px] font-bold text-slate-200 flex items-center gap-1.5">
-                <ShieldCheck className="w-3.5 h-3.5 text-emerald-400"/>
-                PCI-DSS Level 1
-              </div>
-              <div className="px-2.5 py-1 rounded bg-slate-800/80 border border-slate-700 text-[10px] font-bold text-slate-200 flex items-center gap-1.5">
-                <Lock className="w-3.5 h-3.5 text-blue-400"/>
-                ISO/IEC 27001
-              </div>
-              <div className="px-2.5 py-1 rounded bg-slate-800/80 border border-slate-700 text-[10px] font-bold text-slate-200 flex items-center gap-1.5">
-                <CheckCircle2 className="w-3.5 h-3.5 text-purple-400"/>
-                AICPA SOC 2
+            <div className="pt-2">
+              <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-lg bg-slate-900 border border-slate-700 text-slate-300 text-[11px] font-mono">
+                <ShieldCheck className="w-4 h-4 text-emerald-400 shrink-0" />
+                <span>PCI-DSS Level 1 · ISO 27001</span>
               </div>
             </div>
           </div>
@@ -52,7 +35,7 @@ export function Footer() {
               <li><Link href="/payment-pages" className="hover:text-blue-400">Payment Pages</Link></li>
               <li><Link href="/payment-links" className="hover:text-blue-400">Payment Links</Link></li>
               <li>
-                <Link href="/qr-codes" className="hover:text-blue-400 flex items-center gap-1">
+                <Link href="/pos" className="hover:text-blue-400 flex items-center gap-1">
                   Buimb-Pay POS <span className="text-[8px] bg-blue-500/20 text-blue-300 font-bold px-1 rounded">NEW</span>
                 </Link>
               </li>
@@ -74,6 +57,7 @@ export function Footer() {
               Become a Partner
             </span>
             <ul className="space-y-2 text-slate-400">
+              <li><Link href="/partners" className="hover:text-blue-400">Partner Program</Link></li>
               <li><Link href="/pricing" className="hover:text-blue-400">Refer and Earn</Link></li>
               <li><Link href="/docs" className="hover:text-blue-400">Onboarding APIs</Link></li>
             </ul>
@@ -85,12 +69,13 @@ export function Footer() {
               Banking Plus
             </span>
             <ul className="space-y-2 text-slate-400">
-              <li><Link href="/banking" className="hover:text-blue-400">Buimb-PayX</Link></li>
-              <li><Link href="/compliance" className="hover:text-blue-400">Source to pay</Link></li>
+              <li><Link href="/banking" className="hover:text-blue-400">Buimb-PayX Banking</Link></li>
+              <li><Link href="/vendor-payments" className="hover:text-blue-400">Source to Pay</Link></li>
               <li><Link href="/banking" className="hover:text-blue-400">Current Accounts</Link></li>
               <li><Link href="/instant-settlement" className="hover:text-blue-400">Payouts</Link></li>
-              <li><Link href="/instant-settlement" className="hover:text-blue-400">Payout Links</Link></li>
-              <li><Link href="/banking" className="hover:text-blue-400">Corporate Credit Card</Link></li>
+              <li><Link href="/corporate-cards" className="hover:text-blue-400">Corporate Credit Card</Link></li>
+              <li><Link href="/payout-links" className="hover:text-blue-400">Payout Links</Link></li>
+              <li><Link href="/bank-verification" className="hover:text-blue-400">Bank Verification</Link></li>
             </ul>
 
             <span className="text-[11px] font-bold text-white uppercase tracking-wider block pt-4">
@@ -100,11 +85,10 @@ export function Footer() {
               <li><Link href="/payment-gateway" className="hover:text-blue-400">Route (Split Pay)</Link></li>
               <li><Link href="/invoices" className="hover:text-blue-400">Invoices</Link></li>
               <li><Link href="/payment-links" className="hover:text-blue-400">Freelancer Payments</Link></li>
-              <li><Link href="/pricing" className="hover:text-blue-400">International Payments</Link></li>
+              <li><Link href="/international" className="hover:text-blue-400">International Payments</Link></li>
               <li><Link href="/magic-checkout" className="hover:text-blue-400">Flash Checkout</Link></li>
               <li><Link href="/qr-codes" className="hover:text-blue-400">UPI Payments</Link></li>
-              <li><Link href="/qr-codes" className="hover:text-blue-400">ePOS</Link></li>
-              <li><Link href="/payment-gateway" className="hover:text-blue-400">Checkout Demo</Link></li>
+              <li><Link href="/pay/order_Nx8Y29kLp102" className="hover:text-blue-400">Checkout Demo</Link></li>
             </ul>
           </div>
 
@@ -115,18 +99,18 @@ export function Footer() {
             </span>
             <ul className="space-y-2 text-slate-400">
               <li><Link href="/docs" className="hover:text-blue-400">Docs</Link></li>
-              <li><Link href="/docs" className="hover:text-blue-400">Integrations</Link></li>
-              <li><Link href="/docs" className="hover:text-blue-400">API Reference</Link></li>
+              <li><Link href="/api-reference" className="hover:text-blue-400">Integrations</Link></li>
+              <li><Link href="/api-reference" className="hover:text-blue-400">API Reference</Link></li>
             </ul>
 
             <span className="text-[11px] font-bold text-white uppercase tracking-wider block pt-4">
               Resources
             </span>
             <ul className="space-y-2 text-slate-400">
-              <li><Link href="/docs" className="hover:text-blue-400">Blog</Link></li>
-              <li><Link href="/docs" className="hover:text-blue-400">Learn</Link></li>
-              <li><Link href="/docs" className="hover:text-blue-400">Customer Stories</Link></li>
-              <li><Link href="/docs" className="hover:text-blue-400">Events</Link></li>
+              <li><Link href="/blog" className="hover:text-blue-400">Blog</Link></li>
+              <li><Link href="/blog" className="hover:text-blue-400">Learn</Link></li>
+              <li><Link href="/features" className="hover:text-blue-400">Customer Stories</Link></li>
+              <li><Link href="/contact" className="hover:text-blue-400">Events</Link></li>
               <li><Link href="/compliance" className="hover:text-blue-400">Chargeback Guide</Link></li>
               <li><Link href="/instant-settlement" className="hover:text-blue-400">Settlement Guide</Link></li>
             </ul>
@@ -135,10 +119,10 @@ export function Footer() {
               Solutions
             </span>
             <ul className="space-y-2 text-slate-400">
-              <li><Link href="/pricing" className="hover:text-blue-400">Education</Link></li>
-              <li><Link href="/pricing" className="hover:text-blue-400">E-commerce</Link></li>
-              <li><Link href="/pricing" className="hover:text-blue-400">SaaS</Link></li>
-              <li><Link href="/pricing" className="hover:text-blue-400">BFSI</Link></li>
+              <li><Link href="/payment-links" className="hover:text-blue-400">Education</Link></li>
+              <li><Link href="/magic-checkout" className="hover:text-blue-400">E-commerce</Link></li>
+              <li><Link href="/subscriptions" className="hover:text-blue-400">SaaS</Link></li>
+              <li><Link href="/compliance" className="hover:text-blue-400">BFSI</Link></li>
             </ul>
           </div>
 
@@ -149,20 +133,20 @@ export function Footer() {
             </span>
             <ul className="space-y-2 text-slate-400">
               <li><Link href="/tools/gst-calculator" className="hover:text-blue-400 font-semibold text-blue-300">GST Calculator</Link></li>
-              <li><Link href="/compliance" className="hover:text-blue-400">GST Number Search</Link></li>
-              <li><Link href="/compliance" className="hover:text-blue-400">GST Search by PAN</Link></li>
+              <li><Link href="/tools/gst-calculator" className="hover:text-blue-400">GST Number Search</Link></li>
+              <li><Link href="/tools/gst-calculator" className="hover:text-blue-400">GST Search by PAN</Link></li>
               <li>
-                <Link href="/pricing" className="hover:text-blue-400 flex items-center gap-1">
+                <Link href="/tools/roi-calculator" className="hover:text-blue-400 flex items-center gap-1">
                   ROI Calculator <span className="text-[8px] bg-emerald-500/20 text-emerald-300 font-bold px-1 rounded">NEW</span>
                 </Link>
               </li>
               <li>
-                <Link href="/pricing" className="hover:text-blue-400 flex items-center gap-1">
+                <Link href="/tools/roi-calculator" className="hover:text-blue-400 flex items-center gap-1">
                   CAGR Calculator <span className="text-[8px] bg-emerald-500/20 text-emerald-300 font-bold px-1 rounded">NEW</span>
                 </Link>
               </li>
               <li>
-                <Link href="/pricing" className="hover:text-blue-400 flex items-center gap-1">
+                <Link href="/tools/roi-calculator" className="hover:text-blue-400 flex items-center gap-1">
                   EBITDA Calculator <span className="text-[8px] bg-emerald-500/20 text-emerald-300 font-bold px-1 rounded">NEW</span>
                 </Link>
               </li>
@@ -173,12 +157,12 @@ export function Footer() {
             </span>
             <ul className="space-y-2 text-slate-400">
               <li><Link href="/docs" className="hover:text-blue-400">About Us</Link></li>
-              <li><Link href="/docs" className="hover:text-blue-400">Careers</Link></li>
-              <li><Link href="/compliance" className="hover:text-blue-400">Terms of Use</Link></li>
-              <li><Link href="/compliance" className="hover:text-blue-400">Privacy Policy</Link></li>
-              <li><Link href="/compliance" className="hover:text-blue-400">Grievance Redressal</Link></li>
-              <li><Link href="/compliance" className="hover:text-blue-400">Responsible Disclosure</Link></li>
-              <li><Link href="/pricing" className="hover:text-blue-400">Partners</Link></li>
+              <li><Link href="/contact" className="hover:text-blue-400">Careers</Link></li>
+              <li><Link href="/legal" className="hover:text-blue-400">Terms of Use</Link></li>
+              <li><Link href="/legal" className="hover:text-blue-400">Privacy Policy</Link></li>
+              <li><Link href="/legal" className="hover:text-blue-400">Grievance Redressal</Link></li>
+              <li><Link href="/security" className="hover:text-blue-400">Responsible Disclosure</Link></li>
+              <li><Link href="/partners" className="hover:text-blue-400">Partners</Link></li>
             </ul>
           </div>
         </div>
@@ -207,5 +191,6 @@ export function Footer() {
           </div>
         </div>
       </div>
-    </footer>);
+    </footer>
+  );
 }

@@ -91,6 +91,46 @@ async function runAllTests() {
     return { ok: res.status === 200, info: `HTTP ${res.status}` };
   });
 
+  await check('Public Web Corporate Cards page', async () => {
+    const res = await get('http://localhost:3000/corporate-cards');
+    return { ok: res.status === 200, info: `HTTP ${res.status}` };
+  });
+
+  await check('Public Web Vendor Payments page', async () => {
+    const res = await get('http://localhost:3000/vendor-payments');
+    return { ok: res.status === 200, info: `HTTP ${res.status}` };
+  });
+
+  await check('Public Web Payout Links page', async () => {
+    const res = await get('http://localhost:3000/payout-links');
+    return { ok: res.status === 200, info: `HTTP ${res.status}` };
+  });
+
+  await check('Public Web Bank Verification page', async () => {
+    const res = await get('http://localhost:3000/bank-verification');
+    return { ok: res.status === 200, info: `HTTP ${res.status}` };
+  });
+
+  await check('Public Web Smart POS & Soundbox page', async () => {
+    const res = await get('http://localhost:3000/pos');
+    return { ok: res.status === 200, info: `HTTP ${res.status}` };
+  });
+
+  await check('Public Web ROI Calculator page', async () => {
+    const res = await get('http://localhost:3000/tools/roi-calculator');
+    return { ok: res.status === 200, info: `HTTP ${res.status}` };
+  });
+
+  await check('Public Web Engineering Blog page', async () => {
+    const res = await get('http://localhost:3000/blog');
+    return { ok: res.status === 200, info: `HTTP ${res.status}` };
+  });
+
+  await check('Public Web API Reference page', async () => {
+    const res = await get('http://localhost:3000/api-reference');
+    return { ok: res.status === 200, info: `HTTP ${res.status}` };
+  });
+
   // 3. Merchant Admin Console
   await check('Merchant Admin Console (port 6001)', async () => {
     const res = await get('http://localhost:6001');
@@ -125,3 +165,4 @@ runAllTests().catch(err => {
   console.error('Test suite runner crashed:', err);
   process.exit(1);
 });
+

@@ -263,7 +263,7 @@ export const OverviewView = ({ onNavigate, merchantName = 'Ajay', }) => {
             else if (key === 'view-keys')
                 onNavigate('developers');
             else if (key === 'check-reconciliation')
-                onNavigate('settlements');
+                onNavigate('reconciliation');
         }}/>
 
       {/* Real-time Transactions Feed */}
