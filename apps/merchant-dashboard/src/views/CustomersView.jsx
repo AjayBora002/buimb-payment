@@ -97,9 +97,9 @@ const CUSTOMERS = [
     },
 ];
 const SEGMENT_META = {
-    vip: { label: 'VIP', color: '#C9A227', borderClass: 'border-[#C9A227] text-[#C9A227] bg-[#C9A227]/5' },
+    vip: { label: 'VIP', color: '#0b63e5', borderClass: 'border-[#0b63e5] text-[#0b63e5] bg-[#0b63e5]/5' },
     regular: { label: 'Regular', color: '#4E8B6F', borderClass: 'border-[#4E8B6F] text-[#4E8B6F] bg-[#4E8B6F]/5' },
-    new: { label: 'New', color: '#8FA396', borderClass: 'border-[#8FA396] text-[#8FA396] bg-[#8FA396]/5' },
+    new: { label: 'New', color: '#64748b', borderClass: 'border-[#64748b] text-[#64748b] bg-[#64748b]/5' },
     'at-risk': { label: 'At Risk', color: '#B0503F', borderClass: 'border-[#B0503F] text-[#B0503F] bg-[#B0503F]/5' },
 };
 const INSTRUMENT_ICON = {
@@ -128,17 +128,17 @@ export const CustomersView = () => {
       {/* Page Header */}
       <div className="flex items-center justify-between">
         <div>
-          <h2 className="text-lg font-bold text-[#EDE7D6] tracking-tight">Customers</h2>
-          <div className="w-8 h-0.5 bg-[#C9A227] mt-1"/>
-          <p className="text-xs text-[#8FA396] mt-1.5">
+          <h2 className="text-lg font-bold text-[#0f172a] tracking-tight">Customers</h2>
+          <div className="w-8 h-0.5 bg-[#0b63e5] mt-1"/>
+          <p className="text-xs text-[#64748b] mt-1.5">
             {CUSTOMERS.length} total customers · Lifetime GMV ₹{(totalSpend / 100000).toFixed(1)}L
           </p>
         </div>
         <div className="flex items-center gap-2">
-          <button onClick={() => showToast('Export started — CSV will be emailed', 'success')} className="flex items-center gap-1.5 px-3 py-2 rounded-[4px] bg-[#1D2E28] hover:bg-[#EDE7D6]/[0.05] border border-[#EDE7D6]/[0.12] text-[#EDE7D6] text-xs font-medium transition-colors">
+          <button onClick={() => showToast('Export started — CSV will be emailed', 'success')} className="flex items-center gap-1.5 px-3 py-2 rounded-[4px] bg-[white] hover:bg-[#0f172a]/[0.05] border border-[#0f172a]/[0.12] text-[#0f172a] text-xs font-medium transition-colors">
             <Download className="w-3.5 h-3.5"/> Export CSV
           </button>
-          <button onClick={() => showToast('Customer creation coming in full build', 'info')} className="flex items-center gap-1.5 px-3 py-2 rounded-[4px] bg-[#C9A227] hover:bg-[#d8b030] text-[#131B17] text-xs font-semibold transition-colors">
+          <button onClick={() => showToast('Customer creation coming in full build', 'info')} className="flex items-center gap-1.5 px-3 py-2 rounded-[4px] bg-[#0b63e5] hover:bg-[#d8b030] text-[#f8fafc] text-xs font-semibold transition-colors">
             <Plus className="w-3.5 h-3.5"/> Add Customer
           </button>
         </div>
@@ -147,21 +147,21 @@ export const CustomersView = () => {
       {/* Summary Metric Cards */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
         {[
-            { label: 'Total Customers', value: CUSTOMERS.length.toString(), sub: '+3 this week', icon: Users, color: '#8FA396' },
-            { label: 'VIP Accounts', value: vipCount.toString(), sub: 'Top 40% of GMV', icon: Star, color: '#C9A227' },
+            { label: 'Total Customers', value: CUSTOMERS.length.toString(), sub: '+3 this week', icon: Users, color: '#64748b' },
+            { label: 'VIP Accounts', value: vipCount.toString(), sub: 'Top 40% of GMV', icon: Star, color: '#0b63e5' },
             { label: 'Total Lifetime GMV', value: `₹${(totalSpend / 100000).toFixed(1)}L`, sub: 'all time', icon: TrendingUp, color: '#4E8B6F' },
             { label: 'Avg. Success Rate', value: `${avgSuccessRate.toFixed(1)}%`, sub: 'across all customers', icon: ShieldCheck, color: '#4E8B6F' },
         ].map((m) => {
             const Icon = m.icon;
-            return (<div key={m.label} className="bg-[#1D2E28] rounded-none border border-[#EDE7D6]/[0.08] p-4 hover:border-[#EDE7D6]/[0.16] transition-colors">
+            return (<div key={m.label} className="bg-[white] rounded-none border border-[#0f172a]/[0.08] p-4 hover:border-[#0f172a]/[0.16] transition-colors">
               <div className="flex items-center justify-between mb-3">
-                <span className="text-xs text-[#8FA396] font-medium">{m.label}</span>
+                <span className="text-xs text-[#64748b] font-medium">{m.label}</span>
                 <div className="w-7 h-7 rounded-[2px] flex items-center justify-center border" style={{ borderColor: `${m.color}40`, background: `${m.color}15` }}>
                   <Icon className="w-3.5 h-3.5" style={{ color: m.color }}/>
                 </div>
               </div>
-              <div className="text-2xl font-bold font-mono text-[#EDE7D6]">{m.value}</div>
-              <div className="text-[11px] text-[#8FA396] mt-1">{m.sub}</div>
+              <div className="text-2xl font-bold font-mono text-[#0f172a]">{m.value}</div>
+              <div className="text-[11px] text-[#64748b] mt-1">{m.sub}</div>
             </div>);
         })}
       </div>
@@ -169,44 +169,44 @@ export const CustomersView = () => {
       {/* Filters */}
       <div className="flex flex-wrap items-center gap-3">
         <div className="relative flex-1 min-w-[200px] max-w-sm">
-          <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-[#8FA396]"/>
-          <input value={search} onChange={(e) => setSearch(e.target.value)} placeholder="Search customers..." className="w-full h-9 bg-[#1D2E28] border border-[#EDE7D6]/[0.12] rounded-[4px] pl-9 pr-3 text-xs text-[#EDE7D6] placeholder-[#8FA396]/60 focus:outline-none focus:border-[#C9A227]"/>
+          <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-[#64748b]"/>
+          <input value={search} onChange={(e) => setSearch(e.target.value)} placeholder="Search customers..." className="w-full h-9 bg-[white] border border-[#0f172a]/[0.12] rounded-[4px] pl-9 pr-3 text-xs text-[#0f172a] placeholder-[#64748b]/60 focus:outline-none focus:border-[#0b63e5]"/>
         </div>
-        <div className="flex gap-1.5 border-b border-[#EDE7D6]/[0.08] pb-2">
+        <div className="flex gap-1.5 border-b border-[#0f172a]/[0.08] pb-2">
           {['ALL', 'vip', 'regular', 'new', 'at-risk'].map((s) => (<button key={s} onClick={() => setSegment(s)} className={`px-3 py-1 rounded-[4px] text-xs font-semibold transition-colors ${segment === s
-                ? 'bg-[#C9A227] text-[#131B17]'
-                : 'text-[#8FA396] hover:text-[#EDE7D6]'}`}>
+                ? 'bg-[#0b63e5] text-[#f8fafc]'
+                : 'text-[#64748b] hover:text-[#0f172a]'}`}>
               {s === 'ALL' ? 'All' : SEGMENT_META[s]?.label}
             </button>))}
         </div>
       </div>
 
       {/* Customer Table */}
-      <div className="bg-[#1D2E28] rounded-none border border-[#EDE7D6]/[0.08] overflow-hidden">
+      <div className="bg-[white] rounded-none border border-[#0f172a]/[0.08] overflow-hidden">
         <div className="overflow-x-auto">
           <table className="w-full text-xs">
             <thead>
-              <tr className="border-b border-[#EDE7D6]/[0.08] bg-[#131B17]/60">
-                {['Customer', 'Segment', 'Lifetime GMV', 'Orders', 'Success Rate', 'Last Active', ''].map((h) => (<th key={h} className="text-left px-4 py-3 text-[11px] font-semibold text-[#8FA396]">
+              <tr className="border-b border-[#0f172a]/[0.08] bg-[#f8fafc]/60">
+                {['Customer', 'Segment', 'Lifetime GMV', 'Orders', 'Success Rate', 'Last Active', ''].map((h) => (<th key={h} className="text-left px-4 py-3 text-[11px] font-semibold text-[#64748b]">
                     {h}
                   </th>))}
               </tr>
             </thead>
-            <tbody className="divide-y divide-[#EDE7D6]/[0.08]">
+            <tbody className="divide-y divide-[#0f172a]/[0.08]">
               {filtered.map((c) => {
             const seg = SEGMENT_META[c.segment];
-            return (<tr key={c.id} onClick={() => setSelectedCustomer(c)} className="hover:bg-[#EDE7D6]/[0.02] cursor-pointer transition-colors group">
+            return (<tr key={c.id} onClick={() => setSelectedCustomer(c)} className="hover:bg-[#0f172a]/[0.02] cursor-pointer transition-colors group">
                     <td className="px-4 py-3.5">
                       <div className="flex items-center gap-3">
-                        <div className="w-8 h-8 rounded-[2px] bg-[#131B17] border border-[#EDE7D6]/[0.12] flex items-center justify-center text-xs font-bold text-[#C9A227] flex-shrink-0 font-mono">
+                        <div className="w-8 h-8 rounded-[2px] bg-[#f8fafc] border border-[#0f172a]/[0.12] flex items-center justify-center text-xs font-bold text-[#0b63e5] flex-shrink-0 font-mono">
                           {c.name.split(' ').map((w) => w[0]).slice(0, 2).join('')}
                         </div>
                         <div>
-                          <div className="font-semibold text-[#EDE7D6] flex items-center gap-1">
+                          <div className="font-semibold text-[#0f172a] flex items-center gap-1">
                             {c.name}
-                            {c.segment === 'vip' && <Star className="w-3 h-3 text-[#C9A227] fill-[#C9A227]"/>}
+                            {c.segment === 'vip' && <Star className="w-3 h-3 text-[#0b63e5] fill-[#0b63e5]"/>}
                           </div>
-                          <div className="text-[#8FA396] text-[11px] font-mono">{c.email}</div>
+                          <div className="text-[#64748b] text-[11px] font-mono">{c.email}</div>
                         </div>
                       </div>
                     </td>
@@ -215,13 +215,13 @@ export const CustomersView = () => {
                         {seg.label}
                       </span>
                     </td>
-                    <td className="px-4 py-3.5 font-mono font-semibold text-[#EDE7D6]">
+                    <td className="px-4 py-3.5 font-mono font-semibold text-[#0f172a]">
                       {c.lifetimeSpendFmt}
                     </td>
-                    <td className="px-4 py-3.5 text-[#8FA396] font-mono">{c.totalOrders}</td>
+                    <td className="px-4 py-3.5 text-[#64748b] font-mono">{c.totalOrders}</td>
                     <td className="px-4 py-3.5">
                       <div className="flex items-center gap-2">
-                        <div className="w-16 h-1.5 rounded-none bg-[#131B17]">
+                        <div className="w-16 h-1.5 rounded-none bg-[#f8fafc]">
                           <div className="h-full rounded-none" style={{
                     width: `${c.successRate}%`,
                     background: c.successRate >= 95 ? '#4E8B6F' : c.successRate >= 80 ? '#C98A2E' : '#B0503F',
@@ -232,9 +232,9 @@ export const CustomersView = () => {
                         </span>
                       </div>
                     </td>
-                    <td className="px-4 py-3.5 text-[#8FA396] font-mono">{c.lastActive}</td>
+                    <td className="px-4 py-3.5 text-[#64748b] font-mono">{c.lastActive}</td>
                     <td className="px-4 py-3.5">
-                      <button className="opacity-0 group-hover:opacity-100 p-1 rounded-[4px] hover:bg-[#EDE7D6]/[0.05] text-[#8FA396] hover:text-[#EDE7D6] transition-all">
+                      <button className="opacity-0 group-hover:opacity-100 p-1 rounded-[4px] hover:bg-[#0f172a]/[0.05] text-[#64748b] hover:text-[#0f172a] transition-all">
                         <ArrowUpRight className="w-3.5 h-3.5"/>
                       </button>
                     </td>
@@ -247,23 +247,23 @@ export const CustomersView = () => {
 
       {/* Customer Detail Drawer */}
       {selectedCustomer && (<div className="fixed inset-0 z-50 flex">
-          <div className="flex-1 bg-[#131B17]/80 backdrop-blur-sm" onClick={() => setSelectedCustomer(null)}/>
-          <div className="w-full max-w-md bg-[#131B17] border-l border-[#EDE7D6]/[0.12] flex flex-col h-full overflow-y-auto">
+          <div className="flex-1 bg-[#f8fafc]/80 backdrop-blur-sm" onClick={() => setSelectedCustomer(null)}/>
+          <div className="w-full max-w-md bg-[#f8fafc] border-l border-[#0f172a]/[0.12] flex flex-col h-full overflow-y-auto">
             {/* Drawer Header */}
-            <div className="sticky top-0 bg-[#131B17] border-b border-[#EDE7D6]/[0.08] px-5 py-4 flex items-center justify-between z-10">
+            <div className="sticky top-0 bg-[#f8fafc] border-b border-[#0f172a]/[0.08] px-5 py-4 flex items-center justify-between z-10">
               <div className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-[2px] bg-[#1D2E28] border border-[#EDE7D6]/[0.12] flex items-center justify-center text-sm font-bold text-[#C9A227] font-mono">
+                <div className="w-10 h-10 rounded-[2px] bg-[white] border border-[#0f172a]/[0.12] flex items-center justify-center text-sm font-bold text-[#0b63e5] font-mono">
                   {selectedCustomer.name.split(' ').map((w) => w[0]).slice(0, 2).join('')}
                 </div>
                 <div>
-                  <div className="font-bold text-[#EDE7D6] flex items-center gap-1.5">
+                  <div className="font-bold text-[#0f172a] flex items-center gap-1.5">
                     {selectedCustomer.name}
-                    {selectedCustomer.segment === 'vip' && <Star className="w-3.5 h-3.5 text-[#C9A227] fill-[#C9A227]"/>}
+                    {selectedCustomer.segment === 'vip' && <Star className="w-3.5 h-3.5 text-[#0b63e5] fill-[#0b63e5]"/>}
                   </div>
-                  <div className="text-[11px] font-mono text-[#8FA396]">{selectedCustomer.id}</div>
+                  <div className="text-[11px] font-mono text-[#64748b]">{selectedCustomer.id}</div>
                 </div>
               </div>
-              <button onClick={() => setSelectedCustomer(null)} className="p-1.5 rounded-[4px] hover:bg-[#EDE7D6]/[0.05] text-[#8FA396] hover:text-[#EDE7D6]">
+              <button onClick={() => setSelectedCustomer(null)} className="p-1.5 rounded-[4px] hover:bg-[#0f172a]/[0.05] text-[#64748b] hover:text-[#0f172a]">
                 <X className="w-4 h-4"/>
               </button>
             </div>
@@ -271,21 +271,21 @@ export const CustomersView = () => {
             <div className="p-5 space-y-5">
               {/* Contact Info */}
               <div className="space-y-2">
-                <div className="text-xs font-bold text-[#EDE7D6]">Contact Details</div>
+                <div className="text-xs font-bold text-[#0f172a]">Contact Details</div>
                 {[
                 { icon: Mail, label: selectedCustomer.email },
                 { icon: Phone, label: selectedCustomer.phone },
                 { icon: Calendar, label: `Member since ${selectedCustomer.firstSeen}` },
             ].map((row) => {
                 const Icon = row.icon;
-                return (<div key={row.label} className="flex items-center gap-2.5 text-xs text-[#8FA396]">
-                      <Icon className="w-3.5 h-3.5 text-[#8FA396]"/>
+                return (<div key={row.label} className="flex items-center gap-2.5 text-xs text-[#64748b]">
+                      <Icon className="w-3.5 h-3.5 text-[#64748b]"/>
                       {row.label}
                     </div>);
             })}
-                {selectedCustomer.gstin && (<div className="flex items-center gap-2.5 text-xs text-[#8FA396]">
-                    <ShieldCheck className="w-3.5 h-3.5 text-[#8FA396]"/>
-                    GSTIN: <span className="font-mono text-[#EDE7D6]">{selectedCustomer.gstin}</span>
+                {selectedCustomer.gstin && (<div className="flex items-center gap-2.5 text-xs text-[#64748b]">
+                    <ShieldCheck className="w-3.5 h-3.5 text-[#64748b]"/>
+                    GSTIN: <span className="font-mono text-[#0f172a]">{selectedCustomer.gstin}</span>
                   </div>)}
               </div>
 
@@ -295,23 +295,23 @@ export const CustomersView = () => {
                 { label: 'Lifetime GMV', value: selectedCustomer.lifetimeSpendFmt },
                 { label: 'Orders', value: selectedCustomer.totalOrders.toString() },
                 { label: 'Success', value: `${selectedCustomer.successRate}%` },
-            ].map((m) => (<div key={m.label} className="bg-[#1D2E28] rounded-none border border-[#EDE7D6]/[0.08] p-3 text-center">
-                    <div className="text-lg font-bold font-mono text-[#EDE7D6]">{m.value}</div>
-                    <div className="text-[10px] text-[#8FA396] mt-0.5">{m.label}</div>
+            ].map((m) => (<div key={m.label} className="bg-[white] rounded-none border border-[#0f172a]/[0.08] p-3 text-center">
+                    <div className="text-lg font-bold font-mono text-[#0f172a]">{m.value}</div>
+                    <div className="text-[10px] text-[#64748b] mt-0.5">{m.label}</div>
                   </div>))}
               </div>
 
               {/* Saved Payment Instruments */}
               <div className="space-y-2">
-                <div className="text-xs font-bold text-[#EDE7D6]">Saved Instruments</div>
-                {selectedCustomer.savedInstruments.length === 0 ? (<div className="text-xs text-[#8FA396] italic">No saved instruments</div>) : (selectedCustomer.savedInstruments.map((inst, i) => {
+                <div className="text-xs font-bold text-[#0f172a]">Saved Instruments</div>
+                {selectedCustomer.savedInstruments.length === 0 ? (<div className="text-xs text-[#64748b] italic">No saved instruments</div>) : (selectedCustomer.savedInstruments.map((inst, i) => {
                 const Icon = INSTRUMENT_ICON[inst.type];
-                return (<div key={i} className="flex items-center justify-between bg-[#1D2E28] rounded-none p-3 border border-[#EDE7D6]/[0.08]">
+                return (<div key={i} className="flex items-center justify-between bg-[white] rounded-none p-3 border border-[#0f172a]/[0.08]">
                         <div className="flex items-center gap-2.5">
-                          <Icon className="w-4 h-4 text-[#C9A227]"/>
+                          <Icon className="w-4 h-4 text-[#0b63e5]"/>
                           <div>
-                            <div className="text-xs font-medium text-[#EDE7D6]">{inst.label}</div>
-                            <div className="text-[11px] font-mono text-[#8FA396]">{inst.masked}</div>
+                            <div className="text-xs font-medium text-[#0f172a]">{inst.label}</div>
+                            <div className="text-[11px] font-mono text-[#64748b]">{inst.masked}</div>
                           </div>
                         </div>
                         {inst.isDefault && (<span className="text-[10px] font-mono font-bold text-[#4E8B6F] border border-[#4E8B6F] bg-[#4E8B6F]/10 px-2 py-0.5 rounded-[2px]">Default</span>)}
@@ -321,35 +321,35 @@ export const CustomersView = () => {
 
               {/* Tags */}
               <div className="space-y-2">
-                <div className="text-xs font-bold text-[#EDE7D6]">Tags</div>
+                <div className="text-xs font-bold text-[#0f172a]">Tags</div>
                 <div className="flex flex-wrap gap-1.5">
-                  {selectedCustomer.tags.map((tag) => (<span key={tag} className="px-2 py-0.5 rounded-[2px] bg-[#1D2E28] border border-[#EDE7D6]/[0.08] text-[10px] font-mono text-[#EDE7D6]">
+                  {selectedCustomer.tags.map((tag) => (<span key={tag} className="px-2 py-0.5 rounded-[2px] bg-[white] border border-[#0f172a]/[0.08] text-[10px] font-mono text-[#0f172a]">
                       {tag}
                     </span>))}
-                  <button onClick={() => setShowAddTag(true)} className="px-2 py-0.5 rounded-[2px] border border-[#EDE7D6]/[0.2] text-[10px] text-[#8FA396] hover:text-[#EDE7D6] hover:border-[#C9A227] transition-colors flex items-center gap-1">
+                  <button onClick={() => setShowAddTag(true)} className="px-2 py-0.5 rounded-[2px] border border-[#0f172a]/[0.2] text-[10px] text-[#64748b] hover:text-[#0f172a] hover:border-[#0b63e5] transition-colors flex items-center gap-1">
                     <Tag className="w-2.5 h-2.5"/> Add Tag
                   </button>
                 </div>
                 {showAddTag && (<div className="flex gap-2 mt-2">
-                    <input value={newTag} onChange={(e) => setNewTag(e.target.value)} placeholder="e.g. net60" className="flex-1 h-8 bg-[#1D2E28] border border-[#EDE7D6]/[0.12] rounded-[4px] px-2.5 text-xs text-[#EDE7D6] placeholder-[#8FA396]/60 focus:outline-none focus:border-[#C9A227]"/>
+                    <input value={newTag} onChange={(e) => setNewTag(e.target.value)} placeholder="e.g. net60" className="flex-1 h-8 bg-[white] border border-[#0f172a]/[0.12] rounded-[4px] px-2.5 text-xs text-[#0f172a] placeholder-[#64748b]/60 focus:outline-none focus:border-[#0b63e5]"/>
                     <button onClick={() => {
                     if (newTag.trim()) {
                         showToast(`Tag "${newTag}" added`, 'success');
                         setNewTag('');
                     }
                     setShowAddTag(false);
-                }} className="px-3 h-8 bg-[#C9A227] hover:bg-[#d8b030] text-[#131B17] text-xs font-semibold rounded-[4px] transition-colors">
+                }} className="px-3 h-8 bg-[#0b63e5] hover:bg-[#d8b030] text-[#f8fafc] text-xs font-semibold rounded-[4px] transition-colors">
                       Add
                     </button>
                   </div>)}
               </div>
 
               {/* CTA */}
-              <div className="flex gap-2 pt-2 border-t border-[#EDE7D6]/[0.08]">
-                <button onClick={() => showToast(`Sending payment request to ${selectedCustomer.email}`, 'success')} className="flex-1 py-2 bg-[#C9A227] hover:bg-[#d8b030] text-[#131B17] text-xs font-semibold rounded-[4px] transition-colors">
+              <div className="flex gap-2 pt-2 border-t border-[#0f172a]/[0.08]">
+                <button onClick={() => showToast(`Sending payment request to ${selectedCustomer.email}`, 'success')} className="flex-1 py-2 bg-[#0b63e5] hover:bg-[#d8b030] text-[#f8fafc] text-xs font-semibold rounded-[4px] transition-colors">
                   Send Payment Request
                 </button>
-                <button onClick={() => showToast('Customer report generated', 'info')} className="py-2 px-3 bg-[#1D2E28] hover:bg-[#EDE7D6]/[0.05] text-[#EDE7D6] text-xs font-medium rounded-[4px] border border-[#EDE7D6]/[0.12] transition-colors">
+                <button onClick={() => showToast('Customer report generated', 'info')} className="py-2 px-3 bg-[white] hover:bg-[#0f172a]/[0.05] text-[#0f172a] text-xs font-medium rounded-[4px] border border-[#0f172a]/[0.12] transition-colors">
                   <Download className="w-3.5 h-3.5"/>
                 </button>
               </div>

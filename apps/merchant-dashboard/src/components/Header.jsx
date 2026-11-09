@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { Search, Bell, HelpCircle, Command, Lock, X, AlertTriangle, ExternalLink, Plus, Link2, FileText, ArrowUpRight, QrCode, RotateCcw, CheckCircle2, ChevronDown, } from 'lucide-react';
-export const Header = ({ title, workspaceName = 'Bora Enterprises Pvt Ltd', user, onOpenCommandPalette, onOpenCheckoutPreview, onQuickAction, }) => {
-    const [isTestMode, setIsTestMode] = useState(true);
+export const Header = ({ title, workspaceName = 'Bora Enterprises Pvt Ltd', user, onOpenCommandPalette, onOpenCheckoutPreview, onQuickAction, isTestMode = true, onToggleTestMode, }) => {
     const [showLiveModal, setShowLiveModal] = useState(false);
     const [showNotifications, setShowNotifications] = useState(false);
     const [showCreateMenu, setShowCreateMenu] = useState(false);
@@ -40,7 +39,7 @@ export const Header = ({ title, workspaceName = 'Bora Enterprises Pvt Ltd', user
       <div className="flex items-center gap-3">
         {/* Razorpay's Iconic Test / Live Mode Toggle */}
         <div className="flex items-center p-0.5 bg-slate-100 rounded-full border border-slate-200 shadow-xs">
-          <button onClick={() => setIsTestMode(true)} className={`flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold transition-all ${isTestMode
+          <button onClick={() => onToggleTestMode ? onToggleTestMode(true) : null} className={`flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold transition-all ${isTestMode
             ? 'bg-amber-400 text-slate-950 shadow-sm'
             : 'text-slate-500 hover:text-slate-800'}`}>
             <span className={`w-1.5 h-1.5 rounded-full ${isTestMode ? 'bg-slate-950 animate-pulse' : 'bg-slate-400'}`}/>
@@ -210,7 +209,7 @@ export const Header = ({ title, workspaceName = 'Bora Enterprises Pvt Ltd', user
               </button>
               <button onClick={() => {
                 setShowLiveModal(false);
-                setIsTestMode(false);
+                onToggleTestMode ? onToggleTestMode(false) : null;
             }} className="px-4 py-2 rounded-lg bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold inline-flex items-center gap-1.5 shadow-sm">
                 Activate Live Mode Now
               </button>

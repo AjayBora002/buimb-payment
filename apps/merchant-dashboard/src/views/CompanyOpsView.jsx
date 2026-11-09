@@ -103,7 +103,7 @@ const KYC_META = {
     APPROVED: { label: 'Approved', color: '#4E8B6F', icon: CheckCircle2 },
     PENDING: { label: 'Pending', color: '#C98A2E', icon: Clock },
     REJECTED: { label: 'Rejected', color: '#B0503F', icon: Ban },
-    RESUBMISSION: { label: 'Resubmission', color: '#C9A227', icon: AlertTriangle },
+    RESUBMISSION: { label: 'Resubmission', color: '#0b63e5', icon: AlertTriangle },
 };
 const RISK_META = {
     LOW: { label: 'Low', color: '#4E8B6F' },
@@ -115,7 +115,7 @@ const DISPUTE_META = {
     OPEN: { label: 'Open', color: '#B0503F' },
     UNDER_REVIEW: { label: 'Under Review', color: '#C98A2E' },
     RESOLVED_MERCHANT: { label: 'Merchant Win', color: '#4E8B6F' },
-    RESOLVED_CUSTOMER: { label: 'Customer Win', color: '#8FA396' },
+    RESOLVED_CUSTOMER: { label: 'Customer Win', color: '#64748b' },
 };
 export const CompanyOpsView = () => {
     const { showToast } = useToast();
@@ -131,12 +131,12 @@ export const CompanyOpsView = () => {
       <div className="flex items-center justify-between">
         <div>
           <div className="flex items-center gap-2">
-            <Shield className="w-5 h-5 text-[#C9A227]"/>
-            <h2 className="text-xl font-bold text-[#EDE7D6]">Company Operations</h2>
+            <Shield className="w-5 h-5 text-[#0b63e5]"/>
+            <h2 className="text-xl font-bold text-[#0f172a]">Company Operations</h2>
           </div>
-          <p className="text-xs text-[#8FA396] mt-0.5">Internal ops portal — Merchant KYC · Disputes · Risk Velocity Rules</p>
+          <p className="text-xs text-[#64748b] mt-0.5">Internal ops portal — Merchant KYC · Disputes · Risk Velocity Rules</p>
         </div>
-        <div className="px-2.5 py-1 rounded-[2px] font-mono text-[11px] font-bold border border-[#C9A227] text-[#C9A227] uppercase tracking-wider">
+        <div className="px-2.5 py-1 rounded-[2px] font-mono text-[11px] font-bold border border-[#0b63e5] text-[#0b63e5] uppercase tracking-wider">
           Internal View Only
         </div>
       </div>
@@ -146,40 +146,40 @@ export const CompanyOpsView = () => {
         {[
             { label: 'KYC Queue', value: pendingKyc.toString(), sub: 'awaiting review', icon: Users, color: '#C98A2E' },
             { label: 'Open Disputes', value: openDisputes.toString(), sub: 'need arbitration', icon: AlertTriangle, color: '#B0503F' },
-            { label: 'Active Rules', value: `${activeRules}/${rules.length}`, sub: 'velocity rules', icon: Zap, color: '#C9A227' },
+            { label: 'Active Rules', value: `${activeRules}/${rules.length}`, sub: 'velocity rules', icon: Zap, color: '#0b63e5' },
             { label: 'Triggered (24h)', value: triggeredRules.toString(), sub: 'rule violations', icon: Activity, color: '#B0503F' },
         ].map((m) => {
             const Icon = m.icon;
-            return (<div key={m.label} className="bg-[#1D2E28] rounded-none border border-[rgba(237,231,214,0.08)] p-4">
+            return (<div key={m.label} className="bg-[white] rounded-none border border-[rgba(237,231,214,0.08)] p-4">
               <div className="flex items-center justify-between mb-3">
-                <span className="text-[11px] font-mono text-[#8FA396] uppercase tracking-wider">{m.label}</span>
+                <span className="text-[11px] font-mono text-[#64748b] uppercase tracking-wider">{m.label}</span>
                 <div className="w-7 h-7 rounded-[2px] flex items-center justify-center border" style={{ borderColor: `${m.color}30`, background: `${m.color}15` }}>
                   <Icon className="w-3.5 h-3.5" style={{ color: m.color }}/>
                 </div>
               </div>
-              <div className="text-2xl font-mono font-bold tabular-nums text-[#EDE7D6]">{m.value}</div>
-              <div className="text-[11px] text-[#8FA396] mt-1">{m.sub}</div>
+              <div className="text-2xl font-mono font-bold tabular-nums text-[#0f172a]">{m.value}</div>
+              <div className="text-[11px] text-[#64748b] mt-1">{m.sub}</div>
             </div>);
         })}
       </div>
 
       {/* Tab Navigation */}
-      <div className="flex gap-1 bg-[#1D2E28] p-1 border border-[rgba(237,231,214,0.08)] w-fit">
+      <div className="flex gap-1 bg-[white] p-1 border border-[rgba(237,231,214,0.08)] w-fit">
         {[
             { id: 'kyc', label: 'Merchant KYC' },
             { id: 'disputes', label: 'Disputes' },
             { id: 'risk', label: 'Risk Rules' },
-        ].map((t) => (<button key={t.id} onClick={() => setTab(t.id)} className={`px-4 py-1.5 rounded-[4px] text-xs font-semibold transition-all ${tab === t.id ? 'bg-[#C9A227] text-[#131B17]' : 'text-[#8FA396] hover:text-[#EDE7D6]'}`}>
+        ].map((t) => (<button key={t.id} onClick={() => setTab(t.id)} className={`px-4 py-1.5 rounded-[4px] text-xs font-semibold transition-all ${tab === t.id ? 'bg-[#0b63e5] text-[#f8fafc]' : 'text-[#64748b] hover:text-[#0f172a]'}`}>
             {t.label}
           </button>))}
       </div>
 
       {/* KYC Tab */}
-      {tab === 'kyc' && (<div className="bg-[#1D2E28] rounded-none border border-[rgba(237,231,214,0.08)] overflow-hidden">
+      {tab === 'kyc' && (<div className="bg-[white] rounded-none border border-[rgba(237,231,214,0.08)] overflow-hidden">
           <table className="w-full text-xs">
             <thead>
-              <tr className="border-b border-[rgba(237,231,214,0.08)] bg-[#131B17]/40">
-                {['Business', 'Category', 'Applied', 'Documents', 'Risk', 'KYC Status'].map((h) => (<th key={h} className="text-left px-4 py-3 text-[10px] font-mono font-bold text-[#8FA396] uppercase tracking-wider">{h}</th>))}
+              <tr className="border-b border-[rgba(237,231,214,0.08)] bg-[#f8fafc]/40">
+                {['Business', 'Category', 'Applied', 'Documents', 'Risk', 'KYC Status'].map((h) => (<th key={h} className="text-left px-4 py-3 text-[10px] font-mono font-bold text-[#64748b] uppercase tracking-wider">{h}</th>))}
               </tr>
             </thead>
             <tbody className="divide-y divide-[rgba(237,231,214,0.06)]">
@@ -187,19 +187,19 @@ export const CompanyOpsView = () => {
                 const kycMeta = KYC_META[m.kycStatus];
                 const riskMeta = RISK_META[m.riskLevel];
                 const KycIcon = kycMeta.icon;
-                return (<tr key={m.id} onClick={() => setSelectedMerchant(m)} className="hover:bg-[#131B17]/50 cursor-pointer transition-colors group">
+                return (<tr key={m.id} onClick={() => setSelectedMerchant(m)} className="hover:bg-[#f8fafc]/50 cursor-pointer transition-colors group">
                     <td className="px-4 py-3.5">
-                      <div className="font-semibold text-[#EDE7D6]">{m.businessName}</div>
-                      <div className="text-[11px] text-[#8FA396]">{m.ownerName} · {m.city}</div>
+                      <div className="font-semibold text-[#0f172a]">{m.businessName}</div>
+                      <div className="text-[11px] text-[#64748b]">{m.ownerName} · {m.city}</div>
                     </td>
-                    <td className="px-4 py-3.5 text-[#EDE7D6]/80">{m.category}</td>
-                    <td className="px-4 py-3.5 font-mono text-[#8FA396]">{m.appliedAt}</td>
+                    <td className="px-4 py-3.5 text-[#0f172a]/80">{m.category}</td>
+                    <td className="px-4 py-3.5 font-mono text-[#64748b]">{m.appliedAt}</td>
                     <td className="px-4 py-3.5">
                       <div className="flex items-center gap-2">
-                        <div className="w-20 h-1.5 rounded-[1px] bg-[#131B17]">
-                          <div className="h-full rounded-[1px] bg-[#C9A227]" style={{ width: `${(m.documentsSubmitted / m.documentsRequired) * 100}%` }}/>
+                        <div className="w-20 h-1.5 rounded-[1px] bg-[#f8fafc]">
+                          <div className="h-full rounded-[1px] bg-[#0b63e5]" style={{ width: `${(m.documentsSubmitted / m.documentsRequired) * 100}%` }}/>
                         </div>
-                        <span className="font-mono tabular-nums text-[#8FA396]">{m.documentsSubmitted}/{m.documentsRequired}</span>
+                        <span className="font-mono tabular-nums text-[#64748b]">{m.documentsSubmitted}/{m.documentsRequired}</span>
                       </div>
                     </td>
                     <td className="px-4 py-3.5">
@@ -217,22 +217,22 @@ export const CompanyOpsView = () => {
         </div>)}
 
       {/* Disputes Tab */}
-      {tab === 'disputes' && (<div className="bg-[#1D2E28] rounded-none border border-[rgba(237,231,214,0.08)] overflow-hidden">
+      {tab === 'disputes' && (<div className="bg-[white] rounded-none border border-[rgba(237,231,214,0.08)] overflow-hidden">
           <table className="w-full text-xs">
             <thead>
-              <tr className="border-b border-[rgba(237,231,214,0.08)] bg-[#131B17]/40">
-                {['Dispute ID', 'Merchant', 'Customer', 'Amount', 'Reason', 'Status', 'Actions'].map((h) => (<th key={h} className="text-left px-4 py-3 text-[10px] font-mono font-bold text-[#8FA396] uppercase tracking-wider">{h}</th>))}
+              <tr className="border-b border-[rgba(237,231,214,0.08)] bg-[#f8fafc]/40">
+                {['Dispute ID', 'Merchant', 'Customer', 'Amount', 'Reason', 'Status', 'Actions'].map((h) => (<th key={h} className="text-left px-4 py-3 text-[10px] font-mono font-bold text-[#64748b] uppercase tracking-wider">{h}</th>))}
               </tr>
             </thead>
             <tbody className="divide-y divide-[rgba(237,231,214,0.06)]">
               {DISPUTES.map((d) => {
                 const meta = DISPUTE_META[d.status];
-                return (<tr key={d.id} className="hover:bg-[#131B17]/50 transition-colors">
-                    <td className="px-4 py-3.5 font-mono text-[#8FA396] text-[11px]">{d.id}</td>
-                    <td className="px-4 py-3.5 font-medium text-[#EDE7D6]">{d.merchantName}</td>
-                    <td className="px-4 py-3.5 text-[#EDE7D6]/80">{d.customerName}</td>
-                    <td className="px-4 py-3.5 font-mono font-bold tabular-nums text-[#EDE7D6]">{d.amount}</td>
-                    <td className="px-4 py-3.5 text-[#8FA396]">{d.reason}</td>
+                return (<tr key={d.id} className="hover:bg-[#f8fafc]/50 transition-colors">
+                    <td className="px-4 py-3.5 font-mono text-[#64748b] text-[11px]">{d.id}</td>
+                    <td className="px-4 py-3.5 font-medium text-[#0f172a]">{d.merchantName}</td>
+                    <td className="px-4 py-3.5 text-[#0f172a]/80">{d.customerName}</td>
+                    <td className="px-4 py-3.5 font-mono font-bold tabular-nums text-[#0f172a]">{d.amount}</td>
+                    <td className="px-4 py-3.5 text-[#64748b]">{d.reason}</td>
                     <td className="px-4 py-3.5">
                       <span className="px-2 py-0.5 rounded-[2px] font-mono text-[10px] font-bold border uppercase tracking-wider" style={{ color: meta.color, borderColor: meta.color, background: `${meta.color}10` }}>
                         {meta.label}
@@ -243,7 +243,7 @@ export const CompanyOpsView = () => {
                           <button onClick={() => showToast(`Dispute ${d.id} resolved in favour of merchant`, 'success')} className="px-2 py-0.5 rounded-[4px] border border-[#4E8B6F] text-[#4E8B6F] text-[10px] font-mono font-bold hover:bg-[#4E8B6F]/10 transition-colors">
                             Merchant Win
                           </button>
-                          <button onClick={() => showToast(`Dispute ${d.id} resolved in favour of customer`, 'info')} className="px-2 py-0.5 rounded-[4px] border border-[rgba(237,231,214,0.2)] text-[#EDE7D6] text-[10px] font-mono font-bold hover:bg-[#EDE7D6]/10 transition-colors">
+                          <button onClick={() => showToast(`Dispute ${d.id} resolved in favour of customer`, 'info')} className="px-2 py-0.5 rounded-[4px] border border-[rgba(237,231,214,0.2)] text-[#0f172a] text-[10px] font-mono font-bold hover:bg-[#0f172a]/10 transition-colors">
                             Customer Win
                           </button>
                         </div>)}
@@ -256,15 +256,15 @@ export const CompanyOpsView = () => {
 
       {/* Risk Rules Tab */}
       {tab === 'risk' && (<div className="space-y-3">
-          {rules.map((rule) => (<div key={rule.id} className="bg-[#1D2E28] rounded-none border border-[rgba(237,231,214,0.08)] p-4">
+          {rules.map((rule) => (<div key={rule.id} className="bg-[white] rounded-none border border-[rgba(237,231,214,0.08)] p-4">
               <div className="flex items-start justify-between gap-4">
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center gap-2 mb-1">
-                    <span className="text-sm font-semibold text-[#EDE7D6]">{rule.name}</span>
+                    <span className="text-sm font-semibold text-[#0f172a]">{rule.name}</span>
                     <span className="px-1.5 py-0.5 rounded-[2px] font-mono text-[10px] font-bold border uppercase tracking-wider" style={{
-                    color: rule.action === 'BLOCK' ? '#B0503F' : rule.action === 'FLAG' ? '#C98A2E' : '#C9A227',
-                    borderColor: rule.action === 'BLOCK' ? '#B0503F' : rule.action === 'FLAG' ? '#C98A2E' : '#C9A227',
-                    background: rule.action === 'BLOCK' ? '#B0503F10' : rule.action === 'FLAG' ? '#C98A2E10' : '#C9A22710',
+                    color: rule.action === 'BLOCK' ? '#B0503F' : rule.action === 'FLAG' ? '#C98A2E' : '#0b63e5',
+                    borderColor: rule.action === 'BLOCK' ? '#B0503F' : rule.action === 'FLAG' ? '#C98A2E' : '#0b63e5',
+                    background: rule.action === 'BLOCK' ? '#B0503F10' : rule.action === 'FLAG' ? '#C98A2E10' : '#0b63e510',
                 }}>
                       {rule.action}
                     </span>
@@ -272,18 +272,18 @@ export const CompanyOpsView = () => {
                         {rule.triggeredLast24h}× triggered 24h
                       </span>)}
                   </div>
-                  <div className="text-xs text-[#8FA396]">{rule.description}</div>
-                  <div className="flex items-center gap-4 mt-2 text-[11px] font-mono text-[#8FA396]">
-                    <span>Threshold: <span className="text-[#EDE7D6] font-semibold">{rule.threshold}</span></span>
-                    <span>Window: <span className="text-[#EDE7D6] font-semibold">{rule.window}</span></span>
+                  <div className="text-xs text-[#64748b]">{rule.description}</div>
+                  <div className="flex items-center gap-4 mt-2 text-[11px] font-mono text-[#64748b]">
+                    <span>Threshold: <span className="text-[#0f172a] font-semibold">{rule.threshold}</span></span>
+                    <span>Window: <span className="text-[#0f172a] font-semibold">{rule.window}</span></span>
                   </div>
                 </div>
                 <div className="flex items-center gap-3 flex-shrink-0">
                   <button onClick={() => {
                     setRules((prev) => prev.map((r) => r.id === rule.id ? { ...r, active: !r.active } : r));
                     showToast(`Rule "${rule.name}" ${rule.active ? 'disabled' : 'enabled'}`, rule.active ? 'error' : 'success');
-                }} className={`relative w-10 h-5 rounded-[2px] border border-[rgba(237,231,214,0.2)] transition-colors ${rule.active ? 'bg-[#C9A227]' : 'bg-[#131B17]'}`}>
-                    <span className={`absolute top-0.5 w-3.5 h-3.5 rounded-[1px] transition-all ${rule.active ? 'left-5 bg-[#131B17]' : 'left-0.5 bg-[#8FA396]'}`}/>
+                }} className={`relative w-10 h-5 rounded-[2px] border border-[rgba(237,231,214,0.2)] transition-colors ${rule.active ? 'bg-[#0b63e5]' : 'bg-[#f8fafc]'}`}>
+                    <span className={`absolute top-0.5 w-3.5 h-3.5 rounded-[1px] transition-all ${rule.active ? 'left-5 bg-[#f8fafc]' : 'left-0.5 bg-[#64748b]'}`}/>
                   </button>
                 </div>
               </div>
@@ -293,13 +293,13 @@ export const CompanyOpsView = () => {
       {/* Merchant KYC Detail Panel */}
       {selectedMerchant && (<div className="fixed inset-0 z-50 flex">
           <div className="flex-1 bg-black/60" onClick={() => setSelectedMerchant(null)}/>
-          <div className="w-full max-w-md bg-[#1D2E28] border-l border-[rgba(237,231,214,0.12)] flex flex-col h-full overflow-y-auto">
-            <div className="sticky top-0 bg-[#1D2E28] border-b border-[rgba(237,231,214,0.08)] px-5 py-4 flex items-center justify-between z-10">
+          <div className="w-full max-w-md bg-[white] border-l border-[rgba(237,231,214,0.12)] flex flex-col h-full overflow-y-auto">
+            <div className="sticky top-0 bg-[white] border-b border-[rgba(237,231,214,0.08)] px-5 py-4 flex items-center justify-between z-10">
               <div>
-                <div className="font-bold text-[#EDE7D6] text-sm">{selectedMerchant.businessName}</div>
-                <div className="text-[11px] font-mono text-[#8FA396]">{selectedMerchant.id}</div>
+                <div className="font-bold text-[#0f172a] text-sm">{selectedMerchant.businessName}</div>
+                <div className="text-[11px] font-mono text-[#64748b]">{selectedMerchant.id}</div>
               </div>
-              <button onClick={() => setSelectedMerchant(null)} className="p-1.5 rounded-[4px] hover:bg-[#131B17] text-[#8FA396] hover:text-[#EDE7D6]">
+              <button onClick={() => setSelectedMerchant(null)} className="p-1.5 rounded-[4px] hover:bg-[#f8fafc] text-[#64748b] hover:text-[#0f172a]">
                 <X className="w-4 h-4"/>
               </button>
             </div>
@@ -319,7 +319,7 @@ export const CompanyOpsView = () => {
               </div>
 
               {/* Details */}
-              <div className="border border-[rgba(237,231,214,0.08)] divide-y divide-[rgba(237,231,214,0.06)] bg-[#131B17]/40 p-1">
+              <div className="border border-[rgba(237,231,214,0.08)] divide-y divide-[rgba(237,231,214,0.06)] bg-[#f8fafc]/40 p-1">
                 {[
                 { label: 'Owner', value: selectedMerchant.ownerName },
                 { label: 'PAN', value: selectedMerchant.pan },
@@ -329,26 +329,26 @@ export const CompanyOpsView = () => {
                 { label: 'Expected Monthly GMV', value: selectedMerchant.monthlyGmv },
                 { label: 'Applied', value: selectedMerchant.appliedAt },
             ].map((row) => (<div key={row.label} className="flex items-center justify-between py-2 px-3">
-                    <span className="text-[11px] font-mono text-[#8FA396]">{row.label}</span>
-                    <span className="text-xs font-medium text-[#EDE7D6]">{row.value}</span>
+                    <span className="text-[11px] font-mono text-[#64748b]">{row.label}</span>
+                    <span className="text-xs font-medium text-[#0f172a]">{row.value}</span>
                   </div>))}
               </div>
 
               {/* Document Progress */}
               <div className="space-y-2">
-                <div className="text-[10px] font-mono font-bold text-[#8FA396] uppercase tracking-wider">Document Completion</div>
+                <div className="text-[10px] font-mono font-bold text-[#64748b] uppercase tracking-wider">Document Completion</div>
                 <div className="flex items-center gap-3">
-                  <div className="flex-1 h-1.5 rounded-[1px] bg-[#131B17]">
-                    <div className="h-full rounded-[1px] bg-[#C9A227] transition-all" style={{ width: `${(selectedMerchant.documentsSubmitted / selectedMerchant.documentsRequired) * 100}%` }}/>
+                  <div className="flex-1 h-1.5 rounded-[1px] bg-[#f8fafc]">
+                    <div className="h-full rounded-[1px] bg-[#0b63e5] transition-all" style={{ width: `${(selectedMerchant.documentsSubmitted / selectedMerchant.documentsRequired) * 100}%` }}/>
                   </div>
-                  <span className="text-xs font-mono tabular-nums text-[#EDE7D6]">{selectedMerchant.documentsSubmitted}/{selectedMerchant.documentsRequired}</span>
+                  <span className="text-xs font-mono tabular-nums text-[#0f172a]">{selectedMerchant.documentsSubmitted}/{selectedMerchant.documentsRequired}</span>
                 </div>
               </div>
 
               {/* Notes */}
-              {selectedMerchant.notes && (<div className="p-3 bg-[#131B17]/60 border border-[rgba(237,231,214,0.12)]">
+              {selectedMerchant.notes && (<div className="p-3 bg-[#f8fafc]/60 border border-[rgba(237,231,214,0.12)]">
                   <div className="text-[10px] font-mono font-bold text-[#C98A2E] uppercase tracking-wider mb-1">Ops Note</div>
-                  <div className="text-xs text-[#EDE7D6]/80">{selectedMerchant.notes}</div>
+                  <div className="text-xs text-[#0f172a]/80">{selectedMerchant.notes}</div>
                 </div>)}
 
               {/* Actions */}
@@ -356,7 +356,7 @@ export const CompanyOpsView = () => {
                   <button onClick={() => {
                     showToast(`${selectedMerchant.businessName} approved!`, 'success');
                     setSelectedMerchant(null);
-                }} className="flex-1 py-2 bg-[#4E8B6F] hover:bg-[#5da382] text-[#131B17] text-xs font-bold rounded-[4px] transition-all">
+                }} className="flex-1 py-2 bg-[#4E8B6F] hover:bg-[#5da382] text-[#f8fafc] text-xs font-bold rounded-[4px] transition-all">
                     Approve KYC
                   </button>
                   <button onClick={() => {

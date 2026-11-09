@@ -49,6 +49,7 @@ function DashboardShell() {
         return 'login';
     });
     const [currentTab, setCurrentTab] = useState('overview');
+    const [isTestMode, setIsTestMode] = useState(true);
     const [currentPersona, setCurrentPersona] = useState(USER_PERSONAS[0]);
     const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
     const [isCommandPaletteOpen, setIsCommandPaletteOpen] = useState(false);
@@ -124,7 +125,30 @@ function DashboardShell() {
 
         {/* Main Content Viewport */}
         <div className="flex-1 flex flex-col min-w-0 h-screen overflow-y-auto">
-          <Header title={titles[currentTab] || 'Overview'} currentPersona={currentPersona} user={user} onPersonaChange={setCurrentPersona} onOpenCommandPalette={() => setIsCommandPaletteOpen(true)} onOpenCheckoutPreview={() => setIsCheckoutOpen(true)} portalMode={portalMode} onTogglePortalMode={isPlatformStaff ? () => setPortalMode(portalMode === 'merchant' ? 'ops' : 'merchant') : undefined} onQuickAction={handleQuickAction}/>
+          <Header title={titles[currentTab] || 'Overview'} currentPersona={currentPersona} user={user} onPersonaChange={setCurrentPersona} onOpenCommandPalette={() => setIsCommandPaletteOpen(true)} onOpenCheckoutPreview={() => setIsCheckoutOpen(true)} portalMode={portalMode} onTogglePortalMode={isPlatformStaff ? () => setPortalMode(portalMode === 'merchant' ? 'ops' : 'merchant') : undefined} onQuickAction={handleQuickAction} isTestMode={isTestMode} onToggleTestMode={setIsTestMode}/>
+
+          {/* Environment Status Ribbon (Razorpay Style) */}
+          {isTestMode ? (
+            <div className="bg-amber-500/10 border-b border-amber-500/20 px-8 py-2 flex items-center justify-between text-xs text-amber-900 font-medium">
+              <div className="flex items-center gap-2">
+                <span className="w-2 h-2 rounded-full bg-amber-500 animate-pulse" />
+                <span><strong>TEST MODE ACTIVE:</strong> You are currently simulating transactions on sandbox rails. No actual funds will be debited or credited.</span>
+              </div>
+              <button onClick={() => setIsTestMode(false)} className="underline hover:text-amber-950 font-bold text-[11px] cursor-pointer">
+                Switch to Live Mode &rarr;
+              </button>
+            </div>
+          ) : (
+            <div className="bg-emerald-500/10 border-b border-emerald-500/20 px-8 py-2 flex items-center justify-between text-xs text-emerald-900 font-medium">
+              <div className="flex items-center gap-2">
+                <span className="w-2 h-2 rounded-full bg-emerald-600 animate-pulse" />
+                <span><strong>LIVE MODE ACTIVE:</strong> Connected to live banking rails, NPCI UPI 2.0 network, and RBI Section 40 Nodal Escrow settlement.</span>
+              </div>
+              <button onClick={() => setIsTestMode(true)} className="underline hover:text-emerald-950 font-bold text-[11px] cursor-pointer">
+                Switch to Test Mode &rarr;
+              </button>
+            </div>
+          )}
 
           <main className="flex-1 p-6 md:p-8 max-w-[1440px] mx-auto w-full">
             {currentTab === 'overview' && (<OverviewView onNavigate={setCurrentTab} merchantName={user?.firstName || 'Ajay'}/>)}

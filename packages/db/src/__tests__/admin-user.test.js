@@ -100,3 +100,4 @@ describe('Admin User Repository & RBAC Invariants', () => {
     assert.ok(financePerms.includes('reconciliation:run'));
   });
 });
+

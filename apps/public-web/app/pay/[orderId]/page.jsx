@@ -1,7 +1,7 @@
 'use client';
 import React, { useEffect, useState } from 'react';
 import { ShieldCheck, Lock, CheckCircle2, CreditCard, Smartphone, Building2, Wallet, Clock, Copy, Zap, Check, Edit2, ArrowRight, QrCode, Send, Phone, AtSign, Sparkles, CheckCircle, } from 'lucide-react';
-const API_BASE = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3000';
+const API_BASE = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:4000';
 export default function CheckoutPage({ params }) {
     const { orderId } = React.use(params);
     const [order, setOrder] = useState(null);

@@ -188,15 +188,15 @@ export const PaymentLinksView = ({ onOpenCheckout }) => {
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-          <h2 className="text-base font-bold text-[#EDE7D6]">Payment Links</h2>
-          <div className="w-8 h-0.5 bg-[#C9A227] mt-1"/>
-          <p className="text-xs text-[#8FA396] mt-1">
+          <h2 className="text-base font-bold text-[#0f172a]">Payment Links</h2>
+          <div className="w-8 h-0.5 bg-[#0b63e5] mt-1"/>
+          <p className="text-xs text-[#64748b] mt-1">
             Create, share, and track hosted payment links via SMS, WhatsApp, and email
           </p>
         </div>
 
         <div className="flex items-center gap-3">
-          <button onClick={() => setShowCreateModal(true)} className="px-4 py-2 rounded-[4px] bg-[#C9A227] hover:bg-[#DBB53B] text-[#131B17] text-xs font-bold flex items-center gap-2 transition-colors border border-[#B08C1E]">
+          <button onClick={() => setShowCreateModal(true)} className="px-4 py-2 rounded-[4px] bg-[#0b63e5] hover:bg-[#DBB53B] text-[#f8fafc] text-xs font-bold flex items-center gap-2 transition-colors border border-[#B08C1E]">
             <Plus className="w-3.5 h-3.5"/>
             Create Payment Link
           </button>
@@ -205,52 +205,52 @@ export const PaymentLinksView = ({ onOpenCheckout }) => {
 
       {/* Metrics Row */}
       <div className="grid grid-cols-1 sm:grid-cols-4 gap-4">
-        <div className="p-4 bg-[#1D2E28] border border-[rgba(237,231,214,0.08)]">
-          <span className="text-[11px] text-[#8FA396]">Total Active Links</span>
-          <div className="text-2xl font-bold font-mono text-[#EDE7D6] tabular-nums mt-1">16</div>
+        <div className="p-4 bg-[white] border border-[rgba(237,231,214,0.08)]">
+          <span className="text-[11px] text-[#64748b]">Total Active Links</span>
+          <div className="text-2xl font-bold font-mono text-[#0f172a] tabular-nums mt-1">16</div>
           <span className="text-[10px] text-[#4E8B6F] font-mono">All customer VPAs enabled</span>
         </div>
 
-        <div className="p-4 bg-[#1D2E28] border border-[rgba(237,231,214,0.08)]">
-          <span className="text-[11px] text-[#8FA396]">Total Collected via Links</span>
-          <div className="text-2xl font-bold font-mono text-[#C9A227] tabular-nums mt-1">₹4,82,500.00</div>
+        <div className="p-4 bg-[white] border border-[rgba(237,231,214,0.08)]">
+          <span className="text-[11px] text-[#64748b]">Total Collected via Links</span>
+          <div className="text-2xl font-bold font-mono text-[#0b63e5] tabular-nums mt-1">₹4,82,500.00</div>
           <span className="text-[10px] text-[#4E8B6F] font-mono">+16.4% this month</span>
         </div>
 
-        <div className="p-4 bg-[#1D2E28] border border-[rgba(237,231,214,0.08)]">
-          <span className="text-[11px] text-[#8FA396]">Conversion Rate</span>
+        <div className="p-4 bg-[white] border border-[rgba(237,231,214,0.08)]">
+          <span className="text-[11px] text-[#64748b]">Conversion Rate</span>
           <div className="text-2xl font-bold font-mono text-[#4E8B6F] tabular-nums mt-1">87.4%</div>
-          <span className="text-[10px] text-[#8FA396] font-mono">View-to-payment conversion</span>
+          <span className="text-[10px] text-[#64748b] font-mono">View-to-payment conversion</span>
         </div>
 
-        <div className="p-4 bg-[#1D2E28] border border-[rgba(237,231,214,0.08)]">
-          <span className="text-[11px] text-[#8FA396]">Expiring Within 7 Days</span>
+        <div className="p-4 bg-[white] border border-[rgba(237,231,214,0.08)]">
+          <span className="text-[11px] text-[#64748b]">Expiring Within 7 Days</span>
           <div className="text-2xl font-bold font-mono text-[#C98A2E] tabular-nums mt-1">3</div>
           <span className="text-[10px] text-[#C98A2E] font-mono">Action suggested</span>
         </div>
       </div>
 
       {/* Filters Toolbar */}
-      <div className="p-4 bg-[#1D2E28] border border-[rgba(237,231,214,0.08)] flex flex-col md:flex-row md:items-center justify-between gap-4">
+      <div className="p-4 bg-[white] border border-[rgba(237,231,214,0.08)] flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div className="flex flex-wrap items-center gap-2">
           {['ALL', 'ACTIVE', 'PARTIALLY_PAID', 'PAID', 'EXPIRED', 'CANCELLED'].map((st) => (<button key={st} onClick={() => setFilter(st)} className={`px-3 py-1.5 rounded-[2px] text-xs font-semibold transition-colors ${filter === st
-                ? 'bg-[#C9A227] text-[#131B17] font-bold'
-                : 'text-[#8FA396] hover:text-[#EDE7D6]'}`}>
+                ? 'bg-[#0b63e5] text-[#f8fafc] font-bold'
+                : 'text-[#64748b] hover:text-[#0f172a]'}`}>
               {st.replace('_', ' ').toLowerCase().replace(/\b\w/g, (c) => c.toUpperCase())}
             </button>))}
         </div>
 
         <div className="relative">
-          <Search className="w-3.5 h-3.5 text-[#8FA396] absolute left-3 top-2.5"/>
-          <input type="text" placeholder="Search links, customers, IDs..." value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)} className="w-64 h-8 bg-[#131B17] border border-[rgba(237,231,214,0.08)] rounded-[4px] pl-8 pr-3 text-xs text-[#EDE7D6] placeholder:text-[#8FA396] focus:outline-none focus:border-[#C9A227]"/>
+          <Search className="w-3.5 h-3.5 text-[#64748b] absolute left-3 top-2.5"/>
+          <input type="text" placeholder="Search links, customers, IDs..." value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)} className="w-64 h-8 bg-[#f8fafc] border border-[rgba(237,231,214,0.08)] rounded-[4px] pl-8 pr-3 text-xs text-[#0f172a] placeholder:text-[#64748b] focus:outline-none focus:border-[#0b63e5]"/>
         </div>
       </div>
 
       {/* Links Table */}
-      <div className="bg-[#1D2E28] border border-[rgba(237,231,214,0.08)] overflow-hidden">
+      <div className="bg-[white] border border-[rgba(237,231,214,0.08)] overflow-hidden">
         <table className="w-full text-left text-xs">
           <thead>
-            <tr className="border-b border-[rgba(237,231,214,0.08)] bg-[#131B17] text-[#8FA396] font-medium">
+            <tr className="border-b border-[rgba(237,231,214,0.08)] bg-[#f8fafc] text-[#64748b] font-medium">
               <th className="py-3.5 px-4">Link Details</th>
               <th className="py-3.5 px-4">Customer</th>
               <th className="py-3.5 px-4">Amount</th>
@@ -263,8 +263,8 @@ export const PaymentLinksView = ({ onOpenCheckout }) => {
             {filteredLinks.map((link) => (<tr key={link.id} className="hover:bg-[#243831] transition-colors group">
                 {/* Title and ID */}
                 <td className="py-3.5 px-4">
-                  <div className="font-semibold text-[#EDE7D6]">{link.title}</div>
-                  <div className="flex items-center gap-2 text-[10px] text-[#8FA396] font-mono mt-0.5">
+                  <div className="font-semibold text-[#0f172a]">{link.title}</div>
+                  <div className="flex items-center gap-2 text-[10px] text-[#64748b] font-mono mt-0.5">
                     <span>{link.id}</span>
                     <span>/</span>
                     <span>/pay/{link.slug}</span>
@@ -273,14 +273,14 @@ export const PaymentLinksView = ({ onOpenCheckout }) => {
 
                 {/* Customer */}
                 <td className="py-3.5 px-4">
-                  <div className="font-medium text-[#EDE7D6]">{link.customerName}</div>
-                  <div className="text-[10px] text-[#8FA396]">{link.customerEmail}</div>
+                  <div className="font-medium text-[#0f172a]">{link.customerName}</div>
+                  <div className="text-[10px] text-[#64748b]">{link.customerEmail}</div>
                 </td>
 
                 {/* Amount */}
                 <td className="py-3.5 px-4">
-                  <div className="font-bold font-mono text-[#EDE7D6] tabular-nums">{link.amount}</div>
-                  {link.allowPartial && (<span className="text-[9px] text-[#C9A227] border border-[#C9A227]/30 px-1 py-0.2 rounded-[2px]">
+                  <div className="font-bold font-mono text-[#0f172a] tabular-nums">{link.amount}</div>
+                  {link.allowPartial && (<span className="text-[9px] text-[#0b63e5] border border-[#0b63e5]/30 px-1 py-0.2 rounded-[2px]">
                       Partial Allowed
                     </span>)}
                 </td>
@@ -290,16 +290,16 @@ export const PaymentLinksView = ({ onOpenCheckout }) => {
                   <span className={`inline-flex items-center px-2 py-0.5 rounded-[2px] font-mono text-[10px] font-bold border ${link.status === 'ACTIVE'
                 ? 'border-[#4E8B6F] text-[#4E8B6F] bg-[#4E8B6F]/5'
                 : link.status === 'PAID'
-                    ? 'border-[#C9A227] text-[#C9A227] bg-[#C9A227]/5'
+                    ? 'border-[#0b63e5] text-[#0b63e5] bg-[#0b63e5]/5'
                     : link.status === 'PARTIALLY_PAID'
                         ? 'border-[#C98A2E] text-[#C98A2E] bg-[#C98A2E]/5'
-                        : 'border-[#8FA396] text-[#8FA396] bg-transparent'}`}>
+                        : 'border-[#64748b] text-[#64748b] bg-transparent'}`}>
                     {link.status}
                   </span>
                 </td>
 
                 {/* Expiry */}
-                <td className="py-3.5 px-4 text-[#8FA396] font-mono text-[11px] tabular-nums">
+                <td className="py-3.5 px-4 text-[#64748b] font-mono text-[11px] tabular-nums">
                   {link.expiresAt}
                 </td>
 
@@ -307,27 +307,27 @@ export const PaymentLinksView = ({ onOpenCheckout }) => {
                 <td className="py-3.5 px-4 text-right">
                   <div className="flex items-center justify-end gap-1.5">
                     {/* Copy Link */}
-                    <button onClick={() => handleCopyLink(link)} className="p-1.5 rounded-[4px] text-[#8FA396] hover:text-[#EDE7D6] hover:bg-[#131B17] transition-colors" title="Copy payment link">
+                    <button onClick={() => handleCopyLink(link)} className="p-1.5 rounded-[4px] text-[#64748b] hover:text-[#0f172a] hover:bg-[#f8fafc] transition-colors" title="Copy payment link">
                       <Copy className="w-3.5 h-3.5"/>
                     </button>
 
                     {/* QR Code */}
-                    <button onClick={() => setQrModalLink(link)} className="p-1.5 rounded-[4px] text-[#C9A227] hover:bg-[#131B17] transition-colors" title="View QR Code">
+                    <button onClick={() => setQrModalLink(link)} className="p-1.5 rounded-[4px] text-[#0b63e5] hover:bg-[#f8fafc] transition-colors" title="View QR Code">
                       <QrCode className="w-3.5 h-3.5"/>
                     </button>
 
                     {/* Preview Customer Checkout */}
-                    {onOpenCheckout && (<button onClick={() => onOpenCheckout(link)} className="p-1.5 rounded-[4px] text-[#8FA396] hover:text-[#4E8B6F] hover:bg-[#131B17] transition-colors" title="Simulate customer checkout">
+                    {onOpenCheckout && (<button onClick={() => onOpenCheckout(link)} className="p-1.5 rounded-[4px] text-[#64748b] hover:text-[#4E8B6F] hover:bg-[#f8fafc] transition-colors" title="Simulate customer checkout">
                         <ExternalLink className="w-3.5 h-3.5"/>
                       </button>)}
 
                     {/* Duplicate Link */}
-                    <button onClick={() => handleDuplicate(link)} className="p-1.5 rounded-[4px] text-[#8FA396] hover:text-[#EDE7D6] hover:bg-[#131B17] transition-colors" title="Duplicate link">
+                    <button onClick={() => handleDuplicate(link)} className="p-1.5 rounded-[4px] text-[#64748b] hover:text-[#0f172a] hover:bg-[#f8fafc] transition-colors" title="Duplicate link">
                       <Share2 className="w-3.5 h-3.5"/>
                     </button>
 
                     {/* Cancel Link */}
-                    {link.status === 'ACTIVE' && (<button onClick={() => handleCancelLink(link.id)} className="p-1.5 rounded-[4px] text-[#8FA396] hover:text-[#B0503F] hover:bg-[#131B17] transition-colors" title="Cancel link">
+                    {link.status === 'ACTIVE' && (<button onClick={() => handleCancelLink(link.id)} className="p-1.5 rounded-[4px] text-[#64748b] hover:text-[#B0503F] hover:bg-[#f8fafc] transition-colors" title="Cancel link">
                         <Ban className="w-3.5 h-3.5"/>
                       </button>)}
                   </div>
@@ -339,20 +339,20 @@ export const PaymentLinksView = ({ onOpenCheckout }) => {
 
       {/* QR Code Preview Modal */}
       {/* QR Code Preview Modal */}
-      {qrModalLink && (<div className="fixed inset-0 bg-[#131B17]/80 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-          <div className="bg-[#1D2E28] border border-[rgba(237,231,214,0.15)] rounded-[4px] w-full max-w-sm p-6 space-y-5 text-center text-[#EDE7D6]">
+      {qrModalLink && (<div className="fixed inset-0 bg-[#f8fafc]/80 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+          <div className="bg-[white] border border-[rgba(237,231,214,0.15)] rounded-[4px] w-full max-w-sm p-6 space-y-5 text-center text-[#0f172a]">
             <div className="flex items-center justify-between border-b border-[rgba(237,231,214,0.08)] pb-3">
               <div>
-                <h3 className="text-sm font-bold text-[#EDE7D6]">Payment QR Code</h3>
-                <div className="w-8 h-0.5 bg-[#C9A227] mt-1"/>
+                <h3 className="text-sm font-bold text-[#0f172a]">Payment QR Code</h3>
+                <div className="w-8 h-0.5 bg-[#0b63e5] mt-1"/>
               </div>
-              <button onClick={() => setQrModalLink(null)} className="text-[#8FA396] hover:text-[#EDE7D6]">
+              <button onClick={() => setQrModalLink(null)} className="text-[#64748b] hover:text-[#0f172a]">
                 <X className="w-4 h-4"/>
               </button>
             </div>
 
             <div className="p-4 bg-white rounded-[4px] w-48 h-48 mx-auto flex items-center justify-center border border-[rgba(237,231,214,0.15)]">
-              <svg viewBox="0 0 100 100" className="w-full h-full text-[#131B17]">
+              <svg viewBox="0 0 100 100" className="w-full h-full text-[#f8fafc]">
                 <rect x="10" y="10" width="30" height="30" fill="currentColor" rx="2"/>
                 <rect x="16" y="16" width="18" height="18" fill="white" rx="1"/>
                 <rect x="20" y="20" width="10" height="10" fill="currentColor"/>
@@ -369,11 +369,11 @@ export const PaymentLinksView = ({ onOpenCheckout }) => {
             </div>
 
             <div>
-              <div className="text-sm font-bold text-[#EDE7D6]">{qrModalLink.title}</div>
-              <div className="text-base font-bold font-mono text-[#C9A227] tabular-nums mt-0.5">
+              <div className="text-sm font-bold text-[#0f172a]">{qrModalLink.title}</div>
+              <div className="text-base font-bold font-mono text-[#0b63e5] tabular-nums mt-0.5">
                 {qrModalLink.amount}
               </div>
-              <span className="text-[11px] text-[#8FA396] block mt-1">
+              <span className="text-[11px] text-[#64748b] block mt-1">
                 Scan with Google Pay, PhonePe, Paytm, or any BHIM UPI app
               </span>
             </div>
@@ -381,60 +381,60 @@ export const PaymentLinksView = ({ onOpenCheckout }) => {
             <button onClick={() => {
                 showToast('QR Code image downloaded (PNG)', 'success');
                 setQrModalLink(null);
-            }} className="w-full py-2.5 rounded-[4px] bg-[#C9A227] hover:bg-[#DBB53B] text-[#131B17] text-xs font-bold border border-[#B08C1E]">
+            }} className="w-full py-2.5 rounded-[4px] bg-[#0b63e5] hover:bg-[#DBB53B] text-[#f8fafc] text-xs font-bold border border-[#B08C1E]">
               Download QR Image
             </button>
           </div>
         </div>)}
 
       {/* Create Link Modal */}
-      {showCreateModal && (<div className="fixed inset-0 bg-[#131B17]/80 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-          <form onSubmit={handleCreate} className="bg-[#1D2E28] border border-[rgba(237,231,214,0.15)] rounded-[4px] w-full max-w-md p-6 space-y-4 text-[#EDE7D6]">
+      {showCreateModal && (<div className="fixed inset-0 bg-[#f8fafc]/80 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+          <form onSubmit={handleCreate} className="bg-[white] border border-[rgba(237,231,214,0.15)] rounded-[4px] w-full max-w-md p-6 space-y-4 text-[#0f172a]">
             <div className="flex items-center justify-between border-b border-[rgba(237,231,214,0.08)] pb-3">
               <div>
-                <h3 className="text-sm font-bold text-[#EDE7D6]">Create New Payment Link</h3>
-                <div className="w-8 h-0.5 bg-[#C9A227] mt-1"/>
+                <h3 className="text-sm font-bold text-[#0f172a]">Create New Payment Link</h3>
+                <div className="w-8 h-0.5 bg-[#0b63e5] mt-1"/>
               </div>
-              <button type="button" onClick={() => setShowCreateModal(false)} className="text-[#8FA396] hover:text-[#EDE7D6]">
+              <button type="button" onClick={() => setShowCreateModal(false)} className="text-[#64748b] hover:text-[#0f172a]">
                 <X className="w-4 h-4"/>
               </button>
             </div>
 
             <div className="space-y-3 text-xs">
               <div>
-                <label className="block text-[#8FA396] mb-1">Purpose / Title</label>
-                <input type="text" placeholder="e.g. Website Design Milestone 1" value={form.title} onChange={(e) => setForm({ ...form, title: e.target.value })} className="w-full bg-[#131B17] border border-[rgba(237,231,214,0.08)] rounded-[4px] px-3 py-2 text-[#EDE7D6] focus:outline-none focus:border-[#C9A227]" required/>
+                <label className="block text-[#64748b] mb-1">Purpose / Title</label>
+                <input type="text" placeholder="e.g. Website Design Milestone 1" value={form.title} onChange={(e) => setForm({ ...form, title: e.target.value })} className="w-full bg-[#f8fafc] border border-[rgba(237,231,214,0.08)] rounded-[4px] px-3 py-2 text-[#0f172a] focus:outline-none focus:border-[#0b63e5]" required/>
               </div>
 
               <div>
-                <label className="block text-[#8FA396] mb-1">Amount (₹ INR)</label>
-                <input type="number" placeholder="e.g. 5000" value={form.amount} onChange={(e) => setForm({ ...form, amount: e.target.value })} className="w-full bg-[#131B17] border border-[rgba(237,231,214,0.08)] rounded-[4px] px-3 py-2 text-[#EDE7D6] font-bold font-mono text-sm focus:outline-none focus:border-[#C9A227]" required/>
+                <label className="block text-[#64748b] mb-1">Amount (₹ INR)</label>
+                <input type="number" placeholder="e.g. 5000" value={form.amount} onChange={(e) => setForm({ ...form, amount: e.target.value })} className="w-full bg-[#f8fafc] border border-[rgba(237,231,214,0.08)] rounded-[4px] px-3 py-2 text-[#0f172a] font-bold font-mono text-sm focus:outline-none focus:border-[#0b63e5]" required/>
               </div>
 
               <div className="grid grid-cols-2 gap-3">
                 <div>
-                  <label className="block text-[#8FA396] mb-1">Customer Name</label>
-                  <input type="text" placeholder="Customer Name" value={form.customerName} onChange={(e) => setForm({ ...form, customerName: e.target.value })} className="w-full bg-[#131B17] border border-[rgba(237,231,214,0.08)] rounded-[4px] px-3 py-2 text-[#EDE7D6] focus:outline-none focus:border-[#C9A227]"/>
+                  <label className="block text-[#64748b] mb-1">Customer Name</label>
+                  <input type="text" placeholder="Customer Name" value={form.customerName} onChange={(e) => setForm({ ...form, customerName: e.target.value })} className="w-full bg-[#f8fafc] border border-[rgba(237,231,214,0.08)] rounded-[4px] px-3 py-2 text-[#0f172a] focus:outline-none focus:border-[#0b63e5]"/>
                 </div>
                 <div>
-                  <label className="block text-[#8FA396] mb-1">Customer Email</label>
-                  <input type="email" placeholder="email@domain.com" value={form.customerEmail} onChange={(e) => setForm({ ...form, customerEmail: e.target.value })} className="w-full bg-[#131B17] border border-[rgba(237,231,214,0.08)] rounded-[4px] px-3 py-2 text-[#EDE7D6] focus:outline-none focus:border-[#C9A227]"/>
+                  <label className="block text-[#64748b] mb-1">Customer Email</label>
+                  <input type="email" placeholder="email@domain.com" value={form.customerEmail} onChange={(e) => setForm({ ...form, customerEmail: e.target.value })} className="w-full bg-[#f8fafc] border border-[rgba(237,231,214,0.08)] rounded-[4px] px-3 py-2 text-[#0f172a] focus:outline-none focus:border-[#0b63e5]"/>
                 </div>
               </div>
 
               <div className="flex items-center gap-2 pt-1">
-                <input type="checkbox" id="partial" checked={form.allowPartial} onChange={(e) => setForm({ ...form, allowPartial: e.target.checked })} className="rounded-[2px] border-[rgba(237,231,214,0.2)] bg-[#131B17] text-[#C9A227]"/>
-                <label htmlFor="partial" className="text-[#EDE7D6]">
+                <input type="checkbox" id="partial" checked={form.allowPartial} onChange={(e) => setForm({ ...form, allowPartial: e.target.checked })} className="rounded-[2px] border-[rgba(237,231,214,0.2)] bg-[#f8fafc] text-[#0b63e5]"/>
+                <label htmlFor="partial" className="text-[#0f172a]">
                   Allow customer to make partial payments
                 </label>
               </div>
             </div>
 
             <div className="flex justify-end gap-2 pt-3 border-t border-[rgba(237,231,214,0.08)]">
-              <button type="button" onClick={() => setShowCreateModal(false)} className="px-4 py-2 rounded-[4px] bg-[#131B17] text-[#8FA396] hover:text-[#EDE7D6] text-xs font-semibold border border-[rgba(237,231,214,0.08)]">
+              <button type="button" onClick={() => setShowCreateModal(false)} className="px-4 py-2 rounded-[4px] bg-[#f8fafc] text-[#64748b] hover:text-[#0f172a] text-xs font-semibold border border-[rgba(237,231,214,0.08)]">
                 Cancel
               </button>
-              <button type="submit" disabled={isCreating} className="px-4 py-2 rounded-[4px] bg-[#C9A227] hover:bg-[#DBB53B] text-[#131B17] text-xs font-bold border border-[#B08C1E] disabled:opacity-60">
+              <button type="submit" disabled={isCreating} className="px-4 py-2 rounded-[4px] bg-[#0b63e5] hover:bg-[#DBB53B] text-[#f8fafc] text-xs font-bold border border-[#B08C1E] disabled:opacity-60">
                 {isCreating ? 'Creating…' : 'Generate Link'}
               </button>
             </div>

@@ -86,7 +86,7 @@ export const LedgerView = () => {
         return e.account.includes(filterAccount);
     });
     return (<div className="space-y-6">
-      {verificationResult && (<div className="p-3 bg-[#1D2E28] border border-[#4E8B6F] text-[#4E8B6F] font-mono text-xs flex items-center gap-2">
+      {verificationResult && (<div className="p-3 bg-[white] border border-[#4E8B6F] text-[#4E8B6F] font-mono text-xs flex items-center gap-2">
           <CheckCircle2 className="w-4 h-4 text-[#4E8B6F] flex-shrink-0"/>
           {verificationResult}
         </div>)}
@@ -94,14 +94,14 @@ export const LedgerView = () => {
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-          <h2 className="text-base font-bold text-[#EDE7D6]">Double-Entry Financial Ledger</h2>
-          <div className="w-8 h-0.5 bg-[#C9A227] mt-1"/>
-          <p className="text-xs text-[#8FA396] mt-1">
+          <h2 className="text-base font-bold text-[#0f172a]">Double-Entry Financial Ledger</h2>
+          <div className="w-8 h-0.5 bg-[#0b63e5] mt-1"/>
+          <p className="text-xs text-[#64748b] mt-1">
             Immutable, cryptographically chained double-entry audit records fulfilling RBI Escrow governance
           </p>
         </div>
 
-        <button onClick={handleVerifyLedger} disabled={isVerifying} className="px-4 py-2 rounded-[4px] bg-[#C9A227] hover:bg-[#DBB53B] text-[#131B17] text-xs font-bold flex items-center gap-2 transition-colors disabled:opacity-50 border border-[#B08C1E]">
+        <button onClick={handleVerifyLedger} disabled={isVerifying} className="px-4 py-2 rounded-[4px] bg-[#0b63e5] hover:bg-[#DBB53B] text-[#f8fafc] text-xs font-bold flex items-center gap-2 transition-colors disabled:opacity-50 border border-[#B08C1E]">
           <ShieldCheck className="w-4 h-4"/>
           {isVerifying ? 'Verifying Hashes...' : 'Verify Cryptographic Integrity'}
         </button>
@@ -109,25 +109,25 @@ export const LedgerView = () => {
 
       {/* Metric Cards: Square passbook style */}
       <div className="grid grid-cols-1 sm:grid-cols-4 gap-4">
-        <div className="p-4 bg-[#1D2E28] border border-[rgba(237,231,214,0.08)]">
-          <div className="text-[#8FA396] text-xs font-semibold">Nodal Escrow Balance</div>
-          <div className="text-xl font-bold font-mono text-[#EDE7D6] tabular-nums mt-1">₹8,42,190.50</div>
+        <div className="p-4 bg-[white] border border-[rgba(237,231,214,0.08)]">
+          <div className="text-[#64748b] text-xs font-semibold">Nodal Escrow Balance</div>
+          <div className="text-xl font-bold font-mono text-[#0f172a] tabular-nums mt-1">₹8,42,190.50</div>
           <div className="text-[11px] font-mono text-[#4E8B6F] mt-0.5">Reconciled with HDFC Escrow</div>
         </div>
-        <div className="p-4 bg-[#1D2E28] border border-[rgba(237,231,214,0.08)]">
-          <div className="text-[#8FA396] text-xs font-semibold">Merchant Payables</div>
-          <div className="text-xl font-bold font-mono text-[#C9A227] tabular-nums mt-1">₹8,12,450.00</div>
-          <div className="text-[11px] font-mono text-[#8FA396] mt-0.5">Scheduled for T+1 payout</div>
+        <div className="p-4 bg-[white] border border-[rgba(237,231,214,0.08)]">
+          <div className="text-[#64748b] text-xs font-semibold">Merchant Payables</div>
+          <div className="text-xl font-bold font-mono text-[#0b63e5] tabular-nums mt-1">₹8,12,450.00</div>
+          <div className="text-[11px] font-mono text-[#64748b] mt-0.5">Scheduled for T+1 payout</div>
         </div>
-        <div className="p-4 bg-[#1D2E28] border border-[rgba(237,231,214,0.08)]">
-          <div className="text-[#8FA396] text-xs font-semibold">Platform Net Fees</div>
-          <div className="text-xl font-bold font-mono text-[#EDE7D6] tabular-nums mt-1">₹25,203.81</div>
-          <div className="text-[11px] font-mono text-[#8FA396] mt-0.5">Retained commission</div>
+        <div className="p-4 bg-[white] border border-[rgba(237,231,214,0.08)]">
+          <div className="text-[#64748b] text-xs font-semibold">Platform Net Fees</div>
+          <div className="text-xl font-bold font-mono text-[#0f172a] tabular-nums mt-1">₹25,203.81</div>
+          <div className="text-[11px] font-mono text-[#64748b] mt-0.5">Retained commission</div>
         </div>
-        <div className="p-4 bg-[#1D2E28] border border-[rgba(237,231,214,0.08)]">
-          <div className="text-[#8FA396] text-xs font-semibold">GST Output Tax (18%)</div>
-          <div className="text-xl font-bold font-mono text-[#EDE7D6] tabular-nums mt-1">₹4,536.69</div>
-          <div className="text-[11px] font-mono text-[#8FA396] mt-0.5">To deposit by 20th next month</div>
+        <div className="p-4 bg-[white] border border-[rgba(237,231,214,0.08)]">
+          <div className="text-[#64748b] text-xs font-semibold">GST Output Tax (18%)</div>
+          <div className="text-xl font-bold font-mono text-[#0f172a] tabular-nums mt-1">₹4,536.69</div>
+          <div className="text-[11px] font-mono text-[#64748b] mt-0.5">To deposit by 20th next month</div>
         </div>
       </div>
 
@@ -140,17 +140,17 @@ export const LedgerView = () => {
             { id: '4010', label: '4010 - MDR Revenue' },
             { id: '2050', label: '2050 - GST Tax' },
         ].map((tab) => (<button key={tab.id} onClick={() => setFilterAccount(tab.id)} className={`px-3 py-1.5 rounded-[2px] font-mono text-xs font-semibold transition-colors ${filterAccount === tab.id
-                ? 'bg-[#C9A227] text-[#131B17] font-bold'
-                : 'text-[#8FA396] hover:text-[#EDE7D6]'}`}>
+                ? 'bg-[#0b63e5] text-[#f8fafc] font-bold'
+                : 'text-[#64748b] hover:text-[#0f172a]'}`}>
             {tab.label}
           </button>))}
       </div>
 
       {/* Ledger Table */}
-      <div className="bg-[#1D2E28] border border-[rgba(237,231,214,0.08)] overflow-hidden">
+      <div className="bg-[white] border border-[rgba(237,231,214,0.08)] overflow-hidden">
         <table className="w-full text-left text-xs">
           <thead>
-            <tr className="border-b border-[rgba(237,231,214,0.08)] bg-[#131B17] text-[#8FA396] font-medium">
+            <tr className="border-b border-[rgba(237,231,214,0.08)] bg-[#f8fafc] text-[#64748b] font-medium">
               <th className="py-3 px-4">Journal Entry ID</th>
               <th className="py-3 px-4">Transaction Reference</th>
               <th className="py-3 px-4">Account / Chart</th>
@@ -162,9 +162,9 @@ export const LedgerView = () => {
           </thead>
           <tbody className="divide-y divide-[rgba(237,231,214,0.08)]">
             {filteredEntries.map((entry) => (<tr key={entry.id} className="hover:bg-[#243831] transition-colors">
-                <td className="py-3 px-4 font-mono text-[#EDE7D6] font-semibold">{entry.id}</td>
-                <td className="py-3 px-4 font-mono text-[#8FA396]">{entry.txRef}</td>
-                <td className="py-3 px-4 text-[#EDE7D6] font-medium">{entry.account}</td>
+                <td className="py-3 px-4 font-mono text-[#0f172a] font-semibold">{entry.id}</td>
+                <td className="py-3 px-4 font-mono text-[#64748b]">{entry.txRef}</td>
+                <td className="py-3 px-4 text-[#0f172a] font-medium">{entry.account}</td>
                 <td className="py-3 px-4">
                   <span className={`px-2 py-0.5 rounded-[2px] font-mono text-[10px] font-bold border ${entry.type === 'DEBIT'
                 ? 'border-[#C98A2E] text-[#C98A2E] bg-[#C98A2E]/5'
@@ -172,14 +172,14 @@ export const LedgerView = () => {
                     {entry.type}
                   </span>
                 </td>
-                <td className="py-3 px-4 font-mono font-bold text-[#EDE7D6] tabular-nums">{entry.amount}</td>
-                <td className="py-3 px-4 font-mono text-[10px] text-[#8FA396]">
+                <td className="py-3 px-4 font-mono font-bold text-[#0f172a] tabular-nums">{entry.amount}</td>
+                <td className="py-3 px-4 font-mono text-[10px] text-[#64748b]">
                   <div className="flex items-center gap-1">
                     <Lock className="w-3 h-3 text-[#4E8B6F]"/>
                     {entry.hash}
                   </div>
                 </td>
-                <td className="py-3 px-4 font-mono text-[#8FA396] text-[11px] tabular-nums">{entry.date}</td>
+                <td className="py-3 px-4 font-mono text-[#64748b] text-[11px] tabular-nums">{entry.date}</td>
               </tr>))}
           </tbody>
         </table>
