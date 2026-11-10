@@ -9,15 +9,15 @@ import {
   SupportTicketRepository,
   AuditLogRepository,
   CustomerRepository
-} from '@youpi/db';
+} from '../packages/db/src/index.js';
 import {
   QueueEngine,
   TimingEngine,
   AttributionEngine,
   RecoveryEngine,
   ObservationNormalizer
-} from '@youpi/core';
-import { PaymentStatus, ObserverSource, ObservationAttributionStatus } from '@youpi/common';
+} from '../packages/core/src/index.js';
+import { PaymentStatus, ObserverSource, ObservationAttributionStatus } from '../packages/common/src/index.js';
 
 describe('Phase 16: Comprehensive Chaos & Concurrency Verification', () => {
   let db;

@@ -155,7 +155,7 @@ export class ProcessManager extends EventEmitter {
 
     const child = fork(svc.script, [], {
       execArgv: [...process.execArgv, ...execArgv],
-      env: { ...process.env, ...freshEnv, PORT: svc.port.toString() },
+      env: { ...process.env, ...freshEnv, PORT: svc.port.toString(), YOUPI_BIND_HOST: process.env.YOUPI_BIND_HOST || '127.0.0.1' },
       stdio: ['ignore', 'pipe', 'pipe', 'ipc']
     });
 

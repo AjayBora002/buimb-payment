@@ -90,10 +90,10 @@ export const AuthProvider = ({ children }) => {
                 const data = await res.json();
                 setTokens({ accessToken: data.accessToken, refreshToken: data.refreshToken });
 
-                const profile = await apiClient.get('/v1/auth/me');
-                setUser(profile || DEMO_PROFILE);
+                const profile = data.user || (await apiClient.get('/v1/auth/me').catch(() => null)) || DEMO_PROFILE;
+                setUser(profile);
                 setStatus('authenticated');
-                return profile || DEMO_PROFILE;
+                return profile;
             }
         } catch (fetchErr) {
             console.warn('[BuimbPay Auth] Backend unreachable, evaluating fallback:', fetchErr.message);

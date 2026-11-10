@@ -2,7 +2,7 @@ import { test, describe, before, after } from 'node:test';
 import assert from 'node:assert/strict';
 import crypto from 'node:crypto';
 import http from 'node:http';
-import { Database } from '@youpi/db';
+import { Database } from '../../../../packages/db/src/database.js';
 import { startServer as startPaymentApi } from '../../../payment-api/src/index.js';
 import { startCoinWalletStore } from '../index.js';
 import { generateHmac } from '@youpi/common';

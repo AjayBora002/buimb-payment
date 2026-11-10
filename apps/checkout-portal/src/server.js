@@ -105,7 +105,7 @@ export class CheckoutServer {
 
     const appName = state?.branding?.appName || 'Buimb-Pay';
     const primaryColor = state?.branding?.primaryColor || '#0b63e5';
-    const merchantName = state?.merchantName || 'Acme Technologies';
+    const merchantName = state?.merchantName || 'BuimbPay Enterprise Store';
     const orderId = state?.orderId || 'order_rzp_99214';
     const logoUrl = state?.branding?.logoUrl || '';
     const sidebarNotice = state?.branding?.sidebarNotice || 'Fast & Secure 256-Bit Encrypted Payments';
@@ -290,7 +290,7 @@ export class CheckoutServer {
             paymentId,
             orderId: 'order_rzp_99214',
             amount: '1,299.00',
-            merchantName: 'Acme Technologies',
+            merchantName: 'BuimbPay Enterprise Store',
             payeeVpa: 'buimbpay.merchant@icici',
             branding: {
               appName: 'Buimb-Pay',

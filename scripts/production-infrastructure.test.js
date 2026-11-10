@@ -9,8 +9,8 @@ import {
   validatePairingPayload,
   PaymentStatus,
   PaymentMethod
-} from '@youpi/common';
-import { Database, runMigrations, MerchantRepository, DeviceRepository } from '@youpi/db';
+} from '../packages/common/src/index.js';
+import { Database, runMigrations, MerchantRepository, DeviceRepository } from '../packages/db/src/index.js';
 
 describe('YOUPI PG V2 — Production Infrastructure Finalization (Part L Acceptance Tests)', () => {
   // ============================================================

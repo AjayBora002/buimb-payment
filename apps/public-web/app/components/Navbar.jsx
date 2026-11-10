@@ -62,7 +62,7 @@ export function Navbar() {
               Global cards, Apple Pay, Google Pay at lower fee.
             </span>
             <Link
-              href="/international"
+              href="/crossborder-payments"
               className="text-[#0B63E5] hover:text-blue-800 font-bold ml-1 flex items-center gap-0.5"
             >
               Know More
@@ -131,7 +131,7 @@ export function Navbar() {
                   </span>
                   <div className="space-y-3">
                     <Link
-                      href="/optimizer"
+                      href="/agentic-payments"
                       onClick={() => setActiveMenu(null)}
                       className="block p-2 rounded-xl hover:bg-slate-50 transition-colors group"
                     >
@@ -144,7 +144,7 @@ export function Navbar() {
                     </Link>
 
                     <Link
-                      href="/optimizer"
+                      href="/agent-studio"
                       onClick={() => setActiveMenu(null)}
                       className="block p-2 rounded-xl hover:bg-slate-50 transition-colors group"
                     >
@@ -157,7 +157,7 @@ export function Navbar() {
                     </Link>
 
                     <Link
-                      href="/banking"
+                      href="/agentic-banking"
                       onClick={() => setActiveMenu(null)}
                       className="block p-2 rounded-xl hover:bg-slate-50 transition-colors group"
                     >
@@ -298,7 +298,7 @@ export function Navbar() {
                         </Link>
 
                         <Link
-                          href="/payment-gateway"
+                          href="/upi-payments"
                           onClick={() => setActiveMenu(null)}
                           className="flex items-start gap-2.5 p-2 rounded-xl hover:bg-slate-50 transition-colors group"
                         >
@@ -564,7 +564,7 @@ export function Navbar() {
                       </Link>
 
                       <Link
-                        href="/instant-settlement"
+                        href="/payouts"
                         onClick={() => setActiveMenu(null)}
                         className="flex items-start gap-2.5 p-2 rounded-xl hover:bg-slate-50 transition-colors group"
                       >
@@ -638,7 +638,7 @@ export function Navbar() {
                       </Link>
 
                       <Link
-                        href="/tools/gst-calculator"
+                        href="/tax-payments"
                         onClick={() => setActiveMenu(null)}
                         className="flex items-start gap-2.5 p-2 rounded-xl hover:bg-slate-50 transition-colors group"
                       >
@@ -650,13 +650,13 @@ export function Navbar() {
                             Tax Payments & TDS
                           </div>
                           <div className="text-[10px] text-slate-500 leading-tight">
-                            Calculate TDS and GST in seconds
+                            Advance tax, TDS Challan 281 & GST
                           </div>
                         </div>
                       </Link>
 
                       <Link
-                        href="/banking"
+                        href="/escrow"
                         onClick={() => setActiveMenu(null)}
                         className="flex items-start gap-2.5 p-2 rounded-xl hover:bg-slate-50 transition-colors group"
                       >
@@ -683,7 +683,7 @@ export function Navbar() {
                         Start Your Business
                       </span>
                       <Link
-                        href="/startup-perks"
+                        href="/company-registration"
                         onClick={() => setActiveMenu(null)}
                         className="flex items-start gap-2.5 p-2 rounded-xl hover:bg-slate-50 transition-colors group"
                       >
@@ -774,7 +774,7 @@ export function Navbar() {
             </div>
 
             {/* 5. Engage */}
-            <Link href="/magic-checkout" className="hover:text-[#0B63E5] text-slate-800 transition-colors">
+            <Link href="/engage" className="hover:text-[#0B63E5] text-slate-800 transition-colors">
               Engage
             </Link>
 
@@ -816,14 +816,14 @@ export function Navbar() {
                     Partner Program
                   </Link>
                   <Link
-                    href="/banking"
+                    href="/partners/buimbpayx"
                     onClick={() => setActiveMenu(null)}
                     className="block px-3 py-2 rounded-lg hover:bg-slate-50 text-xs font-bold text-slate-800 hover:text-[#0B63E5]"
                   >
                     Buimb-PayX Partners
                   </Link>
                   <Link
-                    href="/pricing"
+                    href="/refer-and-earn"
                     onClick={() => setActiveMenu(null)}
                     className="block px-3 py-2 rounded-lg hover:bg-slate-50 text-xs font-bold text-slate-800 hover:text-[#0B63E5]"
                   >
@@ -835,9 +835,9 @@ export function Navbar() {
 
             {/* 7. Startups */}
             <Link
-              href="/startup-perks"
+              href="/startups"
               className={`hover:text-[#0B63E5] transition-colors ${
-                pathname === '/startup-perks' ? 'text-[#0B63E5]' : 'text-slate-800'
+                pathname === '/startups' ? 'text-[#0B63E5]' : 'text-slate-800'
               }`}
             >
               Startups
@@ -877,10 +877,10 @@ export function Navbar() {
                     </span>
                     <div className="space-y-1.5 text-xs text-slate-700">
                       <Link href="/blog" className="block hover:text-[#0B63E5]">Blog</Link>
-                      <Link href="/blog" className="block hover:text-[#0B63E5]">Learn</Link>
-                      <Link href="/contact" className="block hover:text-[#0B63E5]">Events</Link>
-                      <Link href="/compliance" className="block hover:text-[#0B63E5]">White Papers</Link>
-                      <Link href="/features" className="block hover:text-[#0B63E5]">Customer Stories</Link>
+                      <Link href="/learn" className="block hover:text-[#0B63E5]">Learn</Link>
+                      <Link href="/events" className="block hover:text-[#0B63E5]">Events</Link>
+                      <Link href="/whitepapers" className="block hover:text-[#0B63E5]">White Papers</Link>
+                      <Link href="/customer-stories" className="block hover:text-[#0B63E5]">Customer Stories</Link>
                     </div>
                   </div>
 
@@ -891,10 +891,10 @@ export function Navbar() {
                     </span>
                     <div className="space-y-1.5 text-xs text-slate-700">
                       <Link href="/docs" className="block hover:text-[#0B63E5]">Developer Docs</Link>
-                      <Link href="/api-reference" className="block hover:text-[#0B63E5]">Integrations</Link>
+                      <Link href="/integrations" className="block hover:text-[#0B63E5]">Integrations</Link>
                       <Link href="/api-reference" className="block hover:text-[#0B63E5]">API Reference</Link>
-                      <Link href="/api-reference" className="block hover:text-[#0B63E5]">API Playground</Link>
-                      <Link href="/api-reference" className="block hover:text-[#0B63E5]">Onboarding APIs</Link>
+                      <Link href="/playground" className="block hover:text-[#0B63E5]">API Playground</Link>
+                      <Link href="/onboarding-apis" className="block hover:text-[#0B63E5]">Onboarding APIs</Link>
                     </div>
                   </div>
 
@@ -904,11 +904,11 @@ export function Navbar() {
                       Solutions
                     </span>
                     <div className="space-y-1.5 text-xs text-slate-700">
-                      <Link href="/subscriptions" className="block hover:text-[#0B63E5]">SaaS</Link>
-                      <Link href="/magic-checkout" className="block hover:text-[#0B63E5]">E-Commerce</Link>
-                      <Link href="/payment-links" className="block hover:text-[#0B63E5]">Education</Link>
-                      <Link href="/compliance" className="block hover:text-[#0B63E5]">BFSI</Link>
-                      <Link href="/payment-pages" className="block hover:text-[#0B63E5]">Freelance</Link>
+                      <Link href="/solutions/saas" className="block hover:text-[#0B63E5]">SaaS</Link>
+                      <Link href="/solutions/ecommerce" className="block hover:text-[#0B63E5]">E-Commerce</Link>
+                      <Link href="/solutions/education" className="block hover:text-[#0B63E5]">Education</Link>
+                      <Link href="/solutions/bfsi" className="block hover:text-[#0B63E5]">BFSI</Link>
+                      <Link href="/solutions/freelance" className="block hover:text-[#0B63E5]">Freelance</Link>
                     </div>
                   </div>
 
@@ -919,12 +919,16 @@ export function Navbar() {
                     </span>
                     <div className="space-y-1.5 text-xs text-slate-700">
                       <Link href="/tools/gst-calculator" className="block font-semibold text-[#0B63E5] hover:underline">GST Calculator</Link>
-                      <Link href="/tools/gst-calculator" className="block hover:text-[#0B63E5]">Online TDS Payment</Link>
-                      <Link href="/tools/gst-calculator" className="block hover:text-[#0B63E5]">GST Number Search</Link>
-                      <Link href="/tools/gst-calculator" className="block hover:text-[#0B63E5]">GST Search by PAN</Link>
+                      <Link href="/tools/tds-calculator" className="block hover:text-[#0B63E5]">Online TDS Payment</Link>
+                      <Link href="/tools/gst-search" className="block hover:text-[#0B63E5]">GST Number Search</Link>
+                      <Link href="/tools/gst-search-pan" className="block hover:text-[#0B63E5]">GST Search by PAN</Link>
                       <Link href="/tools/roi-calculator" className="block hover:text-[#0B63E5]">ROI Calculator</Link>
-                      <Link href="/tools/roi-calculator" className="block hover:text-[#0B63E5]">CAGR Calculator</Link>
-                      <Link href="/tools/roi-calculator" className="block hover:text-[#0B63E5]">EBITDA Calculator</Link>
+                      <Link href="/tools/cagr-calculator" className="block hover:text-[#0B63E5]">CAGR Calculator</Link>
+                      <Link href="/tools/ebitda-calculator" className="block hover:text-[#0B63E5]">EBITDA Calculator</Link>
+                      <Link href="/tools/business-directory" className="block hover:text-[#0B63E5] text-[11px] font-semibold text-emerald-700 flex items-center justify-between">
+                        <span>Business Directory</span>
+                        <span className="text-[8px] bg-emerald-100 text-emerald-800 font-bold px-1 rounded">NEW</span>
+                      </Link>
                     </div>
                   </div>
                 </div>
@@ -960,14 +964,12 @@ export function Navbar() {
             </div>
 
             {/* Login Button */}
-            <a
-              href={DASHBOARD_URL}
-              target="_blank"
-              rel="noreferrer"
+            <Link
+              href="/login"
               className="text-xs sm:text-sm font-bold text-[#0B63E5] border border-[#0B63E5] hover:bg-blue-50/60 px-4 py-2 rounded-lg transition-all"
             >
               Login
-            </a>
+            </Link>
 
             {/* Sign Up Button */}
             <Link
@@ -1012,7 +1014,7 @@ export function Navbar() {
             </div>
             <div className="grid grid-cols-2 gap-2 text-xs font-semibold">
               <Link href="/banking" onClick={() => setMobileMenuOpen(false)} className="p-2.5 rounded-lg bg-slate-50">Current Account</Link>
-              <Link href="/instant-settlement" onClick={() => setMobileMenuOpen(false)} className="p-2.5 rounded-lg bg-slate-50">Instant Payouts</Link>
+              <Link href="/payouts" onClick={() => setMobileMenuOpen(false)} className="p-2.5 rounded-lg bg-slate-50">Instant Payouts</Link>
               <Link href="/vendor-payments" onClick={() => setMobileMenuOpen(false)} className="p-2.5 rounded-lg bg-slate-50">Vendor Payments</Link>
               <Link href="/bank-verification" onClick={() => setMobileMenuOpen(false)} className="p-2.5 rounded-lg bg-slate-50 text-emerald-700">₹1 Penny Verify</Link>
               <Link href="/corporate-cards" onClick={() => setMobileMenuOpen(false)} className="p-2.5 rounded-lg bg-slate-50">Corporate Cards</Link>
@@ -1035,9 +1037,9 @@ export function Navbar() {
               <Link href="/signup" onClick={() => setMobileMenuOpen(false)} className="w-full py-3 rounded-lg bg-[#0B63E5] text-white font-bold text-center block text-sm shadow-md">
                 Sign Up Now →
               </Link>
-              <a href={DASHBOARD_URL} target="_blank" rel="noreferrer" className="w-full py-3 rounded-lg border border-slate-300 text-slate-800 font-bold text-center block hover:bg-slate-50 text-sm">
+              <Link href="/login" onClick={() => setMobileMenuOpen(false)} className="w-full py-3 rounded-lg border border-slate-300 text-slate-800 font-bold text-center block hover:bg-slate-50 text-sm">
                 Login
-              </a>
+              </Link>
             </div>
           </div>
         </div>

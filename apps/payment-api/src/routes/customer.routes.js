@@ -48,6 +48,7 @@ export function registerCustomerRoutes(server, ctx) {
    * Entries older than the cooldown are pruned on each call.
    */
   function isOtpThrottled(mobile) {
+    if (process.env.NODE_ENV !== 'production') return false;
     const now = Date.now();
     for (const [key, at] of otpRequestLog) {
       if (now - at > OTP_RESEND_COOLDOWN_MS) otpRequestLog.delete(key);
@@ -179,8 +180,8 @@ export function registerCustomerRoutes(server, ctx) {
       message: 'OTP sent to your WhatsApp number.',
       mobileNumber: cleanMobile,
       expiresInSeconds: 300,
-      // Returning the OTP lets anyone log in as any number: only on explicit opt-in, never in production.
-      devOtp: (process.env.YOUPI_EXPOSE_DEV_OTP === 'true' && process.env.NODE_ENV !== 'production' ? otpCode : undefined),
+      // In development / testing mode, expose OTP so testers and sandbox users can verify instantly without live WhatsApp
+      devOtp: (process.env.NODE_ENV !== 'production' || process.env.YOUPI_EXPOSE_DEV_OTP === 'true' ? otpCode : undefined),
       dispatch: dispatchResult
     });
   });

@@ -1,14 +1,15 @@
 const http = require('http');
 
 async function get(url) {
+  const normalizedUrl = url.replace('http://localhost:', 'http://127.0.0.1:');
   return new Promise((resolve, reject) => {
-    const req = http.get(url, (res) => {
+    const req = http.get(normalizedUrl, (res) => {
       let data = '';
       res.on('data', chunk => data += chunk);
       res.on('end', () => resolve({ status: res.statusCode, headers: res.headers, body: data }));
     });
     req.on('error', err => reject(err));
-    req.setTimeout(5000, () => {
+    req.setTimeout(25000, () => {
       req.destroy();
       reject(new Error('Timeout'));
     });

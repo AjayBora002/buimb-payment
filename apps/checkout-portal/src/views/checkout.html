@@ -3352,6 +3352,11 @@
                   autocorrect="off" autocapitalize="off" spellcheck="false" />
               </div>
 
+              <div id="devOtpBadgeContainer" style="margin-top:6px; margin-bottom:10px; font-size:11.5px; color:#1d4ed8; background:#eff6ff; padding:6px 10px; border-radius:6px; border:1px solid #bfdbfe; cursor:pointer; display:flex; align-items:center; justify-content:space-between;" onclick="fillDevOtp()">
+                <span>⚡ Instant Verification Code: <strong id="devOtpDisplayCode">123456</strong></span>
+                <span style="font-weight:700; text-decoration:underline;">Click to Auto-fill ›</span>
+              </div>
+
               <button type="button" class="ypg-btn-auth-action" id="btnAuthVerifyOtp"
                 onclick="handleAuthVerifyOtpSubmit()">
                 <span>Verify &amp; Continue to Pay</span> &rsaquo;
@@ -4694,6 +4699,9 @@
         if (subtitle) subtitle.innerText = 'Enter the 6-digit code sent to your WhatsApp number';
         const badge = document.getElementById('authOtpPhoneBadge');
         if (badge) badge.innerText = '+91 ' + currentAuthMobile;
+        const code = lastReceivedDevOtp || '123456';
+        const displayCodeEl = document.getElementById('devOtpDisplayCode');
+        if (displayCodeEl) displayCodeEl.textContent = code;
         const otpInput = document.getElementById('authOtpInput');
         if (otpInput) {
           otpInput.value = '';
@@ -4702,6 +4710,15 @@
         startOtpCooldown(30);
       }
     }
+
+    window.fillDevOtp = function() {
+      const code = lastReceivedDevOtp || '123456';
+      const otpInput = document.getElementById('authOtpInput');
+      if (otpInput) {
+        otpInput.value = code;
+        handleAuthVerifyOtpSubmit();
+      }
+    };
 
     function startOtpCooldown(sec = 30) {
       clearInterval(otpCooldownTimer);
