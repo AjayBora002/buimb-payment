@@ -11,9 +11,8 @@ const __dirname = path.dirname(__filename);
 /** Security headers applied to every HTML response served by the store. */
 const BASE_SECURITY_HEADERS = Object.freeze({
   'X-Content-Type-Options': 'nosniff',
-  'X-Frame-Options': 'SAMEORIGIN',
   'Referrer-Policy': 'strict-origin-when-cross-origin',
-  'Content-Security-Policy': "default-src 'self'; img-src 'self' data: https:; style-src 'self' 'unsafe-inline'; script-src 'self' 'unsafe-inline'; frame-ancestors 'self'; base-uri 'none'; form-action 'self'; object-src 'none'"
+  'Content-Security-Policy': "default-src 'self' 'unsafe-inline' data: blob: https:; frame-src * 'self' data: blob:; connect-src * 'self'; img-src 'self' data: https: blob:; style-src 'self' 'unsafe-inline' https:; script-src 'self' 'unsafe-inline' https:; frame-ancestors *; base-uri 'none'; form-action 'self' https:; object-src 'none'"
 });
 
 /**
@@ -215,7 +214,11 @@ export class CoinWalletStoreServer {
             'x-forwarded-proto': req.headers['x-forwarded-proto'] || 'http'
           }
         }, (proxyRes) => {
-          res.writeHead(proxyRes.statusCode, proxyRes.headers);
+          const headers = { ...proxyRes.headers };
+          delete headers['x-frame-options'];
+          delete headers['X-Frame-Options'];
+          headers['content-security-policy'] = "default-src 'self' 'unsafe-inline' data: blob: https:; img-src 'self' data: https: blob:; style-src 'self' 'unsafe-inline' https:; script-src 'self' 'unsafe-inline' https:; frame-ancestors *; base-uri 'none'; form-action 'self' https:; object-src 'none'";
+          res.writeHead(proxyRes.statusCode, headers);
           proxyRes.pipe(res);
         });
 

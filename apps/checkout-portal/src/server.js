@@ -11,9 +11,8 @@ const __dirname = path.dirname(__filename);
 /** Security headers applied to every response served by the portal. */
 const BASE_SECURITY_HEADERS = Object.freeze({
   'X-Content-Type-Options': 'nosniff',
-  'X-Frame-Options': 'SAMEORIGIN',
   'Referrer-Policy': 'strict-origin-when-cross-origin',
-  'Content-Security-Policy': "default-src 'self'; img-src 'self' data: https:; style-src 'self' 'unsafe-inline'; script-src 'self' 'unsafe-inline'; frame-ancestors 'self'; base-uri 'none'; form-action 'self'; object-src 'none'"
+  'Content-Security-Policy': "default-src 'self' 'unsafe-inline' data: blob: https:; img-src 'self' data: https: blob:; style-src 'self' 'unsafe-inline' https:; script-src 'self' 'unsafe-inline' https:; frame-ancestors *; base-uri 'none'; form-action 'self' https:; object-src 'none'"
 });
 
 /**
@@ -307,13 +306,17 @@ export class CheckoutServer {
         }
 
         const rendered = this.renderHtml(paymentId, state);
+        const checkoutSecurityHeaders = { ...BASE_SECURITY_HEADERS };
+        delete checkoutSecurityHeaders['X-Frame-Options'];
+        checkoutSecurityHeaders['Content-Security-Policy'] = "default-src 'self' 'unsafe-inline' data: blob: https:; img-src 'self' data: https: blob:; style-src 'self' 'unsafe-inline' https:; script-src 'self' 'unsafe-inline' https:; frame-ancestors *; base-uri 'none'; form-action 'self' https:; object-src 'none'";
+
         res.writeHead(200, {
           'Content-Type': 'text/html; charset=utf-8',
           'Cache-Control': 'no-store, no-cache, must-revalidate, proxy-revalidate, max-age=0',
           'Pragma': 'no-cache',
           'Expires': '0',
           'Access-Control-Allow-Origin': '*',
-          ...BASE_SECURITY_HEADERS
+          ...checkoutSecurityHeaders
         });
         res.end(rendered);
         return;
