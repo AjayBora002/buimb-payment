@@ -4,6 +4,71 @@ import Link from 'next/link';
 import { CreditCard, Zap, ShieldCheck, Code2, Lock, CheckCircle2, RefreshCw, ChevronDown, ChevronUp, ArrowRight, ArrowUpRight, Sparkles, Smartphone, Building, GitFork, Link2, FileText, Copy, Users, Check, TrendingUp, Calculator, Search, BadgePercent, Split, Percent, ExternalLink, } from 'lucide-react';
 const DASHBOARD_URL = process.env.NEXT_PUBLIC_DASHBOARD_URL || 'http://localhost:5173';
 export default function HomePage() {
+    // Cross-Border Corridor State (Matching Reference {75859952-FB36-4057-9C82-3DFD74E1F466}.png)
+    const [activeCorridor, setActiveCorridor] = useState('france');
+    const corridorData = {
+      france: {
+        flag: '🇫🇷',
+        country: 'France',
+        currency: 'EUR',
+        amount: '€380.00',
+        inr: '₹34,200.00',
+        rate: '1 EUR = ₹90.00',
+        buyer: 'Claire Martin',
+        location: 'Paris, France',
+        item: 'Handcrafted Silk Bridal Lehenga',
+        merchant: 'Aarohi Couture',
+        merchantCity: 'Jaipur, Rajasthan',
+        image: '/assets/crossborder_hero.png',
+        badge: '3% Forex Rate · Zero Hidden Spread'
+      },
+      usa: {
+        flag: '🇺🇸',
+        country: 'United States',
+        currency: 'USD',
+        amount: '$1,840.00',
+        inr: '₹1,53,640.00',
+        rate: '1 USD = ₹83.50',
+        buyer: 'Michael Vance',
+        location: 'San Francisco, CA',
+        item: 'Enterprise AI Cloud Subscription',
+        merchant: 'NexGen Cloud Technologies',
+        merchantCity: 'Bengaluru, Karnataka',
+        image: '/assets/usa_hero.png',
+        badge: 'Direct ACH & Cards at 3%'
+      },
+      uk: {
+        flag: '🇬🇧',
+        country: 'United Kingdom',
+        currency: 'GBP',
+        amount: '£450.00',
+        inr: '₹47,790.00',
+        rate: '1 GBP = ₹106.20',
+        buyer: 'Oliver Davies',
+        location: 'London, UK',
+        item: 'Hand-Engraved Brass Decor Set',
+        merchant: 'Moradabad Metal Exports',
+        merchantCity: 'Moradabad, UP',
+        image: '/assets/crossborder_hero.png',
+        badge: 'UK Faster Payments & Cards'
+      },
+      uae: {
+        flag: '🇦🇪',
+        country: 'UAE',
+        currency: 'AED',
+        amount: '1,200 AED',
+        inr: '₹27,300.00',
+        rate: '1 AED = ₹22.75',
+        buyer: 'Rashid Al-Maktoum',
+        location: 'Dubai, UAE',
+        item: 'Pure Pashmina Cashmere Shawl',
+        merchant: 'Kashmir Heritage Weavers',
+        merchantCity: 'Srinagar, J&K',
+        image: '/assets/crossborder_hero.png',
+        badge: 'GCC Direct Collections'
+      },
+    };
+
     // Recommendation Selector State (Matching Reference {43673FF8-37F0-4D63-A269-79A3C6AFBC02}.png)
     const [needHelpChoice, setNeedHelpChoice] = useState('accept');
     // Interactive Product Tab
@@ -107,103 +172,229 @@ Order order = buimbpay.orders.create(orderRequest);`,
         },
     ];
     return (<div className="w-full bg-white text-slate-900 overflow-hidden font-sans select-none antialiased">
-      {/* ── 1. Hero Section ──────────────────────── */}
-      <section className="relative pt-12 pb-20 md:pb-28 px-4 sm:px-6 bg-gradient-to-b from-[#0C2340] via-[#0A1B33] to-[#071328] text-white overflow-hidden border-b border-slate-800">
-        {/* Ambient Glows */}
-        <div className="absolute inset-0 pointer-events-none overflow-hidden">
-          <div className="absolute top-10 left-1/2 -translate-x-1/2 w-[1000px] h-[550px] bg-blue-600/15 rounded-full blur-[140px]"/>
-          <div className="absolute top-40 right-10 w-[500px] h-[500px] bg-cyan-400/10 rounded-full blur-[120px]"/>
-          <div className="absolute inset-0 opacity-[0.04]" style={{
-            backgroundImage: 'radial-gradient(circle, #ffffff 1px, transparent 1px)',
-            backgroundSize: '24px 24px',
-        }}/>
-        </div>
+      {/* ── 1. Authentic Razorpay Signature Hero Section (Clean White Cross-Border) ──────────────────────── */}
+      <section className="relative pt-8 pb-16 md:pb-20 px-4 sm:px-8 bg-[#FAFCFF] border-b border-slate-200 overflow-hidden">
+        <div className="max-w-7xl mx-auto space-y-12">
+          {/* Top 2-Column Grid */}
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 items-center">
+            {/* Left Column: Headline, CTAs, Trust Proof (6 cols) */}
+            <div className="lg:col-span-6 space-y-6">
+              <div className="flex items-center gap-2 text-xs font-bold text-[#0B63E5] uppercase tracking-wider">
+                <span className="w-5 h-0.5 bg-[#0B63E5] rounded-full"></span>
+                <span>ACCEPT INTERNATIONAL PAYMENTS</span>
+              </div>
 
-        <div className="max-w-7xl mx-auto relative z-10 space-y-8">
-          <div className="text-center max-w-4xl mx-auto space-y-5">
-            {/* Tagline Badge */}
-            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full border border-blue-400/30 bg-blue-500/10 backdrop-blur-md text-xs font-bold text-blue-300 uppercase tracking-wider shadow-sm">
-              <span className="w-2 h-2 rounded-full bg-blue-400 animate-pulse"/>
-              Powering India's Digital Economy
+              <h1 className="text-4xl sm:text-5xl lg:text-[56px] font-black text-[#0C2340] leading-[1.08] tracking-tight">
+                Accept international cards at <span className="text-[#0B63E5]">3%*</span>.
+                <span className="block mt-1">Switch to BuimbPay.</span>
+              </h1>
+
+              <p className="text-base sm:text-lg text-slate-600 max-w-xl font-normal leading-relaxed">
+                Power your cross-border business with the highest success rates, transparent pricing, and instant settlements in INR directly into your local current account.
+              </p>
+
+              <div className="flex flex-wrap items-center gap-3 pt-1">
+                <Link
+                  href="/signup"
+                  className="bg-[#0B63E5] hover:bg-[#0951bd] text-white px-7 py-3.5 rounded-lg text-sm font-bold transition-all shadow-md shadow-blue-600/25 hover:scale-[1.02] flex items-center gap-2"
+                >
+                  <span>Sign Up Now</span>
+                  <ArrowRight className="w-4 h-4" />
+                </Link>
+
+                <a
+                  href={`${DASHBOARD_URL}/login`}
+                  className="inline-flex items-center justify-center gap-2.5 px-6 py-3.5 rounded-lg border border-slate-300 bg-white hover:bg-slate-50 text-slate-700 text-sm font-bold transition-all shadow-xs hover:border-slate-400"
+                >
+                  <svg className="w-4 h-4" viewBox="0 0 24 24">
+                    <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" />
+                    <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" />
+                    <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l2.85-2.22.81-.63z" />
+                    <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z" />
+                  </svg>
+                  <span>Sign up with Google</span>
+                </a>
+              </div>
+
+              <div className="text-[11px] text-slate-400">
+                *Standard forex rates apply. Available for cross-border export businesses &amp; digital services.
+              </div>
+
+              {/* Trust Badges */}
+              <div className="pt-4 border-t border-slate-200/80 grid grid-cols-3 gap-4 max-w-lg">
+                <div>
+                  <div className="text-xl sm:text-2xl font-black text-[#0C2340]">10M+</div>
+                  <div className="text-[11px] text-slate-500 font-medium">Businesses Powered</div>
+                </div>
+                <div>
+                  <div className="text-xl sm:text-2xl font-black text-[#0C2340]">99.98%</div>
+                  <div className="text-[11px] text-slate-500 font-medium">Gateway Uptime</div>
+                </div>
+                <div>
+                  <div className="text-xl sm:text-2xl font-black text-emerald-600">₹0</div>
+                  <div className="text-[11px] text-slate-500 font-medium">Setup &amp; AMC Fee</div>
+                </div>
+              </div>
             </div>
 
-            {/* Headline */}
-            <h1 className="text-4xl sm:text-6xl lg:text-[68px] font-black tracking-tight text-white leading-[1.08]">
-              Power your finance,{' '}
-              <span className="bg-gradient-to-r from-blue-400 via-cyan-300 to-indigo-300 bg-clip-text text-transparent">
-                grow your business
-              </span>
-            </h1>
+            {/* Right Column: Interactive Corridor Graphic (6 cols) */}
+            <div className="lg:col-span-6">
+              <div className="bg-white rounded-3xl border border-slate-200/90 shadow-2xl p-5 sm:p-6 space-y-4">
+                {/* Corridor Selector Tabs */}
+                <div className="flex items-center gap-1.5 p-1 rounded-xl bg-slate-100/90 border border-slate-200 text-xs font-bold overflow-x-auto">
+                  {Object.entries(corridorData).map(([key, item]) => (
+                    <button
+                      key={key}
+                      type="button"
+                      onClick={() => setActiveCorridor(key)}
+                      className={`px-3 py-1.5 rounded-lg transition-all flex items-center gap-1.5 cursor-pointer shrink-0 ${
+                        activeCorridor === key
+                          ? 'bg-white text-[#0C2340] shadow-sm border border-slate-200'
+                          : 'text-slate-600 hover:text-slate-900'
+                      }`}
+                    >
+                      <span className="text-sm">{item.flag}</span>
+                      <span>{item.country}</span>
+                    </button>
+                  ))}
+                </div>
 
-            {/* Subheading */}
-            <p className="text-base sm:text-xl text-slate-300 max-w-3xl mx-auto font-normal leading-relaxed">
-              Accept payments from customers across 100+ modes. Automate payouts for vendors & employees with Buimb-PayX. Never run out of working capital.
-            </p>
+                {/* Corridor Hero Card */}
+                {(() => {
+                  const current = corridorData[activeCorridor] || corridorData.france;
+                  return (
+                    <div className="space-y-4">
+                      {/* Photo / Graphic Container */}
+                      <div className="relative rounded-2xl overflow-hidden border border-slate-200 bg-slate-50 h-[250px] sm:h-[280px]">
+                        <img
+                          src={current.image}
+                          alt={`${current.country} corridor checkout`}
+                          className="w-full h-full object-cover object-center"
+                        />
+                        <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
 
-            {/* CTAs */}
-            <div className="flex flex-wrap items-center justify-center gap-4 pt-2">
-              <Link href="/signup" className="bg-[#0B63E5] hover:bg-[#0951bd] text-white px-8 py-3.5 rounded-lg text-sm font-bold transition-all shadow-xl shadow-blue-600/30 hover:scale-[1.02] flex items-center gap-2">
-                <span>Sign Up Now</span>
-                <ArrowRight className="w-4 h-4"/>
-              </Link>
+                        {/* Floating Top Badge */}
+                        <div className="absolute top-3 left-3 bg-white/90 backdrop-blur-md px-3 py-1 rounded-full border border-slate-200 text-[11px] font-bold text-slate-800 flex items-center gap-1.5 shadow-sm">
+                          <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+                          <span>{current.badge}</span>
+                        </div>
 
-              <a href={DASHBOARD_URL} target="_blank" rel="noreferrer" className="bg-white/10 hover:bg-white/15 text-white border border-white/20 backdrop-blur-md px-7 py-3.5 rounded-lg text-sm font-bold transition-all hover:scale-[1.02] flex items-center gap-2">
-                <Sparkles className="w-4 h-4 text-amber-300"/>
-                <span>Explore Live Demo</span>
-              </a>
+                        {/* Floating Bottom Overseas Buyer Pill */}
+                        <div className="absolute bottom-3 left-3 right-3 bg-white/95 backdrop-blur-md rounded-xl p-3 border border-slate-200 flex items-center justify-between shadow-lg">
+                          <div>
+                            <div className="text-[10px] text-slate-500 uppercase tracking-wider font-bold">
+                              International Customer Order
+                            </div>
+                            <div className="text-xs font-bold text-slate-900">
+                              {current.buyer} · {current.location}
+                            </div>
+                            <div className="text-[11px] text-slate-600">
+                              {current.item}
+                            </div>
+                          </div>
+                          <div className="text-right">
+                            <span className="text-[10px] text-slate-400 block font-semibold">Total Paid</span>
+                            <div className="text-base sm:text-lg font-black font-mono text-[#0B63E5]">
+                              {current.amount}
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+
+                      {/* Corridor Conversion Details */}
+                      <div className="grid grid-cols-2 gap-3">
+                        <div className="p-3 rounded-xl bg-slate-50 border border-slate-200">
+                          <span className="text-[10px] text-slate-500 font-bold block uppercase tracking-wider">
+                            Guaranteed FX Rate
+                          </span>
+                          <div className="text-sm font-black font-mono text-slate-800 mt-0.5">
+                            {current.rate}
+                          </div>
+                          <div className="text-[10px] text-emerald-600 font-semibold mt-0.5">
+                            ✓ Real-time rate lock
+                          </div>
+                        </div>
+
+                        <div className="p-3 rounded-xl bg-emerald-50/70 border border-emerald-200">
+                          <span className="text-[10px] text-emerald-800 font-bold block uppercase tracking-wider">
+                            Indian Merchant Credit
+                          </span>
+                          <div className="text-sm font-black font-mono text-emerald-700 mt-0.5">
+                            {current.inr}
+                          </div>
+                          <div className="text-[10px] text-slate-600 font-medium truncate mt-0.5">
+                            {current.merchant} ({current.merchantCity})
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  );
+                })()}
+
+                {/* Footer security badge */}
+                <div className="pt-2 flex items-center justify-between text-[11px] text-slate-500 border-t border-slate-100">
+                  <span className="flex items-center gap-1">
+                    <ShieldCheck className="w-3.5 h-3.5 text-emerald-600" />
+                    <span>RBI Compliant Cross-Border Inward Remittance</span>
+                  </span>
+                  <Link href="/international" className="text-[#0B63E5] font-bold hover:underline">
+                    Explore Corridors &rarr;
+                  </Link>
+                </div>
+              </div>
             </div>
           </div>
 
           {/* ── Interactive "Need Help Choosing?" Bar (From Reference {43673FF8-37F0-4D63-A269-79A3C6AFBC02}.png) ── */}
-          <div className="pt-6 max-w-5xl mx-auto">
-            <div className="p-2 rounded-2xl bg-white/10 backdrop-blur-xl border border-white/15 flex flex-wrap items-center justify-center gap-2 text-xs font-bold text-white shadow-2xl">
-              <span className="px-3 py-1.5 text-slate-300 font-semibold flex items-center gap-1.5 hidden md:flex">
-                <Sparkles className="w-3.5 h-3.5 text-blue-400"/>
+          <div className="pt-6">
+            <div className="p-2 rounded-2xl bg-white border border-slate-200/90 flex flex-wrap items-center justify-center gap-2 text-xs font-bold text-slate-800 shadow-lg">
+              <span className="px-3 py-1.5 text-slate-500 font-semibold flex items-center gap-1.5 hidden md:flex">
+                <Sparkles className="w-3.5 h-3.5 text-[#0B63E5]"/>
                 Need help choosing?
               </span>
 
               <button onClick={() => setNeedHelpChoice('accept')} className={`px-3.5 py-2 rounded-xl transition-all cursor-pointer flex items-center gap-1.5 ${needHelpChoice === 'accept'
             ? 'bg-[#0B63E5] text-white shadow-md'
-            : 'text-slate-200 hover:bg-white/10'}`}>
+            : 'text-slate-700 hover:bg-slate-100'}`}>
                 <CreditCard className="w-3.5 h-3.5"/>
                 <span>Accept Payments</span>
               </button>
 
               <button onClick={() => setNeedHelpChoice('payouts')} className={`px-3.5 py-2 rounded-xl transition-all cursor-pointer flex items-center gap-1.5 ${needHelpChoice === 'payouts'
             ? 'bg-[#0B63E5] text-white shadow-md'
-            : 'text-slate-200 hover:bg-white/10'}`}>
+            : 'text-slate-700 hover:bg-slate-100'}`}>
                 <ArrowUpRight className="w-3.5 h-3.5"/>
                 <span>Make Payouts</span>
               </button>
 
               <button onClick={() => setNeedHelpChoice('banking')} className={`px-3.5 py-2 rounded-xl transition-all cursor-pointer flex items-center gap-1.5 ${needHelpChoice === 'banking'
             ? 'bg-[#0B63E5] text-white shadow-md'
-            : 'text-slate-200 hover:bg-white/10'}`}>
+            : 'text-slate-700 hover:bg-slate-100'}`}>
                 <Building className="w-3.5 h-3.5"/>
                 <span>Start Business Banking</span>
               </button>
 
               <button onClick={() => setNeedHelpChoice('credit')} className={`px-3.5 py-2 rounded-xl transition-all cursor-pointer flex items-center gap-1.5 ${needHelpChoice === 'credit'
             ? 'bg-[#0B63E5] text-white shadow-md'
-            : 'text-slate-200 hover:bg-white/10'}`}>
+            : 'text-slate-700 hover:bg-slate-100'}`}>
                 <BadgePercent className="w-3.5 h-3.5"/>
-                <span>Get Credit & Perks</span>
+                <span>Get Credit &amp; Perks</span>
               </button>
 
               <button onClick={() => setNeedHelpChoice('payroll')} className={`px-3.5 py-2 rounded-xl transition-all cursor-pointer flex items-center gap-1.5 ${needHelpChoice === 'payroll'
             ? 'bg-[#0B63E5] text-white shadow-md'
-            : 'text-slate-200 hover:bg-white/10'}`}>
+            : 'text-slate-700 hover:bg-slate-100'}`}>
                 <Users className="w-3.5 h-3.5"/>
                 <span>Automate Payroll</span>
               </button>
             </div>
           </div>
 
-          {/* ── Dynamic Hero Showcase Card Based on Choice ── */}
-          <div className="max-w-5xl mx-auto pt-2">
+          {/* ── Dynamic Product Console Based on Choice ── */}
+          <div className="pt-2">
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-stretch">
               {/* Left Column: Live Interactive Product Experience (7 cols) */}
-              <div className="lg:col-span-7 bg-[#0E203C]/95 backdrop-blur-xl border border-white/15 rounded-2xl p-6 shadow-2xl space-y-5 flex flex-col justify-between">
+              <div className="lg:col-span-7 bg-[#0E203C] rounded-2xl p-6 shadow-2xl space-y-5 flex flex-col justify-between text-white border border-slate-800">
                 <div>
                   <div className="flex items-center justify-between border-b border-white/10 pb-3">
                     <div className="flex items-center gap-2">
@@ -391,7 +582,7 @@ Order order = buimbpay.orders.create(orderRequest);`,
               </div>
 
               {/* Right Column: Live Banking & Settlement Escrow Preview (5 cols) */}
-              <div className="lg:col-span-5 bg-gradient-to-br from-[#0B1E40] to-[#08152D] border border-blue-500/25 rounded-2xl p-6 shadow-2xl flex flex-col justify-between space-y-5">
+              <div className="lg:col-span-5 bg-gradient-to-br from-[#0B1E40] to-[#08152D] border border-blue-500/25 rounded-2xl p-6 shadow-2xl flex flex-col justify-between space-y-5 text-white">
                 <div className="space-y-4">
                   <div className="flex items-center justify-between">
                     <span className="px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-blue-500/20 text-blue-300 border border-blue-400/30">

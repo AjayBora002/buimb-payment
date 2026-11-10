@@ -1073,21 +1073,10 @@
             </div>
           </div>
 
-          <!-- PRIMARY BUY BUTTON (Official One-Button Integration Target) -->
+          <!-- PRIMARY BUY BUTTON -->
           <button type="button"
                   class="btn-buy-primary"
                   id="btnInitiateCheckout"
-                  data-youpi-pay
-                  data-order-id=""
-                  data-amount="1.00"
-                  data-currency="INR"
-                  data-name="BuimbPay Store"
-                  data-description="BuimbPay Enterprise Gateway Settlement"
-                  data-success-url="/order-success"
-                  data-failed-url="/order-failed"
-                  data-suspicious-url="/order-suspicious"
-                  data-expired-url="/order-expired"
-                  data-cancelled-url="/order-cancelled"
                   onclick="startGatewayPurchase()">
             <span>⚡ Pay with BuimbPay · <span id="btnAmountDisplay">₹1.00</span></span>
           </button>
@@ -1247,7 +1236,7 @@
   <section class="specs-section" id="features">
     <div class="section-heading-row">
       <span class="section-badge">Gateway Capabilities</span>
-      <h2 class="section-title">Built For Small Scale Businesses</h2>
+      <h2 class="section-title">Built For Modern High-Growth Businesses</h2>
     </div>
 
     <div class="features-quad-grid">
@@ -1612,11 +1601,11 @@ app.post('/api/youpi-webhook', express.raw({ type: 'application/json' }), (req, 
         <div class="brand-logo-badge">⚡</div>
         <div>
           <div style="font-family:'Outfit', sans-serif; font-size:1.2rem; font-weight:800; color:#ffffff;">BuimbPay Enterprise Store</div>
-          <div style="font-size:0.75rem; color:#94a3b8;">Official Demo Store &amp; E-Commerce Gateway Showcase</div>
+          <div style="font-size:0.75rem; color:#94a3b8;">Production Enterprise Gateway Showcase</div>
         </div>
       </div>
       <div style="font-size:0.8rem; color:#94a3b8;">
-        © 2026 Buimb-Pay · Sovereign Small Scale Payment Gateway Suite
+        © 2026 BuimbPay · Sovereign Unified Payment Gateway Suite
       </div>
     </div>
   </footer>
@@ -1637,7 +1626,7 @@ app.post('/api/youpi-webhook', express.raw({ type: 'application/json' }), (req, 
       </p>
 
       <div class="receipt-box">
-        <div class="receipt-row"><span>Product:</span><strong>Buimb-Pay Small Scale Suite</strong></div>
+        <div class="receipt-row"><span>Product:</span><strong>BuimbPay Enterprise Suite</strong></div>
         <div class="receipt-row"><span>Order ID:</span><span id="receiptOrderId" style="font-family:monospace; font-weight:700;">-</span></div>
         <div class="receipt-row"><span>Payment ID:</span><span id="receiptPaymentId" style="font-family:monospace; font-size:0.75rem;">-</span></div>
         <div class="receipt-row"><span>Amount Paid:</span><strong id="receiptAmountPaid" style="color:#059669; font-size:0.95rem;">₹1.00</strong></div>

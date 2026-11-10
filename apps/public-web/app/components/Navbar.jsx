@@ -99,18 +99,81 @@ export function Navbar() {
 
           {/* Desktop Nav Items */}
           <nav className="hidden xl:flex items-center gap-6 text-[13px] font-semibold text-[#0C2340]">
-            {/* 1. Agentic Stack */}
-            <Link
-              href="/optimizer"
-              className="flex items-center gap-1 text-slate-700 hover:text-[#0B63E5] transition-colors group"
+            {/* 1. Agentic Stack Dropdown (Matching Reference {02722972-4FF4-4033-B28B-70136881D9FE}.png) */}
+            <div
+              className="relative"
+              onMouseEnter={() => setActiveMenu('agentic')}
+              onMouseLeave={() => setActiveMenu(null)}
             >
-              <span>Agentic Stack</span>
-              <span className="text-[9px] font-bold uppercase tracking-wider px-1.5 py-0.2 rounded bg-blue-50 text-[#0B63E5] border border-blue-200">
-                AI
-              </span>
-            </Link>
+              <button
+                type="button"
+                onClick={() => setActiveMenu(activeMenu === 'agentic' ? null : 'agentic')}
+                className={`flex items-center gap-1 py-1 transition-colors hover:text-[#0B63E5] cursor-pointer ${
+                  activeMenu === 'agentic' ? 'text-[#0B63E5]' : 'text-slate-800'
+                }`}
+              >
+                <span>Agentic Stack</span>
+                <ChevronDown
+                  className={`w-3.5 h-3.5 transition-transform duration-200 ${
+                    activeMenu === 'agentic' ? 'rotate-180 text-[#0B63E5]' : 'text-slate-400'
+                  }`}
+                />
+              </button>
 
-            {/* 2. Payments Mega-Menu */}
+              {activeMenu === 'agentic' && (
+                <div
+                  className="absolute top-full left-0 mt-3 w-[360px] bg-white text-slate-800 rounded-2xl shadow-2xl border border-slate-200 p-5 space-y-4 animate-in fade-in slide-in-from-top-2 duration-150 z-50"
+                  onMouseEnter={() => setActiveMenu('agentic')}
+                  onMouseLeave={() => setActiveMenu(null)}
+                >
+                  <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider block">
+                    AGENTIC STACK
+                  </span>
+                  <div className="space-y-3">
+                    <Link
+                      href="/optimizer"
+                      onClick={() => setActiveMenu(null)}
+                      className="block p-2 rounded-xl hover:bg-slate-50 transition-colors group"
+                    >
+                      <div className="text-xs font-bold text-slate-900 group-hover:text-[#0B63E5]">
+                        Agentic Payments
+                      </div>
+                      <div className="text-[11px] text-slate-500 leading-snug">
+                        Conversational Payments for the AI Era
+                      </div>
+                    </Link>
+
+                    <Link
+                      href="/optimizer"
+                      onClick={() => setActiveMenu(null)}
+                      className="block p-2 rounded-xl hover:bg-slate-50 transition-colors group"
+                    >
+                      <div className="text-xs font-bold text-slate-900 group-hover:text-[#0B63E5]">
+                        Agent Studio
+                      </div>
+                      <div className="text-[11px] text-slate-500 leading-snug">
+                        AI Agents for Payments &amp; Revenue Operations
+                      </div>
+                    </Link>
+
+                    <Link
+                      href="/banking"
+                      onClick={() => setActiveMenu(null)}
+                      className="block p-2 rounded-xl hover:bg-slate-50 transition-colors group"
+                    >
+                      <div className="text-xs font-bold text-slate-900 group-hover:text-[#0B63E5]">
+                        Agentic Connected Banking
+                      </div>
+                      <div className="text-[11px] text-slate-500 leading-snug">
+                        Banking you can talk to
+                      </div>
+                    </Link>
+                  </div>
+                </div>
+              )}
+            </div>
+
+            {/* 2. Payments Mega-Menu (Matching Reference {BD436C4C-23FD-4904-97DE-D1EAC489FCBA}.png) */}
             <div
               className="relative"
               onMouseEnter={() => setActiveMenu('payments')}
@@ -133,245 +196,295 @@ export function Navbar() {
 
               {activeMenu === 'payments' && (
                 <div
-                  className="absolute top-full -left-20 mt-3 w-[880px] bg-white text-slate-800 rounded-2xl shadow-2xl border border-slate-200 p-6 grid grid-cols-12 gap-6 animate-in fade-in slide-in-from-top-2 duration-150 z-50"
+                  className="absolute top-full -left-20 mt-3 w-[920px] bg-white text-slate-800 rounded-2xl shadow-2xl border border-slate-200 p-6 space-y-4 animate-in fade-in slide-in-from-top-2 duration-150 z-50"
                   onMouseEnter={() => setActiveMenu('payments')}
                   onMouseLeave={() => setActiveMenu(null)}
                 >
-                  {/* Left Column: Accept Payments Online (7 cols) */}
-                  <div className="col-span-7 space-y-3">
-                    <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider block">
-                      Accept Payments Online
-                    </span>
-                    <div className="grid grid-cols-2 gap-2.5">
-                      <Link
-                        href="/payment-aggregator"
-                        onClick={() => setActiveMenu(null)}
-                        className="flex items-start gap-2.5 p-2 rounded-xl hover:bg-slate-50 transition-colors group"
-                      >
-                        <div className="w-8 h-8 rounded-lg bg-blue-50 text-[#0B63E5] flex items-center justify-center shrink-0 group-hover:bg-[#0B63E5] group-hover:text-white transition-colors">
-                          <CreditCard className="w-4 h-4" />
-                        </div>
-                        <div>
-                          <div className="text-xs font-bold text-slate-900 group-hover:text-[#0B63E5]">
-                            Payment Aggregator
-                          </div>
-                          <div className="text-[10px] text-slate-500 leading-tight">
-                            Accepting payments made easy
-                          </div>
-                        </div>
-                      </Link>
-
-                      <Link
-                        href="/payment-gateway"
-                        onClick={() => setActiveMenu(null)}
-                        className="flex items-start gap-2.5 p-2 rounded-xl hover:bg-slate-50 transition-colors group"
-                      >
-                        <div className="w-8 h-8 rounded-lg bg-indigo-50 text-indigo-600 flex items-center justify-center shrink-0 group-hover:bg-indigo-600 group-hover:text-white transition-colors">
-                          <Globe className="w-4 h-4" />
-                        </div>
-                        <div>
-                          <div className="text-xs font-bold text-slate-900 group-hover:text-indigo-600">
-                            Payment Gateway
-                          </div>
-                          <div className="text-[10px] text-slate-500 leading-tight">
-                            Website & App checkout
-                          </div>
-                        </div>
-                      </Link>
-
-                      <Link
-                        href="/payment-links"
-                        onClick={() => setActiveMenu(null)}
-                        className="flex items-start gap-2.5 p-2 rounded-xl hover:bg-slate-50 transition-colors group"
-                      >
-                        <div className="w-8 h-8 rounded-lg bg-sky-50 text-sky-600 flex items-center justify-center shrink-0 group-hover:bg-sky-600 group-hover:text-white transition-colors">
-                          <Link2 className="w-4 h-4" />
-                        </div>
-                        <div>
-                          <div className="text-xs font-bold text-slate-900 group-hover:text-sky-600">
-                            Payment Links
-                          </div>
-                          <div className="text-[10px] text-slate-500 leading-tight">
-                            Create & send links to collect
-                          </div>
-                        </div>
-                      </Link>
-
-                      <Link
-                        href="/payment-pages"
-                        onClick={() => setActiveMenu(null)}
-                        className="flex items-start gap-2.5 p-2 rounded-xl hover:bg-slate-50 transition-colors group"
-                      >
-                        <div className="w-8 h-8 rounded-lg bg-violet-50 text-violet-600 flex items-center justify-center shrink-0 group-hover:bg-violet-600 group-hover:text-white transition-colors">
-                          <FileText className="w-4 h-4" />
-                        </div>
-                        <div>
-                          <div className="text-xs font-bold text-slate-900 group-hover:text-violet-600">
-                            Payment Pages
-                          </div>
-                          <div className="text-[10px] text-slate-500 leading-tight">
-                            Zero-code branded page
-                          </div>
-                        </div>
-                      </Link>
-
-                      <Link
-                        href="/qr-codes"
-                        onClick={() => setActiveMenu(null)}
-                        className="flex items-start gap-2.5 p-2 rounded-xl hover:bg-slate-50 transition-colors group"
-                      >
-                        <div className="w-8 h-8 rounded-lg bg-emerald-50 text-emerald-600 flex items-center justify-center shrink-0 group-hover:bg-emerald-600 group-hover:text-white transition-colors">
-                          <QrCode className="w-4 h-4" />
-                        </div>
-                        <div>
-                          <div className="text-xs font-bold text-slate-900 group-hover:text-emerald-600">
-                            QR Codes
-                          </div>
-                          <div className="text-[10px] text-slate-500 leading-tight">
-                            Multi-feature QR for business
-                          </div>
-                        </div>
-                      </Link>
-
-                      <Link
-                        href="/magic-checkout"
-                        onClick={() => setActiveMenu(null)}
-                        className="flex items-start gap-2.5 p-2 rounded-xl hover:bg-slate-50 transition-colors group"
-                      >
-                        <div className="w-8 h-8 rounded-lg bg-amber-50 text-amber-600 flex items-center justify-center shrink-0 group-hover:bg-amber-600 group-hover:text-white transition-colors">
-                          <Zap className="w-4 h-4" />
-                        </div>
-                        <div>
-                          <div className="text-xs font-bold text-slate-900 group-hover:text-amber-600 flex items-center gap-1">
-                            Magic Checkout
-                            <span className="text-[8px] bg-emerald-100 text-emerald-800 font-bold px-1 rounded">NEW</span>
-                          </div>
-                          <div className="text-[10px] text-slate-500 leading-tight">
-                            Boost conversions & stop RTO
-                          </div>
-                        </div>
-                      </Link>
-
-                      <Link
-                        href="/subscriptions"
-                        onClick={() => setActiveMenu(null)}
-                        className="flex items-start gap-2.5 p-2 rounded-xl hover:bg-slate-50 transition-colors group"
-                      >
-                        <div className="w-8 h-8 rounded-lg bg-teal-50 text-teal-600 flex items-center justify-center shrink-0 group-hover:bg-teal-600 group-hover:text-white transition-colors">
-                          <RefreshCw className="w-4 h-4" />
-                        </div>
-                        <div>
-                          <div className="text-xs font-bold text-slate-900 group-hover:text-teal-600">
-                            Subscriptions
-                          </div>
-                          <div className="text-[10px] text-slate-500 leading-tight">
-                            UPI AutoPay & eNACH mandates
-                          </div>
-                        </div>
-                      </Link>
-
-                      <Link
-                        href="/instant-settlement"
-                        onClick={() => setActiveMenu(null)}
-                        className="flex items-start gap-2.5 p-2 rounded-xl hover:bg-slate-50 transition-colors group"
-                      >
-                        <div className="w-8 h-8 rounded-lg bg-rose-50 text-rose-600 flex items-center justify-center shrink-0 group-hover:bg-rose-600 group-hover:text-white transition-colors">
-                          <ArrowUpRight className="w-4 h-4" />
-                        </div>
-                        <div>
-                          <div className="text-xs font-bold text-slate-900 group-hover:text-rose-600">
-                            Instant Settlement
-                          </div>
-                          <div className="text-[10px] text-slate-500 leading-tight">
-                            On-demand T+0 bank payout
-                          </div>
-                        </div>
-                      </Link>
-                    </div>
-
-                    <div className="pt-2 border-t border-slate-100">
-                      <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider block mb-2">
-                        Accept Payments Offline
+                  <div className="grid grid-cols-12 gap-6">
+                    {/* Left Column: Accept Payments Online (4 cols) */}
+                    <div className="col-span-4 space-y-3">
+                      <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider block">
+                        ACCEPT PAYMENTS ONLINE
                       </span>
-                      <Link
-                        href="/pos"
-                        onClick={() => setActiveMenu(null)}
-                        className="flex items-start gap-2.5 p-2 rounded-xl hover:bg-slate-50 transition-colors group"
-                      >
-                        <div className="w-8 h-8 rounded-lg bg-cyan-50 text-cyan-600 flex items-center justify-center shrink-0 group-hover:bg-cyan-600 group-hover:text-white transition-colors">
-                          <Store className="w-4 h-4" />
-                        </div>
-                        <div>
-                          <div className="text-xs font-bold text-slate-900 group-hover:text-cyan-600">
-                            Buimb-Pay POS & Soundbox
-                          </div>
-                          <div className="text-[10px] text-slate-500 leading-tight">
-                            Smart Android POS devices & audio announcements
-                          </div>
-                        </div>
-                      </Link>
-                    </div>
-                  </div>
-
-                  {/* Right Column: Global & Omnichannel (5 cols) */}
-                  <div className="col-span-5 border-l border-slate-100 pl-6 space-y-4">
-                    <div>
-                      <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider block mb-2">
-                        Accept International Payments
-                      </span>
-                      <div className="space-y-2">
+                      <div className="space-y-2.5">
                         <Link
-                          href="/international"
+                          href="/payment-aggregator"
                           onClick={() => setActiveMenu(null)}
-                          className="block p-2 rounded-xl hover:bg-slate-50 transition-colors"
+                          className="flex items-start gap-2.5 p-2 rounded-xl hover:bg-slate-50 transition-colors group"
                         >
-                          <div className="text-xs font-bold text-slate-900">International Payments</div>
-                          <div className="text-[10px] text-slate-500">Accept global cards & Apple Pay</div>
+                          <div className="w-8 h-8 rounded-lg bg-blue-50 text-[#0B63E5] flex items-center justify-center shrink-0 group-hover:bg-[#0B63E5] group-hover:text-white transition-colors">
+                            <CreditCard className="w-4 h-4" />
+                          </div>
+                          <div>
+                            <div className="text-xs font-bold text-slate-900 group-hover:text-[#0B63E5]">
+                              Payment Aggregator
+                            </div>
+                            <div className="text-[10px] text-slate-500 leading-tight">
+                              Accepting payments made easy for businesses
+                            </div>
+                          </div>
                         </Link>
+
                         <Link
-                          href="/international-transfers"
+                          href="/payment-gateway"
                           onClick={() => setActiveMenu(null)}
-                          className="block p-2 rounded-xl hover:bg-slate-50 transition-colors"
+                          className="flex items-start gap-2.5 p-2 rounded-xl hover:bg-slate-50 transition-colors group"
                         >
-                          <div className="text-xs font-bold text-slate-900">International Bank Transfers</div>
-                          <div className="text-[10px] text-slate-500">Accept USD, GBP, EUR directly</div>
+                          <div className="w-8 h-8 rounded-lg bg-blue-50 text-[#0B63E5] flex items-center justify-center shrink-0 group-hover:bg-[#0B63E5] group-hover:text-white transition-colors">
+                            <Globe className="w-4 h-4" />
+                          </div>
+                          <div>
+                            <div className="text-xs font-bold text-slate-900 group-hover:text-[#0B63E5]">
+                              Payment Gateway
+                            </div>
+                            <div className="text-[10px] text-slate-500 leading-tight">
+                              Payments on your Website &amp; App
+                            </div>
+                          </div>
+                        </Link>
+
+                        <Link
+                          href="/payment-links"
+                          onClick={() => setActiveMenu(null)}
+                          className="flex items-start gap-2.5 p-2 rounded-xl hover:bg-slate-50 transition-colors group"
+                        >
+                          <div className="w-8 h-8 rounded-lg bg-blue-50 text-[#0B63E5] flex items-center justify-center shrink-0 group-hover:bg-[#0B63E5] group-hover:text-white transition-colors">
+                            <Link2 className="w-4 h-4" />
+                          </div>
+                          <div>
+                            <div className="text-xs font-bold text-slate-900 group-hover:text-[#0B63E5]">
+                              Payment Links
+                            </div>
+                            <div className="text-[10px] text-slate-500 leading-tight">
+                              Create &amp; send links to collect money
+                            </div>
+                          </div>
+                        </Link>
+
+                        <Link
+                          href="/payment-pages"
+                          onClick={() => setActiveMenu(null)}
+                          className="flex items-start gap-2.5 p-2 rounded-xl hover:bg-slate-50 transition-colors group"
+                        >
+                          <div className="w-8 h-8 rounded-lg bg-blue-50 text-[#0B63E5] flex items-center justify-center shrink-0 group-hover:bg-[#0B63E5] group-hover:text-white transition-colors">
+                            <FileText className="w-4 h-4" />
+                          </div>
+                          <div>
+                            <div className="text-xs font-bold text-slate-900 group-hover:text-[#0B63E5]">
+                              Payment Pages
+                            </div>
+                            <div className="text-[10px] text-slate-500 leading-tight">
+                              Get paid with personalized page
+                            </div>
+                          </div>
+                        </Link>
+
+                        <Link
+                          href="/qr-codes"
+                          onClick={() => setActiveMenu(null)}
+                          className="flex items-start gap-2.5 p-2 rounded-xl hover:bg-slate-50 transition-colors group"
+                        >
+                          <div className="w-8 h-8 rounded-lg bg-blue-50 text-[#0B63E5] flex items-center justify-center shrink-0 group-hover:bg-[#0B63E5] group-hover:text-white transition-colors">
+                            <QrCode className="w-4 h-4" />
+                          </div>
+                          <div>
+                            <div className="text-xs font-bold text-slate-900 group-hover:text-[#0B63E5]">
+                              QR Codes
+                            </div>
+                            <div className="text-[10px] text-slate-500 leading-tight">
+                              Multi-feature QR for your business
+                            </div>
+                          </div>
+                        </Link>
+
+                        <Link
+                          href="/payment-gateway"
+                          onClick={() => setActiveMenu(null)}
+                          className="flex items-start gap-2.5 p-2 rounded-xl hover:bg-slate-50 transition-colors group"
+                        >
+                          <div className="w-8 h-8 rounded-lg bg-blue-50 text-[#0B63E5] flex items-center justify-center shrink-0 group-hover:bg-[#0B63E5] group-hover:text-white transition-colors">
+                            <Zap className="w-4 h-4" />
+                          </div>
+                          <div>
+                            <div className="text-xs font-bold text-slate-900 group-hover:text-[#0B63E5] flex items-center gap-1.5">
+                              UPI Payments
+                              <span className="text-[8px] bg-emerald-100 text-emerald-800 font-bold px-1 rounded">NEW</span>
+                            </div>
+                            <div className="text-[10px] text-slate-500 leading-tight">
+                              Discover the complete UPI stack
+                            </div>
+                          </div>
                         </Link>
                       </div>
                     </div>
 
-                    <div className="pt-2 border-t border-slate-100">
-                      <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider block mb-2">
-                        Built for Global Businesses
-                      </span>
-                      <Link
-                        href="/accept-payments-india"
-                        onClick={() => setActiveMenu(null)}
-                        className="block p-2 rounded-xl hover:bg-slate-50 transition-colors"
-                      >
-                        <div className="text-xs font-bold text-slate-900 flex items-center gap-1.5">
-                          Accept Payments from India
-                          <span className="text-[8px] bg-blue-100 text-blue-700 font-bold px-1 rounded">NEW</span>
+                    {/* Middle Column: Conversions, Subscriptions & Offline (4 cols) */}
+                    <div className="col-span-4 space-y-3">
+                      <div className="h-4" /> {/* Spacer */}
+                      <div className="space-y-2.5">
+                        <Link
+                          href="/magic-checkout"
+                          onClick={() => setActiveMenu(null)}
+                          className="flex items-start gap-2.5 p-2 rounded-xl hover:bg-slate-50 transition-colors group"
+                        >
+                          <div className="w-8 h-8 rounded-lg bg-blue-50 text-[#0B63E5] flex items-center justify-center shrink-0 group-hover:bg-[#0B63E5] group-hover:text-white transition-colors">
+                            <Zap className="w-4 h-4" />
+                          </div>
+                          <div>
+                            <div className="text-xs font-bold text-slate-900 group-hover:text-[#0B63E5] flex items-center gap-1.5">
+                              Magic Checkout
+                              <span className="text-[8px] bg-emerald-100 text-emerald-800 font-bold px-1 rounded">NEW</span>
+                            </div>
+                            <div className="text-[10px] text-slate-500 leading-tight">
+                              Improve Order Conversions &amp; Reduce RTOs
+                            </div>
+                          </div>
+                        </Link>
+
+                        <Link
+                          href="/subscriptions"
+                          onClick={() => setActiveMenu(null)}
+                          className="flex items-start gap-2.5 p-2 rounded-xl hover:bg-slate-50 transition-colors group"
+                        >
+                          <div className="w-8 h-8 rounded-lg bg-blue-50 text-[#0B63E5] flex items-center justify-center shrink-0 group-hover:bg-[#0B63E5] group-hover:text-white transition-colors">
+                            <RefreshCw className="w-4 h-4" />
+                          </div>
+                          <div>
+                            <div className="text-xs font-bold text-slate-900 group-hover:text-[#0B63E5]">
+                              Subscriptions
+                            </div>
+                            <div className="text-[10px] text-slate-500 leading-tight">
+                              Collect recurring subscription payments
+                            </div>
+                          </div>
+                        </Link>
+
+                        <Link
+                          href="/instant-settlement"
+                          onClick={() => setActiveMenu(null)}
+                          className="flex items-start gap-2.5 p-2 rounded-xl hover:bg-slate-50 transition-colors group"
+                        >
+                          <div className="w-8 h-8 rounded-lg bg-blue-50 text-[#0B63E5] flex items-center justify-center shrink-0 group-hover:bg-[#0B63E5] group-hover:text-white transition-colors">
+                            <ArrowUpRight className="w-4 h-4" />
+                          </div>
+                          <div>
+                            <div className="text-xs font-bold text-slate-900 group-hover:text-[#0B63E5]">
+                              Instant Settlement
+                            </div>
+                            <div className="text-[10px] text-slate-500 leading-tight">
+                              Customer payments settled faster
+                            </div>
+                          </div>
+                        </Link>
+
+                        <Link
+                          href="/optimizer"
+                          onClick={() => setActiveMenu(null)}
+                          className="flex items-start gap-2.5 p-2 rounded-xl hover:bg-slate-50 transition-colors group"
+                        >
+                          <div className="w-8 h-8 rounded-lg bg-blue-50 text-[#0B63E5] flex items-center justify-center shrink-0 group-hover:bg-[#0B63E5] group-hover:text-white transition-colors">
+                            <Sparkles className="w-4 h-4" />
+                          </div>
+                          <div>
+                            <div className="text-xs font-bold text-slate-900 group-hover:text-[#0B63E5]">
+                              Optimizer
+                            </div>
+                            <div className="text-[10px] text-slate-500 leading-tight">
+                              Manage multiple payment gateways
+                            </div>
+                          </div>
+                        </Link>
+
+                        <div className="pt-2 border-t border-slate-100">
+                          <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider block mb-2">
+                            ACCEPT PAYMENTS OFFLINE
+                          </span>
+                          <Link
+                            href="/pos"
+                            onClick={() => setActiveMenu(null)}
+                            className="flex items-start gap-2.5 p-2 rounded-xl hover:bg-slate-50 transition-colors group"
+                          >
+                            <div className="w-8 h-8 rounded-lg bg-blue-50 text-[#0B63E5] flex items-center justify-center shrink-0 group-hover:bg-[#0B63E5] group-hover:text-white transition-colors">
+                              <Store className="w-4 h-4" />
+                            </div>
+                            <div>
+                              <div className="text-xs font-bold text-slate-900 group-hover:text-[#0B63E5]">
+                                BuimbPay POS
+                              </div>
+                              <div className="text-[10px] text-slate-500 leading-tight">
+                                Accept Payments In-Store
+                              </div>
+                            </div>
+                          </Link>
                         </div>
-                        <div className="text-[10px] text-slate-500">Seamless INR collection via UPI</div>
-                      </Link>
+                      </div>
                     </div>
 
-                    <div className="pt-2 border-t border-slate-100">
-                      <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider block mb-2">
-                        All-in-One Payments
-                      </span>
-                      <Link
-                        href="/omnichannel"
-                        onClick={() => setActiveMenu(null)}
-                        className="block p-2 rounded-xl hover:bg-slate-50 transition-colors"
-                      >
-                        <div className="text-xs font-bold text-slate-900 flex items-center gap-1.5">
-                          Omnichannel Payments
-                          <span className="text-[8px] bg-purple-100 text-purple-700 font-bold px-1 rounded">NEW</span>
+                    {/* Right Column: International & Omnichannel (4 cols) */}
+                    <div className="col-span-4 border-l border-slate-100 pl-6 space-y-4">
+                      <div>
+                        <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider block mb-2">
+                          ACCEPT INTERNATIONAL PAYMENTS
+                        </span>
+                        <div className="space-y-2">
+                          <Link
+                            href="/international"
+                            onClick={() => setActiveMenu(null)}
+                            className="block p-2 rounded-xl hover:bg-slate-50 transition-colors"
+                          >
+                            <div className="text-xs font-bold text-slate-900">International Payments</div>
+                            <div className="text-[10px] text-slate-500">Accept payments from across the globe</div>
+                          </Link>
+                          <Link
+                            href="/international-transfers"
+                            onClick={() => setActiveMenu(null)}
+                            className="block p-2 rounded-xl hover:bg-slate-50 transition-colors"
+                          >
+                            <div className="text-xs font-bold text-slate-900">International Bank Transfers</div>
+                            <div className="text-[10px] text-slate-500">Accept USD, GBP, EUR payments in your account</div>
+                          </Link>
                         </div>
-                        <div className="text-[10px] text-slate-500">One unified platform for web, app & store</div>
-                      </Link>
+                      </div>
+
+                      <div className="pt-2 border-t border-slate-100">
+                        <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider block mb-2">
+                          BUILT FOR GLOBAL BUSINESSES
+                        </span>
+                        <Link
+                          href="/accept-payments-india"
+                          onClick={() => setActiveMenu(null)}
+                          className="block p-2 rounded-xl hover:bg-slate-50 transition-colors"
+                        >
+                          <div className="text-xs font-bold text-slate-900 flex items-center gap-1.5">
+                            Accept Payments from India
+                            <span className="text-[8px] bg-emerald-100 text-emerald-800 font-bold px-1 rounded">NEW</span>
+                          </div>
+                          <div className="text-[10px] text-slate-500">Seamless INR collections via UPI &amp; cards</div>
+                        </Link>
+                      </div>
+
+                      <div className="pt-2 border-t border-slate-100">
+                        <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider block mb-2">
+                          ALL-IN-ONE PAYMENTS
+                        </span>
+                        <Link
+                          href="/omnichannel"
+                          onClick={() => setActiveMenu(null)}
+                          className="block p-2 rounded-xl hover:bg-slate-50 transition-colors"
+                        >
+                          <div className="text-xs font-bold text-slate-900 flex items-center gap-1.5">
+                            Omnichannel Payments
+                            <span className="text-[8px] bg-emerald-100 text-emerald-800 font-bold px-1 rounded">NEW</span>
+                          </div>
+                          <div className="text-[10px] text-slate-500">One Payment Platform for All Channels</div>
+                        </Link>
+                      </div>
                     </div>
+                  </div>
+
+                  {/* Mega-menu footer disclaimer (Matching Image 3) */}
+                  <div className="pt-3 border-t border-slate-100 text-[11px] text-slate-400 text-center">
+                    Payment aggregation services provided by BuimbPay Payments Private Limited, an RBI Authorised Payment Aggregator
                   </div>
                 </div>
               )}

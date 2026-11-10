@@ -1,6 +1,6 @@
 import { ApiError } from '../types/auth.js';
 import { clearTokens, getAccessToken, getRefreshToken, setAccessToken } from './token-storage.js';
-const API_BASE = import.meta.env.VITE_API_URL || 'http://localhost:3000';
+const API_BASE = import.meta.env.VITE_API_URL || 'http://localhost:6001';
 // The API client has no React context of its own, so it exposes a single
 // escape hatch the AuthProvider registers on mount: "the session is dead,
 // send the user back to the login screen." This is how a 401 that survives
