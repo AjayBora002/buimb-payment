@@ -4,8 +4,8 @@ import { AlertTriangle, ArrowRight, ShieldCheck, Lock, Eye, EyeOff, CheckCircle2
 
 export const LoginView = ({ onSwitchToRegister }) => {
     const { login } = useAuth();
-    const [email, setEmail] = useState('demo@buimbpay.sandbox');
-    const [password, setPassword] = useState('SandboxDemo@123');
+    const [email, setEmail] = useState('superadmin@buimbpay.com');
+    const [password, setPassword] = useState('Admin@BuimbPay2026!');
     const [showPassword, setShowPassword] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState(null);
@@ -23,9 +23,9 @@ export const LoginView = ({ onSwitchToRegister }) => {
         }
     };
 
-    const handleQuickFillSeeded = () => {
-        setEmail('demo@buimbpay.sandbox');
-        setPassword('SandboxDemo@123');
+    const handleQuickFillRole = (roleEmail) => {
+        setEmail(roleEmail);
+        setPassword('Admin@BuimbPay2026!');
         setError(null);
     };
 
@@ -128,19 +128,63 @@ export const LoginView = ({ onSwitchToRegister }) => {
                             </div>
                         )}
 
-                        {/* Quick-fill sandbox credentials helper */}
-                        <div className="p-3 rounded-xl bg-slate-50 border border-slate-200 flex items-center justify-between text-xs">
-                            <div className="text-slate-600">
-                                <span className="font-semibold block text-[11px] text-slate-800">Seeded Sandbox Account</span>
-                                <span className="font-mono text-[10px] text-slate-500">demo@buimbpay.sandbox</span>
+                        {/* Enterprise Admin Role Fast Selector */}
+                        <div className="p-3 rounded-xl bg-slate-50 border border-slate-200 text-xs space-y-2">
+                            <div className="flex items-center justify-between">
+                                <span className="font-bold text-[11px] text-slate-800 flex items-center gap-1.5">
+                                    <ShieldCheck className="w-3.5 h-3.5 text-blue-600"/>
+                                    Enterprise Role Credentials (RBAC Tiers)
+                                </span>
+                                <span className="text-[10px] font-semibold text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200">
+                                    Live Database Verified
+                                </span>
                             </div>
-                            <button
-                                type="button"
-                                onClick={handleQuickFillSeeded}
-                                className="px-2.5 py-1 rounded-md bg-blue-50 hover:bg-blue-100 text-blue-700 font-bold text-[11px] border border-blue-200 transition-colors"
-                            >
-                                Quick Fill
-                            </button>
+                            <div className="grid grid-cols-2 gap-1.5 pt-0.5">
+                                <button
+                                    type="button"
+                                    onClick={() => handleQuickFillRole('superadmin@buimbpay.com')}
+                                    className={`px-2 py-1.5 rounded-lg text-left text-[11px] font-semibold border transition-all ${
+                                        email === 'superadmin@buimbpay.com'
+                                            ? 'bg-blue-600 text-white border-blue-600 shadow-sm'
+                                            : 'bg-white hover:bg-slate-100 text-slate-700 border-slate-200'
+                                    }`}
+                                >
+                                    👑 Super Admin
+                                </button>
+                                <button
+                                    type="button"
+                                    onClick={() => handleQuickFillRole('finance@buimbpay.com')}
+                                    className={`px-2 py-1.5 rounded-lg text-left text-[11px] font-semibold border transition-all ${
+                                        email === 'finance@buimbpay.com'
+                                            ? 'bg-blue-600 text-white border-blue-600 shadow-sm'
+                                            : 'bg-white hover:bg-slate-100 text-slate-700 border-slate-200'
+                                    }`}
+                                >
+                                    🏦 Finance / Settlements
+                                </button>
+                                <button
+                                    type="button"
+                                    onClick={() => handleQuickFillRole('risk@buimbpay.com')}
+                                    className={`px-2 py-1.5 rounded-lg text-left text-[11px] font-semibold border transition-all ${
+                                        email === 'risk@buimbpay.com'
+                                            ? 'bg-blue-600 text-white border-blue-600 shadow-sm'
+                                            : 'bg-white hover:bg-slate-100 text-slate-700 border-slate-200'
+                                    }`}
+                                >
+                                    🛡️ Risk &amp; Fraud
+                                </button>
+                                <button
+                                    type="button"
+                                    onClick={() => handleQuickFillRole('auditor@buimbpay.com')}
+                                    className={`px-2 py-1.5 rounded-lg text-left text-[11px] font-semibold border transition-all ${
+                                        email === 'auditor@buimbpay.com'
+                                            ? 'bg-blue-600 text-white border-blue-600 shadow-sm'
+                                            : 'bg-white hover:bg-slate-100 text-slate-700 border-slate-200'
+                                    }`}
+                                >
+                                    ⚖️ RBI Regulatory Auditor
+                                </button>
+                            </div>
                         </div>
 
                         {/* Form */}

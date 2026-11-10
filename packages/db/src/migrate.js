@@ -117,20 +117,33 @@ export function runMigrations(targetDb) {
   if (existing.length === 0) {
     defaultMerchant = merchantRepo.create({
       id: '00000000-0000-0000-0000-000000000001',
-      businessName: 'YOUPI Demo Store',
-      slug: 'demo-store',
-      contactEmail: 'merchant@youpi.local',
-      contactPhone: '9876543210',
+      businessName: 'BuimbPay Enterprise Store',
+      slug: 'buimbpay-store',
+      contactEmail: 'merchant@buimbpay.com',
+      contactPhone: '+91 98765 43210',
       webhookUrl: process.env.COIN_STORE_WEBHOOK_URL || 'http://localhost:5000/api/webhook',
       webhookSecret: getCoinStoreWebhookSecret(),
       branding: {
-        appName: 'YOUPI PG',
-        primaryColor: '#2563eb',
+        appName: 'BuimbPay',
+        primaryColor: '#0b63e5',
         logoUrl: null
       }
     });
   } else {
     defaultMerchant = existing[0];
+    if (defaultMerchant.businessName === 'YOUPI Demo Store') {
+      merchantRepo.update(defaultMerchant.id, {
+        businessName: 'BuimbPay Enterprise Store',
+        slug: 'buimbpay-store',
+        contactEmail: 'merchant@buimbpay.com',
+        branding: {
+          appName: 'BuimbPay',
+          primaryColor: '#0b63e5',
+          logoUrl: null
+        }
+      });
+      defaultMerchant.businessName = 'BuimbPay Enterprise Store';
+    }
     if (!defaultMerchant.webhookSecret) {
       merchantRepo.update(defaultMerchant.id, {
         webhookUrl: 'http://localhost:5000/api/webhook',

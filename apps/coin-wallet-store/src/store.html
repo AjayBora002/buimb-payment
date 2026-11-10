@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-  <title>Acme Store · Buimb-Pay Standard Checkout</title>
+  <title>BuimbPay Store · Sovereign Unified Gateway</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <!-- OFFICIAL Buimb-Pay UNIVERSAL INTEGRATION SCRIPT -->
@@ -963,27 +963,35 @@
 
   <!-- TOP ANNOUNCEMENT BAR -->
   <div class="top-announcement">
-    <span>✨ <strong>Buimb-Pay Gateway</strong> Demo</span>
+    <span>✨ <strong>BuimbPay Platform</strong> · RBI Payment Aggregator Standard</span>
     <span style="opacity:0.4;">|</span>
-    <span>Zero Platform Fees · Direct P2P UPI Settlement</span>
+    <span>Zero Platform Fees · Direct P2P UPI &amp; RuPay Settlement · 256-Bit NPCI Grade</span>
   </div>
 
   <!-- STICKY MAIN HEADER -->
   <header>
     <div class="header-inner">
       <a href="/" class="brand-group">
-        <div class="brand-logo-badge">⚡</div>
+        <div class="brand-logo-badge" style="background: linear-gradient(135deg, #0b63e5 0%, #1e293b 100%); display:flex; align-items:center; justify-content:center; padding:4px;">
+          <svg viewBox="0 0 40 40" fill="none" style="width:24px; height:24px;">
+            <path d="M10 6 H24 C28.4 6 32 9.6 32 14 C32 16.8 30.6 19.2 28.4 20.6 C31.2 22.1 33 25.1 33 28.5 C33 33.2 29.2 37 24.5 37 H10 Z" fill="#0b63e5" fill-opacity="0.2"/>
+            <path d="M10 6 H23.5 C27.1 6 30 8.9 30 12.5 C30 16.1 27.1 19 23.5 19 H10 Z" fill="#38bdf8"/>
+            <path d="M10 18 H24.5 C28.6 18 32 21.4 32 25.5 C32 29.6 28.6 33 24.5 33 H10 Z" fill="#2563eb"/>
+            <path d="M17 11 H23 C24.1 11 25 11.9 25 13 C25 14.1 24.1 15 23 15 H17 Z" fill="#ffffff"/>
+            <path d="M17 23 H24 C25.1 23 26 23.9 26 25 C26 26.1 25.1 27 24 27 H17 Z" fill="#ffffff"/>
+          </svg>
+        </div>
         <div class="brand-text">
-          <span class="brand-title">Acme Store</span>
-          <span class="brand-subtitle">Official Payment Gateway Demo</span>
+          <span class="brand-title">BuimbPay Store</span>
+          <span class="brand-subtitle">Enterprise Sovereign Payment Suite</span>
         </div>
       </a>
       <nav style="display:flex; align-items:center; gap:0.75rem; flex-wrap:wrap;">
-        <a href="#purchase" class="btn-admin-link">🛒 Buy Demo Pack</a>
-        <a href="#outcome-pages" class="btn-admin-link">🚦 Outcome Pages</a>
+        <a href="#purchase" class="btn-admin-link">🛒 Order Hardware</a>
+        <a href="#outcome-pages" class="btn-admin-link">🚦 Payment Outcomes</a>
         <a href="#developer-guide" class="btn-admin-link" style="background:#eff6ff; color:#2563eb; border-color:#bfdbfe;">📖 Developer Guide</a>
-        <a href="/openapi.yaml" target="_blank" class="btn-admin-link">⚙️ OpenAPI</a>
-        <a href="/wallet" class="btn-admin-link" style="background:#1e293b; color:#ffffff; border-color:#334155;">🪙 Wallet (<span id="topWalletBalance">50</span>)</a>
+        <a href="/openapi.yaml" target="_blank" class="btn-admin-link">⚙️ OpenAPI Specs</a>
+        <a href="/wallet" class="btn-admin-link" style="background:#1e293b; color:#ffffff; border-color:#334155;">🪙 Merchant Vault (<span id="topWalletBalance">50</span>)</a>
       </nav>
     </div>
   </header>
@@ -1021,12 +1029,12 @@
         </div>
       </div>
 
-      <!-- RIGHT COLUMN: PRODUCT BUY BOX FIRST (PRIORITIZED DEMO), THEN CONTENT BELOW IT -->
+      <!-- RIGHT COLUMN: PRODUCT BUY BOX FIRST, THEN CONTENT BELOW IT -->
       <div class="details-column">
         <div class="product-header-block">
-          <h1 class="product-h1">Buimb-Pay — Small Scale Self-Hosted UPI Payment Gateway</h1>
+          <h1 class="product-h1">BuimbPay — Enterprise Self-Hosted Sovereign Payment Gateway</h1>
           <p style="color:var(--text-muted); font-size:0.92rem; margin-top:0.35rem; font-weight:600;">
-            Direct-to-bank sovereign settlement. Test live checkout with zero intermediary fees.
+            Direct-to-bank sovereign settlement across UPI, RuPay, and Counter modes with zero intermediary fees.
           </p>
         </div>
 
@@ -1034,26 +1042,26 @@
         <div class="buy-box-card" id="purchase">
           <div class="pricing-header">
             <div>
-              <span style="font-size:0.8rem; font-weight:700; color:var(--text-muted); text-transform:uppercase;">Live Demo Checkout Price</span>
+              <span style="font-size:0.8rem; font-weight:700; color:var(--text-muted); text-transform:uppercase;">Order Amount</span>
               <div class="price-main" id="displayPrice">₹1.00</div>
             </div>
-            <span class="price-badge-demo">1-Tap Live Checkout</span>
+            <span class="price-badge-demo" style="background:#ecfdf5; color:#059669; border:1px solid #a7f3d0;">✓ Instant Bank Settlement</span>
           </div>
 
           <p class="pricing-note">
-            Test real end-to-end payment gateway execution. Default is <strong>₹1.00</strong> for instant testing, or select/type any custom amount:
+            Execute real end-to-end payment gateway settlement. Pay <strong>₹1.00</strong> for instant pilot verification, or choose a package:
           </p>
 
           <!-- Quick Preset Chips -->
           <div class="amount-selector-title">
-            <span>Quick Select Test Amount</span>
+            <span>Select Commercial Tier</span>
           </div>
           <div class="amount-selector-chips">
-            <button type="button" class="chip-btn active" onclick="selectAmount(1.00, this)">₹1 (Demo)</button>
+            <button type="button" class="chip-btn active" onclick="selectAmount(1.00, this)">₹1 (Pilot)</button>
             <button type="button" class="chip-btn" onclick="selectAmount(10.00, this)">₹10</button>
             <button type="button" class="chip-btn" onclick="selectAmount(100.00, this)">₹100</button>
-            <button type="button" class="chip-btn" onclick="selectAmount(499.00, this)">₹499</button>
-            <button type="button" class="chip-btn" onclick="selectAmount(1499.00, this)">₹1,499</button>
+            <button type="button" class="chip-btn" onclick="selectAmount(499.00, this)">₹499 (Pro Pack)</button>
+            <button type="button" class="chip-btn" onclick="selectAmount(1499.00, this)">₹1,499 (Hardware)</button>
           </div>
 
           <!-- Custom Amount Input -->
@@ -1073,20 +1081,20 @@
                   data-order-id=""
                   data-amount="1.00"
                   data-currency="INR"
-                  data-name="Acme Store"
-                  data-description="Buimb-Pay Enterprise Suite Top-Up"
+                  data-name="BuimbPay Store"
+                  data-description="BuimbPay Enterprise Gateway Settlement"
                   data-success-url="/order-success"
                   data-failed-url="/order-failed"
                   data-suspicious-url="/order-suspicious"
                   data-expired-url="/order-expired"
                   data-cancelled-url="/order-cancelled"
                   onclick="startGatewayPurchase()">
-            <span>⚡ Buy Now with Buimb-Pay · <span id="btnAmountDisplay">₹1.00</span></span>
+            <span>⚡ Pay with BuimbPay · <span id="btnAmountDisplay">₹1.00</span></span>
           </button>
 
           <div class="security-guarantee-note">
             <span>🔒</span>
-            <span>Bank-Grade 256-Bit SSL · Direct UPI Settlement · 0% Deductions</span>
+            <span>Bank-Grade 256-Bit SSL · Direct UPI Settlement · 0% Deductions · RBI Aggregator Ready</span>
           </div>
 
           <!-- Value Proposition Grid -->
@@ -1603,7 +1611,7 @@ app.post('/api/youpi-webhook', express.raw({ type: 'application/json' }), (req, 
       <div class="footer-brand">
         <div class="brand-logo-badge">⚡</div>
         <div>
-          <div style="font-family:'Outfit', sans-serif; font-size:1.2rem; font-weight:800; color:#ffffff;">Acme Store</div>
+          <div style="font-family:'Outfit', sans-serif; font-size:1.2rem; font-weight:800; color:#ffffff;">BuimbPay Enterprise Store</div>
           <div style="font-size:0.75rem; color:#94a3b8;">Official Demo Store &amp; E-Commerce Gateway Showcase</div>
         </div>
       </div>
@@ -1784,7 +1792,7 @@ app.post('/api/youpi-webhook', express.raw({ type: 'application/json' }), (req, 
           order_id: data.orderId,
           amount: currentAmount,
           currency: 'INR',
-          name: 'Acme Store',
+          name: 'BuimbPay Store',
           description: 'Buimb-Pay Enterprise Suite Top-Up',
           successUrl: `/order-success?order_id=${encodeURIComponent(data.orderId)}&amount=${encodeURIComponent(currentAmount)}`,
           failedUrl: `/order-failed?order_id=${encodeURIComponent(data.orderId)}`,
